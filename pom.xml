@@ -19,7 +19,6 @@
     </repositories>
 
     <dependencies>
-        <!-- Spigot as an example -->
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
@@ -34,11 +33,16 @@
             <type>javadoc</type>
             <scope>provided</scope>
         </dependency>
-        <!-- bStats -->
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bungeecord</artifactId>
             <version>1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -66,6 +70,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,0 +1,8 @@
+#Database settings
+database:
+  name: minecraft
+  address: localhost
+  port: 3306
+  username: minecraft
+  password: minecraft
+  table-prefix: masuite_

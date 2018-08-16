@@ -1,3 +1,5 @@
 .idea/
 MaSuiteCore.iml
 test/
+depency-reduced-pom.xml
+target
