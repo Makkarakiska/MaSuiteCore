@@ -3,11 +3,6 @@ package fi.matiaspaavilainen.masuitecore.database;
 import com.zaxxer.hikari.HikariDataSource;
 import fi.matiaspaavilainen.masuitecore.config.Loader;
 import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,7 +11,7 @@ public class Database {
 
     private static HikariDataSource hikari;
 
-    public static void connectToDatabase() {
+    public static void connect() {
         try {
             Configuration config = Loader.load("config.yml");
             hikari = new HikariDataSource();
