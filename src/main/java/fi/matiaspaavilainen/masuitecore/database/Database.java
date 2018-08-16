@@ -18,22 +18,16 @@ public class Database {
 
     public static void connectToDatabase() {
         try {
-            Configuration config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File("plugins/MaSuite", "config.yml"));
-            String address = config.getString("database.address");
-            String port = config.getString("database.port");
-            String name = config.getString("database.database");
-            String username = config.getString("database.username");
-            String password = config.getString("database.password");
-
+            Configuration config = Loader.load("config.yml");
             hikari = new HikariDataSource();
             hikari.setMaximumPoolSize(10);
             hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-            hikari.addDataSourceProperty("serverName", address);
-            hikari.addDataSourceProperty("port", port);
-            hikari.addDataSourceProperty("databaseName", name);
-            hikari.addDataSourceProperty("user", username);
-            hikari.addDataSourceProperty("password", password);
-        } catch (IOException e) {
+            hikari.addDataSourceProperty("serverName", config.getString("database.address"));
+            hikari.addDataSourceProperty("port", config.getString("database.port"));
+            hikari.addDataSourceProperty("databaseName", config.getString("database.database"));
+            hikari.addDataSourceProperty("user", config.getString("database.username"));
+            hikari.addDataSourceProperty("password", config.getString("database.password"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
