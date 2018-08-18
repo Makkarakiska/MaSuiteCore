@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fi.matiaspaavilainen</groupId>
-    <artifactId>masuitecore</artifactId>
+    <artifactId>MaSuiteCore</artifactId>
     <version>1.0</version>
     <repositories>
         <repository>

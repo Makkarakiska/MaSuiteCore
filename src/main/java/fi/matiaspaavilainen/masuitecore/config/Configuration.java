@@ -37,4 +37,12 @@ public class Configuration {
             }
         }
     }
+
+    public void save(net.md_5.bungee.config.Configuration config, String file){
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File("plugins/MaSuite", file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
