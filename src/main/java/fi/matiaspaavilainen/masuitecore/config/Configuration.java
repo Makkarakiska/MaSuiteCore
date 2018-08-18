@@ -2,12 +2,24 @@ package fi.matiaspaavilainen.masuitecore.config;
 
 import com.google.common.io.ByteStreams;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
 
-public class Creator {
+public class Configuration {
+    public net.md_5.bungee.config.Configuration load(String config) {
+        net.md_5.bungee.config.Configuration configuration = null;
+        try {
+            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File("plugins/MaSuite", config));
+            return configuration;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
-    public static void create(Plugin p, String config) {
+    public void create(Plugin p, String config) {
         File f = new File("plugins/MaSuite");
         if (!f.exists()) {
             f.mkdir();

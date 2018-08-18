@@ -2,10 +2,9 @@ package fi.matiaspaavilainen.masuitecore.chat;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class Colorize {
+public class Formator {
 
-    // String version
-    public static String colorize(String string){
+    public String colorize(String string){
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 }
