@@ -1,7 +1,7 @@
 ### MaSuiteCore
 ###### Core of all MaSuite plugins
 
-### Requirements
+#### Requirements
 * MySQL-server
 * Java 8
 #### Installation
@@ -14,9 +14,9 @@
 * Start your server again
 * Done
 
-### Got an issue?
+#### Got an issue? Need help?
 * [Join Discord](https://discord.gg/sZZG6Jq)
 * [Create an issue](https://github.com/masagameplay/MaSuiteCore/issues)
 
-### I made video of this plugin, can you add it to this page?
+#### I made video of this plugin, can you add it to this page?
 Yes! Just come talk to Discord, link me your video and maybe it will get here!
