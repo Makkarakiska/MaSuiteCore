@@ -58,7 +58,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore.MaSuiteCore</shadedPattern>
+                            <shadedPattern>fi.matiaspaavilainen.masuitecore</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

@@ -9,8 +9,7 @@ import java.sql.SQLException;
 
 public class Database {
 
-    private static HikariDataSource hikari;
-
+    public HikariDataSource hikari;
     public void connect() {
         try {
             net.md_5.bungee.config.Configuration config = new Configuration().load("config.yml");
@@ -18,8 +17,8 @@ public class Database {
             hikari.setMaximumPoolSize(10);
             hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
             hikari.addDataSourceProperty("serverName", config.getString("database.address"));
-            hikari.addDataSourceProperty("port", config.getString("database.port"));
-            hikari.addDataSourceProperty("databaseName", config.getString("database.database"));
+            hikari.addDataSourceProperty("port", config.getInt("database.port"));
+            hikari.addDataSourceProperty("databaseName", config.getString("database.name"));
             hikari.addDataSourceProperty("user", config.getString("database.username"));
             hikari.addDataSourceProperty("password", config.getString("database.password"));
         } catch (Exception e) {
@@ -32,6 +31,7 @@ public class Database {
         Connection connection = null;
         PreparedStatement statement = null;
         String tablePrefix = new Configuration().load("config.yml").getString("database.table-prefix");
+        System.out.println("CREATE TABLE IF NOT EXISTS " + tablePrefix + name + " " + SQL);
         try {
             connection = hikari.getConnection();
             statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + name + " " + SQL);

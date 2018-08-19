@@ -1,0 +1,186 @@
+package fi.matiaspaavilainen.masuitecore.managers;
+
+import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
+import fi.matiaspaavilainen.masuitecore.database.Database;
+
+import java.sql.*;
+import java.util.UUID;
+
+public class MaSuitePlayer {
+
+    Connection connection = null;
+    PreparedStatement statement = null;
+    Database db = MaSuiteCore.db;
+
+    private String username;
+    private String nickname;
+    private java.util.UUID UUID;
+    private String ipAddress;
+    private Long firstLogin;
+    private Long lastLogin;
+
+
+    public MaSuitePlayer() {}
+
+    public MaSuitePlayer(String username, String nickname, java.util.UUID UUID, String ipAddress, Long firstLogin, Long lastLogin){
+        this.username = username;
+        this.nickname = nickname;
+        this.UUID = UUID;
+        this.ipAddress = ipAddress;
+        this.firstLogin = firstLogin;
+        this.lastLogin = lastLogin;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public java.util.UUID getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(java.util.UUID UUID) {
+        this.UUID = UUID;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public Long getFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(Long firstLogin) {
+        this.firstLogin = firstLogin;
+    }
+
+    public Long getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Long lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public void insert(){
+        String insert = "INSERT INTO masuite_players (username, nickname, uuid, ipAddress, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, ipAddress = ?;";
+        try {
+            connection = db.hikari.getConnection();
+            statement = connection.prepareStatement(insert);
+            statement.setString(1, this.username);
+            statement.setString(2, this.nickname);
+            statement.setString(3, String.valueOf(this.UUID));
+            statement.setString(4, this.ipAddress);
+            statement.setLong(5, this.firstLogin);
+            statement.setLong(6, this.lastLogin);
+            statement.setString(7, this.username);
+            statement.setString(8, this.ipAddress);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public MaSuitePlayer find(UUID uuid){
+        MaSuitePlayer msp = new MaSuitePlayer();
+        ResultSet resultSet = null;
+
+        try {
+            connection = MaSuiteCore.db.hikari.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM masuite_players WHERE uuid = ?");
+            statement.setString(1, String.valueOf(uuid));
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                msp.setUsername(resultSet.getString("username"));
+                msp.setNickname(resultSet.getString("nickname"));
+                msp.setUUID(java.util.UUID.fromString(resultSet.getString("uuid")));
+                msp.setIpAddress(resultSet.getString("ipAddress"));
+                msp.setFirstLogin(resultSet.getLong("firstLogin"));
+                msp.setLastLogin(resultSet.getLong("lastLogin"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return msp;
+    }
+    public void update(MaSuitePlayer msp){
+        String update = "UPDATE masuite_players SET username = ?, nickname = ?, ipAddress = ?, lastLogin = ? WHERE uuid = ?";
+        try {
+            connection = db.hikari.getConnection();
+            statement = connection.prepareStatement(update);
+            statement.setString(1, "dawsdaad");
+            statement.setString(2, msp.getNickname());
+            statement.setString(3, msp.getIpAddress());
+            statement.setLong(4, msp.getLastLogin());
+            statement.setString(5, String.valueOf(msp.getUUID()));
+            statement.executeUpdate();
+            System.out.println(msp.getLastLogin());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
