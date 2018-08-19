@@ -9,11 +9,9 @@ public class LeaveEvent implements Listener {
 
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e){
-        System.out.println("Left");
         MaSuitePlayer msp = new MaSuitePlayer();
         msp = msp.find(e.getPlayer().getUniqueId());
         msp.setLastLogin(System.currentTimeMillis() / 1000);
-        System.out.println(System.currentTimeMillis() / 1000 + " | " + msp.getLastLogin());
         msp.update(msp);
     }
 

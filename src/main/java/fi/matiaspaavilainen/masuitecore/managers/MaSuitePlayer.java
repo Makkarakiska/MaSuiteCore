@@ -161,13 +161,12 @@ public class MaSuitePlayer {
         try {
             connection = db.hikari.getConnection();
             statement = connection.prepareStatement(update);
-            statement.setString(1, "dawsdaad");
+            statement.setString(1, msp.getUsername());
             statement.setString(2, msp.getNickname());
             statement.setString(3, msp.getIpAddress());
             statement.setLong(4, msp.getLastLogin());
             statement.setString(5, String.valueOf(msp.getUUID()));
             statement.executeUpdate();
-            System.out.println(msp.getLastLogin());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

@@ -31,7 +31,6 @@ public class Database {
         Connection connection = null;
         PreparedStatement statement = null;
         String tablePrefix = new Configuration().load("config.yml").getString("database.table-prefix");
-        System.out.println("CREATE TABLE IF NOT EXISTS " + tablePrefix + name + " " + SQL);
         try {
             connection = hikari.getConnection();
             statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + name + " " + SQL);
