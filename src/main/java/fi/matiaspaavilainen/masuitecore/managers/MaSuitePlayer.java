@@ -1,6 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.managers;
 
 import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
+import fi.matiaspaavilainen.masuitecore.config.Configuration;
 import fi.matiaspaavilainen.masuitecore.database.Database;
 
 import java.sql.*;
@@ -11,7 +12,8 @@ public class MaSuitePlayer {
     Connection connection = null;
     PreparedStatement statement = null;
     Database db = MaSuiteCore.db;
-
+    Configuration config = new Configuration();
+    String tablePrefix = config.load("config.yml").getString("database.table-prefix");
     private String username;
     private String nickname;
     private java.util.UUID UUID;
@@ -20,9 +22,10 @@ public class MaSuitePlayer {
     private Long lastLogin;
 
 
-    public MaSuitePlayer() {}
+    public MaSuitePlayer() {
+    }
 
-    public MaSuitePlayer(String username, String nickname, java.util.UUID UUID, String ipAddress, Long firstLogin, Long lastLogin){
+    public MaSuitePlayer(String username, String nickname, java.util.UUID UUID, String ipAddress, Long firstLogin, Long lastLogin) {
         this.username = username;
         this.nickname = nickname;
         this.UUID = UUID;
@@ -79,8 +82,8 @@ public class MaSuitePlayer {
         this.lastLogin = lastLogin;
     }
 
-    public void insert(){
-        String insert = "INSERT INTO masuite_players (username, nickname, uuid, ipAddress, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, ipAddress = ?;";
+    public void insert() {
+        String insert = "INSERT INTO " + tablePrefix + "players (username, nickname, uuid, ipAddress, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, ipAddress = ?;";
         try {
             connection = db.hikari.getConnection();
             statement = connection.prepareStatement(insert);
@@ -106,13 +109,13 @@ public class MaSuitePlayer {
         }
     }
 
-    public MaSuitePlayer find(UUID uuid){
+    public MaSuitePlayer find(UUID uuid) {
         MaSuitePlayer msp = new MaSuitePlayer();
         ResultSet resultSet = null;
 
         try {
             connection = MaSuiteCore.db.hikari.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM masuite_players WHERE uuid = ?");
+            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE uuid = ?");
             statement.setString(1, String.valueOf(uuid));
             resultSet = statement.executeQuery();
 
@@ -152,8 +155,9 @@ public class MaSuitePlayer {
         }
         return msp;
     }
-    public void update(MaSuitePlayer msp){
-        String update = "UPDATE masuite_players SET username = ?, nickname = ?, ipAddress = ?, lastLogin = ? WHERE uuid = ?";
+
+    public void update(MaSuitePlayer msp) {
+        String update = "UPDATE " + tablePrefix + "players SET username = ?, nickname = ?, ipAddress = ?, lastLogin = ? WHERE uuid = ?";
         try {
             connection = db.hikari.getConnection();
             statement = connection.prepareStatement(update);
