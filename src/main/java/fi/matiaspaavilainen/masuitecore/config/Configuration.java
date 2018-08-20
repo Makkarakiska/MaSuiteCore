@@ -8,15 +8,36 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.*;
 
 public class Configuration {
-    public net.md_5.bungee.config.Configuration load(String config) {
+    public net.md_5.bungee.config.Configuration load(String folder, String config) {
         net.md_5.bungee.config.Configuration configuration = null;
         try {
-            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File("plugins/MaSuite", config));
+            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File("plugins/MaSuite/" + folder, config));
             return configuration;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public net.md_5.bungee.config.Configuration load(String config) {
+        net.md_5.bungee.config.Configuration configuration = null;
+        try {
+            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File("plugins/MaSuite/", config));
+            return configuration;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public void create(Plugin p, String folder, String config) {
+        File f = new File("plugins/MaSuite/" + folder);
+
+        if (!f.exists()) {
+            f.mkdir();
+        }
+        File configFile = new File(f, config);
+        configChecker(p, config, configFile);
     }
 
     public void create(Plugin p, String config) {
@@ -25,6 +46,17 @@ public class Configuration {
             f.mkdir();
         }
         File configFile = new File(f, config);
+        configChecker(p, config, configFile);
+    }
+    public void save(net.md_5.bungee.config.Configuration config, String file){
+        try {
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File("plugins/MaSuite", file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void configChecker(Plugin p, String config, File configFile) {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
@@ -35,14 +67,6 @@ public class Configuration {
             } catch (IOException e) {
                 throw new RuntimeException("Unable to create configuration file", e);
             }
-        }
-    }
-
-    public void save(net.md_5.bungee.config.Configuration config, String file){
-        try {
-            ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File("plugins/MaSuite", file));
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

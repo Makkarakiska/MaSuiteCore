@@ -13,7 +13,7 @@ public class MaSuiteCore extends Plugin {
     @Override
     public void onEnable() {
         Metrics metrics = new Metrics(this);
-        new Configuration().create(this, "config.yml");
+        new Configuration().create(this, null,"config.yml");
 
         db.connect();
         db.createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, ipAddress VARCHAR(15) NOT NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");

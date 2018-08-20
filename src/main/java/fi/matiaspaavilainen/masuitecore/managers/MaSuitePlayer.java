@@ -13,7 +13,7 @@ public class MaSuitePlayer {
     PreparedStatement statement = null;
     Database db = MaSuiteCore.db;
     Configuration config = new Configuration();
-    String tablePrefix = config.load("config.yml").getString("database.table-prefix");
+    String tablePrefix = config.load(null,"config.yml").getString("database.table-prefix");
     private String username;
     private String nickname;
     private java.util.UUID UUID;
