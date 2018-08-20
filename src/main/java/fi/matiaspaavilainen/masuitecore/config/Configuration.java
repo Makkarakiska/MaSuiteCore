@@ -10,8 +10,14 @@ import java.io.*;
 public class Configuration {
     public net.md_5.bungee.config.Configuration load(String folder, String config) {
         net.md_5.bungee.config.Configuration configuration = null;
+        File f = null;
+        if (folder != null) {
+            f = new File("plugins/MaSuite/" + folder);
+        } else {
+            f = new File("plugins/MaSuite");
+        }
         try {
-            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File("plugins/MaSuite/" + folder, config));
+            configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(f, config));
             return configuration;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -31,7 +37,12 @@ public class Configuration {
     }
 
     public void create(Plugin p, String folder, String config) {
-        File f = new File("plugins/MaSuite/" + folder);
+        File f = null;
+        if (folder != null) {
+            f = new File("plugins/MaSuite/" + folder);
+        } else {
+            f = new File("plugins/MaSuite");
+        }
 
         if (!f.exists()) {
             f.mkdir();
@@ -48,7 +59,8 @@ public class Configuration {
         File configFile = new File(f, config);
         configChecker(p, config, configFile);
     }
-    public void save(net.md_5.bungee.config.Configuration config, String file){
+
+    public void save(net.md_5.bungee.config.Configuration config, String file) {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File("plugins/MaSuite", file));
         } catch (IOException e) {
