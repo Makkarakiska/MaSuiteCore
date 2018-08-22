@@ -22,7 +22,7 @@ public class Database {
             hikari.addDataSourceProperty("user", config.getString("database.username"));
             hikari.addDataSourceProperty("password", config.getString("database.password"));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Ooops! Something went wrong. Check your MaSuite database settings!");
         }
 
     }

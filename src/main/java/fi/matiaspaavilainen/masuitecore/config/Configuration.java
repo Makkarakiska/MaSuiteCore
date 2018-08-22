@@ -48,7 +48,17 @@ public class Configuration {
             f.mkdir();
         }
         File configFile = new File(f, config);
-        configChecker(p, config, configFile);
+        if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+                try (InputStream is = p.getResourceAsStream(config);
+                     OutputStream os = new FileOutputStream(configFile)) {
+                    ByteStreams.copy(is, os);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to create configuration file", e);
+            }
+        }
     }
 
     public void create(Plugin p, String config) {
