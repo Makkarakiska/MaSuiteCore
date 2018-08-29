@@ -3,7 +3,12 @@ package fi.matiaspaavilainen.masuitecore.managers;
 import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.config.Configuration;
 import fi.matiaspaavilainen.masuitecore.database.Database;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
@@ -20,7 +25,7 @@ public class MaSuitePlayer {
     private String ipAddress;
     private Long firstLogin;
     private Long lastLogin;
-
+    private Location location;
 
     public MaSuitePlayer() {
     }
@@ -81,6 +86,27 @@ public class MaSuitePlayer {
     public void setLastLogin(Long lastLogin) {
         this.lastLogin = lastLogin;
     }
+
+    public void setLocation(Location location){
+        this.location = location;
+    }
+
+    public void requestLocation(){
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
+        try {
+            out.writeUTF("MaSuitePlayerLocation");
+            out.writeUTF(String.valueOf(this.UUID));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        p.getServer().sendData("BungeeCord", b.toByteArray());
+    }
+
+
+
+
 
     public void insert() {
         String insert = "INSERT INTO " + tablePrefix + "players (username, nickname, uuid, ipAddress, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, ipAddress = ?;";
