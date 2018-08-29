@@ -91,7 +91,7 @@ public class MaSuitePlayer {
         this.location = location;
     }
 
-    public void requestLocation(){
+    public synchronized void requestLocation(){
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
