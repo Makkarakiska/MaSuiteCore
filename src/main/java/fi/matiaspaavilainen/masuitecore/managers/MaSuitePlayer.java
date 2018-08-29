@@ -96,12 +96,15 @@ public class MaSuitePlayer {
         DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
         try {
+            if(p == null){
+                return;
+            }
             out.writeUTF("MaSuitePlayerLocation");
             out.writeUTF(String.valueOf(this.UUID));
+            p.getServer().sendData("BungeeCord", b.toByteArray());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        p.getServer().sendData("BungeeCord", b.toByteArray());
     }
 
 

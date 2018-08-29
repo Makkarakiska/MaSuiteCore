@@ -23,6 +23,7 @@ public class PluginMessageListener implements Listener {
                 msp = msp.find(UUID.fromString(in.readUTF()));
                 Location loc = new Location(in.readUTF(), in.readDouble(), in.readDouble(), in.readDouble(), in.readFloat(), in.readFloat());
                 msp.setLocation(loc);
+                System.out.println(loc.toString());
                 return msp;
             }
         }
