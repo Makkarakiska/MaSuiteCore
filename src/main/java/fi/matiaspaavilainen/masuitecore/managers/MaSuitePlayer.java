@@ -18,7 +18,7 @@ public class MaSuitePlayer {
     PreparedStatement statement = null;
     Database db = MaSuiteCore.db;
     Configuration config = new Configuration();
-    String tablePrefix = config.load(null,"config.yml").getString("database.table-prefix");
+    String tablePrefix = config.load(null, "config.yml").getString("database.table-prefix");
     private String username;
     private String nickname;
     private java.util.UUID UUID;
@@ -87,28 +87,26 @@ public class MaSuitePlayer {
         this.lastLogin = lastLogin;
     }
 
-    public void setLocation(Location location){
-        this.location = location;
-    }
+    public void setLocation(Location location) { this.location = location; }
 
-    public synchronized void requestLocation(){
+    public Location getLocation() { return this.location; }
+
+    public synchronized void requestLocation() {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
         try {
-            if(p == null){
+            if (p == null) {
                 return;
             }
             out.writeUTF("MaSuitePlayerLocation");
             out.writeUTF(String.valueOf(this.UUID));
             p.getServer().sendData("BungeeCord", b.toByteArray());
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-
-
-
 
 
     public void insert() {
