@@ -4,6 +4,7 @@ import fi.matiaspaavilainen.masuitecore.config.Configuration;
 import fi.matiaspaavilainen.masuitecore.database.Database;
 import fi.matiaspaavilainen.masuitecore.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.events.LoginEvent;
+import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerLocation;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.bstats.bungeecord.Metrics;
@@ -22,5 +23,6 @@ public class MaSuiteCore extends Plugin {
         getProxy().getPluginManager().registerListener(this, new LoginEvent());
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerLocation());
+        getProxy().getPluginManager().registerListener(this, new MaSuitePlayerGroup());
     }
 }

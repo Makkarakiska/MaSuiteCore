@@ -3,6 +3,7 @@ package fi.matiaspaavilainen.masuitecore.managers;
 import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.config.Configuration;
 import fi.matiaspaavilainen.masuitecore.database.Database;
+import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -11,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class MaSuitePlayer {
 
@@ -108,7 +110,56 @@ public class MaSuitePlayer {
         }
     }
 
+    public synchronized Group getGroup(){
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
+        if (p == null) {
+            return new Group();
+        }
+        // If Cache contains player
+        if(MaSuitePlayerGroup.groups.asMap().containsKey(p.getUniqueId())){
+            return MaSuitePlayerGroup.groups.getIfPresent(this.UUID);
+        }
+        try {
+            out.writeUTF("MaSuitePlayerGroup");
+            out.writeUTF(String.valueOf(this.UUID));
+            p.getServer().sendData("BungeeCord", b.toByteArray());
 
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Return group
+        final Group[] group = {new Group()};
+        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> group[0] = MaSuitePlayerGroup.groups.getIfPresent(this.UUID), 50, TimeUnit.MILLISECONDS);
+        return group[0];
+    }
+    public synchronized Group getGroup(UUID uuid){
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
+        if (p == null) {
+            return new Group();
+        }
+        // If Cache contains player
+        if(MaSuitePlayerGroup.groups.asMap().containsKey(p.getUniqueId())){
+            return MaSuitePlayerGroup.groups.getIfPresent(uuid);
+        }
+        try {
+            out.writeUTF("MaSuitePlayerGroup");
+            out.writeUTF(String.valueOf(uuid));
+            p.getServer().sendData("BungeeCord", b.toByteArray());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Return group
+        final Group[] group = {new Group()};
+        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> group[0] = MaSuitePlayerGroup.groups.getIfPresent(uuid), 50, TimeUnit.MILLISECONDS);
+        return group[0];
+    }
     public void insert() {
         String insert = "INSERT INTO " + tablePrefix + "players (username, nickname, uuid, ipAddress, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, ipAddress = ?;";
         try {
