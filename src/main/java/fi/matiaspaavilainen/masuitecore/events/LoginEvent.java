@@ -16,5 +16,6 @@ public class LoginEvent implements Listener {
         msp.setFirstLogin(System.currentTimeMillis() / 1000);
         msp.setLastLogin(System.currentTimeMillis() / 1000);
         msp.insert();
+        msp.getGroup();
     }
 }
