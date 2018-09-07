@@ -135,7 +135,31 @@ public class MaSuitePlayer {
         ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> group[0] = MaSuitePlayerGroup.groups.getIfPresent(this.UUID), 50, TimeUnit.MILLISECONDS);
         return group[0];
     }
+    public synchronized Group getGroup(UUID uuid){
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
+        if (p == null) {
+            return new Group();
+        }
+        // If Cache contains player
+        if(MaSuitePlayerGroup.groups.asMap().containsKey(p.getUniqueId())){
+            return MaSuitePlayerGroup.groups.getIfPresent(uuid);
+        }
+        try {
+            out.writeUTF("MaSuitePlayerGroup");
+            out.writeUTF(String.valueOf(uuid));
+            p.getServer().sendData("BungeeCord", b.toByteArray());
 
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Return group
+        final Group[] group = {new Group()};
+        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> group[0] = MaSuitePlayerGroup.groups.getIfPresent(uuid), 50, TimeUnit.MILLISECONDS);
+        return group[0];
+    }
     public void insert() {
         String insert = "INSERT INTO " + tablePrefix + "players (username, nickname, uuid, ipAddress, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?, ipAddress = ?;";
         try {
