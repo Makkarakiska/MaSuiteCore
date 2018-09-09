@@ -6,3 +6,5 @@ database:
   username: minecraft
   password: minecraft
   table-prefix: masuite_
+
+debug: false #Set true for debug messages

@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.events;
 
+import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
 import fi.matiaspaavilainen.masuitecore.managers.MaSuitePlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -13,6 +14,7 @@ public class LeaveEvent implements Listener {
         msp = msp.find(e.getPlayer().getUniqueId());
         msp.setLastLogin(System.currentTimeMillis() / 1000);
         msp.update(msp);
+        MaSuitePlayerGroup.groups.remove(e.getPlayer().getUniqueId());
     }
 
 }
