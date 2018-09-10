@@ -5,6 +5,7 @@ import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.config.Configuration;
 import fi.matiaspaavilainen.masuitecore.database.Database;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
+import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerLocation;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -95,17 +96,42 @@ public class MaSuitePlayer {
         this.location = location;
     }
 
-    public Location getLocation() {
+    /*public Location getLocation() {
         return this.location;
-    }
+    }*/
 
-    public synchronized void requestLocation() {
+    public Location getLocation(){
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
+        if (locationListener(b, out, p)) return new Location();
+        final Location[] location = {MaSuitePlayerLocation.locations.get(p.getUniqueId())};
+        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
+            location[0] = MaSuitePlayerLocation.locations.get(this.UUID);
+            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Location] [MSP] returned location from plugin message.");
+            MaSuitePlayerLocation.locations.remove(p.getUniqueId());
+        }, 50, TimeUnit.MILLISECONDS);
+        return location[0];
+    }
+
+    public Location getLocation(UUID uuid){
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
+        if (locationListener(b, out, p)) return new Location();
+        final Location[] location = {MaSuitePlayerLocation.locations.get(p.getUniqueId())};
+        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
+            location[0] = MaSuitePlayerLocation.locations.get(this.UUID);
+            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Location] [UUID] returned location from plugin message.");
+            MaSuitePlayerLocation.locations.remove(p.getUniqueId());
+        }, 50, TimeUnit.MILLISECONDS);
+        return location[0];
+    }
+
+    private boolean locationListener(ByteArrayOutputStream b, DataOutputStream out, ProxiedPlayer p) {
         try {
             if (p == null) {
-                return;
+                return true;
             }
             out.writeUTF("MaSuitePlayerLocation");
             out.writeUTF(String.valueOf(this.UUID));
@@ -114,6 +140,7 @@ public class MaSuitePlayer {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     public synchronized Group getGroup() {
