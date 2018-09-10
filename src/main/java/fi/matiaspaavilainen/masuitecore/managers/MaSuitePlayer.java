@@ -32,6 +32,7 @@ public class MaSuitePlayer {
     private Location location;
 
     private Debugger debugger = new Debugger();
+
     public MaSuitePlayer() {
     }
 
@@ -100,11 +101,11 @@ public class MaSuitePlayer {
         return this.location;
     }*/
 
-    public Location getLocation(){
+    public Location getLocation() {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
-        if (locationListener(b, out, p)) return new Location();
+        if (locationGetter(b, out, p)) return new Location();
         final Location[] location = {MaSuitePlayerLocation.locations.get(p.getUniqueId())};
         ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
             location[0] = MaSuitePlayerLocation.locations.get(this.UUID);
@@ -114,21 +115,7 @@ public class MaSuitePlayer {
         return location[0];
     }
 
-    public Location getLocation(UUID uuid){
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
-        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
-        if (locationListener(b, out, p)) return new Location();
-        final Location[] location = {MaSuitePlayerLocation.locations.get(p.getUniqueId())};
-        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
-            location[0] = MaSuitePlayerLocation.locations.get(this.UUID);
-            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Location] [UUID] returned location from plugin message.");
-            MaSuitePlayerLocation.locations.remove(p.getUniqueId());
-        }, 50, TimeUnit.MILLISECONDS);
-        return location[0];
-    }
-
-    private boolean locationListener(ByteArrayOutputStream b, DataOutputStream out, ProxiedPlayer p) {
+    private boolean locationGetter(ByteArrayOutputStream b, DataOutputStream out, ProxiedPlayer p) {
         try {
             if (p == null) {
                 return true;
@@ -141,6 +128,37 @@ public class MaSuitePlayer {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public Location getLocation(UUID uuid) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
+        if (locationGetter(b, out, p)) return new Location();
+        final Location[] location = {MaSuitePlayerLocation.locations.get(p.getUniqueId())};
+        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
+            location[0] = MaSuitePlayerLocation.locations.get(this.UUID);
+            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Location] [UUID] returned location from plugin message.");
+            MaSuitePlayerLocation.locations.remove(p.getUniqueId());
+        }, 50, TimeUnit.MILLISECONDS);
+        return location[0];
+    }
+
+    public synchronized void requestLocation() {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        ProxiedPlayer p = ProxyServer.getInstance().getPlayer(this.UUID);
+        try {
+            if (p == null) {
+                return;
+            }
+            out.writeUTF("MaSuitePlayerLocation");
+            out.writeUTF(String.valueOf(this.UUID));
+            p.getServer().sendData("BungeeCord", b.toByteArray());
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public synchronized Group getGroup() {
@@ -197,7 +215,7 @@ public class MaSuitePlayer {
 
             final Group[] group = {new Group()};
             ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
-                    group[0] = MaSuitePlayerGroup.groups.get(uuid);
+                group[0] = MaSuitePlayerGroup.groups.get(uuid);
                 debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [MSP] returned group from plugin message.");
             }, 50, TimeUnit.MILLISECONDS);
             return group[0];
