@@ -6,7 +6,7 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteCore</artifactId>
-    <version>1.4</version>
+    <version>1.4.1</version>
     <repositories>
         <repository>
             <id>bungeecord-repo</id>
