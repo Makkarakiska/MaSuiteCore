@@ -7,6 +7,7 @@ import fi.matiaspaavilainen.masuitecore.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerLocation;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginDescription;
 import org.bstats.bungeecord.Metrics;
 
 public class MaSuiteCore extends Plugin {
@@ -24,5 +25,9 @@ public class MaSuiteCore extends Plugin {
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerLocation());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerGroup());
+
+        // Detect if new version on spigot
+        Updator updator = new Updator();
+        updator.checkVersion(this.getDescription(), "60037");
     }
 }
