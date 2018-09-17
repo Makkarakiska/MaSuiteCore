@@ -10,6 +10,8 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginDescription;
 import org.bstats.bungeecord.Metrics;
 
+import java.sql.SQLException;
+
 public class MaSuiteCore extends Plugin {
 
     public static Database db = new Database();
@@ -29,5 +31,14 @@ public class MaSuiteCore extends Plugin {
         // Detect if new version on spigot
         Updator updator = new Updator();
         updator.checkVersion(this.getDescription(), "60037");
+    }
+
+    @Override
+    public void onDisable(){
+        try {
+            db.hikari.getConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
