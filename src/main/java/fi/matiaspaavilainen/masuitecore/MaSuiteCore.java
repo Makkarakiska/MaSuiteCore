@@ -6,13 +6,21 @@ import fi.matiaspaavilainen.masuitecore.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerLocation;
+import fi.matiaspaavilainen.masuitecore.managers.Group;
+import net.md_5.bungee.api.event.PluginMessageEvent;
+import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginDescription;
+import net.md_5.bungee.event.EventHandler;
 import org.bstats.bungeecord.Metrics;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.UUID;
 
-public class MaSuiteCore extends Plugin {
+public class MaSuiteCore extends Plugin implements Listener {
 
     public static Database db = new Database();
     @Override
@@ -27,7 +35,7 @@ public class MaSuiteCore extends Plugin {
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerLocation());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerGroup());
-
+        getProxy().getPluginManager().registerListener(this, this);
         // Detect if new version on spigot
         Updator updator = new Updator();
         updator.checkVersion(this.getDescription(), "60037");
@@ -35,10 +43,20 @@ public class MaSuiteCore extends Plugin {
 
     @Override
     public void onDisable(){
-        try {
-            db.hikari.getConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        db.hikari.close();
+    }
+
+    @EventHandler
+    public void onPluginMessage(PluginMessageEvent e) throws IOException {
+        System.out.println(e.getTag());
+        if(e.getTag().equals("BungeeCord")){
+            DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getData()));
+            String subchannel = in.readUTF();
+            if(subchannel.equals("MaSuitePlayerGroup")){
+                new Debugger().sendMessage("[MaSuiteCore] [MaSuitePlayerGroup] group received");
+                MaSuitePlayerGroup.groups.put(UUID.fromString(in.readUTF()), new Group(in.readUTF(), in.readUTF()));
+                new Debugger().sendMessage("[MaSuiteCore] [MaSuitePlayerGroup] group saved to cache");
+            }
         }
     }
 }

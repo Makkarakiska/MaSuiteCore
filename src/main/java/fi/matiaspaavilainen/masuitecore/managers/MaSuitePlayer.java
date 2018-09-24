@@ -168,58 +168,17 @@ public class MaSuitePlayer {
         if (p == null) {
             return new Group();
         }
-        // If Cache contains player
-        if (MaSuitePlayerGroup.groups.containsKey(p.getUniqueId())) {
-            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [MSP] returned group from cache.");
-            return MaSuitePlayerGroup.groups.get(this.UUID);
-        } else {
-            try {
-                out.writeUTF("MaSuitePlayerGroup");
-                out.writeUTF(String.valueOf(this.UUID));
-                p.getServer().sendData("BungeeCord", b.toByteArray());
-
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-
-            // Return group
-            final Group[] group = {new Group()};
-            ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
-                group[0] = MaSuitePlayerGroup.groups.get(this.UUID);
-                debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [MSP] returned group from plugin message.");
-            }, 50, TimeUnit.MILLISECONDS);
-            return group[0];
-        }
-
+        debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [MSP] returned group from cache.");
+        return MaSuitePlayerGroup.groups.get(this.UUID);
     }
 
     public Group getGroup(UUID uuid) {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
         if (p == null) {
             return new Group();
         }
-        // If Cache contains player
-        if (MaSuitePlayerGroup.groups.containsKey(p.getUniqueId())) {
-            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [UUID] returned group from cache.");
-            return MaSuitePlayerGroup.groups.get(uuid);
-        } else {
-            try {
-                out.writeUTF("MaSuitePlayerGroup");
-                out.writeUTF(String.valueOf(uuid));
-                p.getServer().sendData("BungeeCord", b.toByteArray());
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
-
-            final Group[] group = {new Group()};
-            ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
-                group[0] = MaSuitePlayerGroup.groups.get(uuid);
-                debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [MSP] returned group from plugin message.");
-            }, 50, TimeUnit.MILLISECONDS);
-            return group[0];
-        }
+        debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [UUID] returned group from cache.");
+        return MaSuitePlayerGroup.groups.get(uuid);
 
     }
 
