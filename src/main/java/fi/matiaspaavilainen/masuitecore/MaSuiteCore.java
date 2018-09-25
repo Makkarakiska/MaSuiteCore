@@ -48,7 +48,6 @@ public class MaSuiteCore extends Plugin implements Listener {
 
     @EventHandler
     public void onPluginMessage(PluginMessageEvent e) throws IOException {
-        System.out.println(e.getTag());
         if(e.getTag().equals("BungeeCord")){
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getData()));
             String subchannel = in.readUTF();
