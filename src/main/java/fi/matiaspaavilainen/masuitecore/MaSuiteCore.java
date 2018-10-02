@@ -35,7 +35,6 @@ public class MaSuiteCore extends Plugin implements Listener {
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerLocation());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerGroup());
-        getProxy().getPluginManager().registerListener(this, this);
         // Detect if new version on spigot
         Updator updator = new Updator();
         updator.checkVersion(this.getDescription(), "60037");
@@ -44,18 +43,5 @@ public class MaSuiteCore extends Plugin implements Listener {
     @Override
     public void onDisable(){
         db.hikari.close();
-    }
-
-    @EventHandler
-    public void onPluginMessage(PluginMessageEvent e) throws IOException {
-        if(e.getTag().equals("BungeeCord")){
-            DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getData()));
-            String subchannel = in.readUTF();
-            if(subchannel.equals("MaSuitePlayerGroup")){
-                new Debugger().sendMessage("[MaSuiteCore] [MaSuitePlayerGroup] group received");
-                MaSuitePlayerGroup.groups.put(UUID.fromString(in.readUTF()), new Group(in.readUTF(), in.readUTF()));
-                new Debugger().sendMessage("[MaSuiteCore] [MaSuitePlayerGroup] group saved to cache");
-            }
-        }
     }
 }

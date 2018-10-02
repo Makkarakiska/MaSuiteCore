@@ -67,6 +67,7 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>MaSuiteCore</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
