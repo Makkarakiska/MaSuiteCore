@@ -6,7 +6,7 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteCore</artifactId>
-    <version>1.4.4</version>
+    <version>1.4.5</version>
     <repositories>
         <repository>
             <id>bungeecord-repo</id>
@@ -74,10 +74,13 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
+                            <shadedPattern>fi.matiaspaavilainen.masuitecore</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.zaxxer.hikari</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore</shadedPattern>
                         </relocation>
                     </relocations>
