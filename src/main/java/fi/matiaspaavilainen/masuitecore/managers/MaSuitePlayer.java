@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 
 public class MaSuitePlayer {
 
-    Connection connection = null;
-    PreparedStatement statement = null;
-    Database db = MaSuiteCore.db;
-    Configuration config = new Configuration();
-    String tablePrefix = config.load(null, "config.yml").getString("database.table-prefix");
+    private Connection connection = null;
+    private PreparedStatement statement = null;
+    private Database db = MaSuiteCore.db;
+    private Configuration config = new Configuration();
+    private String tablePrefix = config.load(null, "config.yml").getString("database.table-prefix");
     private String username;
     private String nickname;
     private java.util.UUID UUID;
@@ -242,6 +242,13 @@ public class MaSuitePlayer {
                     e1.printStackTrace();
                 }
             }
+            if(statement != null){
+                try {
+                    statement.close();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 
@@ -250,19 +257,12 @@ public class MaSuitePlayer {
         ResultSet resultSet = null;
 
         try {
-            connection = MaSuiteCore.db.hikari.getConnection();
+            connection = db.hikari.getConnection();
             statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE uuid = ?");
             statement.setString(1, String.valueOf(uuid));
             resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                msp.setUsername(resultSet.getString("username"));
-                msp.setNickname(resultSet.getString("nickname"));
-                msp.setUUID(java.util.UUID.fromString(resultSet.getString("uuid")));
-                msp.setIpAddress(resultSet.getString("ipAddress"));
-                msp.setFirstLogin(resultSet.getLong("firstLogin"));
-                msp.setLastLogin(resultSet.getLong("lastLogin"));
-            }
+            setupPlayer(msp, resultSet);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -295,22 +295,13 @@ public class MaSuitePlayer {
     public MaSuitePlayer find(String name) {
         MaSuitePlayer msp = new MaSuitePlayer();
         ResultSet resultSet = null;
-
         try {
-            connection = MaSuiteCore.db.hikari.getConnection();
+            System.out.println(db.hikari.getConnection().getClientInfo().toString());
+            connection = db.hikari.getConnection();
             statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE username = ?");
             statement.setString(1, name);
             resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                msp.setUsername(resultSet.getString("username"));
-                msp.setNickname(resultSet.getString("nickname"));
-                msp.setUUID(java.util.UUID.fromString(resultSet.getString("uuid")));
-                msp.setIpAddress(resultSet.getString("ipAddress"));
-                msp.setFirstLogin(resultSet.getLong("firstLogin"));
-                msp.setLastLogin(resultSet.getLong("lastLogin"));
-            }
-
+            setupPlayer(msp, resultSet);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -337,6 +328,17 @@ public class MaSuitePlayer {
             }
         }
         return msp;
+    }
+
+    private void setupPlayer(MaSuitePlayer msp, ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            msp.setUsername(resultSet.getString("username"));
+            msp.setNickname(resultSet.getString("nickname"));
+            msp.setUUID(java.util.UUID.fromString(resultSet.getString("uuid")));
+            msp.setIpAddress(resultSet.getString("ipAddress"));
+            msp.setFirstLogin(resultSet.getLong("firstLogin"));
+            msp.setLastLogin(resultSet.getLong("lastLogin"));
+        }
     }
 
 
