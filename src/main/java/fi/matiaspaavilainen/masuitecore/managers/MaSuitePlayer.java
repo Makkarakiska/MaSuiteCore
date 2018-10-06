@@ -292,6 +292,54 @@ public class MaSuitePlayer {
         return msp;
     }
 
+    public MaSuitePlayer find(String name) {
+        MaSuitePlayer msp = new MaSuitePlayer();
+        ResultSet resultSet = null;
+
+        try {
+            connection = MaSuiteCore.db.hikari.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE username = ?");
+            statement.setString(1, name);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                msp.setUsername(resultSet.getString("username"));
+                msp.setNickname(resultSet.getString("nickname"));
+                msp.setUUID(java.util.UUID.fromString(resultSet.getString("uuid")));
+                msp.setIpAddress(resultSet.getString("ipAddress"));
+                msp.setFirstLogin(resultSet.getLong("firstLogin"));
+                msp.setLastLogin(resultSet.getLong("lastLogin"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return msp;
+    }
+
+
     public void update(MaSuitePlayer msp) {
         String update = "UPDATE " + tablePrefix + "players SET username = ?, nickname = ?, ipAddress = ?, lastLogin = ? WHERE uuid = ?";
         try {
