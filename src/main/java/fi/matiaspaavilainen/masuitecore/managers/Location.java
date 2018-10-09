@@ -21,6 +21,13 @@ public class Location {
         this.pitch = pitch;
     }
 
+    public Location(String world, Double x, Double y, Double z) {
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
     public String getWorld() {
         return world;
     }
