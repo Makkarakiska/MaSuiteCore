@@ -97,10 +97,7 @@ public class MaSuitePlayer {
         this.location = location;
     }
 
-    /*public Location getLocation() {
-        return this.location;
-    }*/
-
+    @Deprecated
     public Location getLocation() {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
@@ -130,6 +127,7 @@ public class MaSuitePlayer {
         return false;
     }
 
+    @Deprecated
     public Location getLocation(UUID uuid) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
@@ -144,6 +142,7 @@ public class MaSuitePlayer {
         return location[0];
     }
 
+    @Deprecated
     public synchronized void requestLocation() {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
@@ -190,7 +189,7 @@ public class MaSuitePlayer {
         }
     }
 
-    public Group getGroup(UUID uuid) {
+    public synchronized Group getGroup(UUID uuid) {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(b);
         ProxiedPlayer p = ProxyServer.getInstance().getPlayer(uuid);
@@ -198,8 +197,8 @@ public class MaSuitePlayer {
             return new Group();
         }
         // If Cache contains player
-        if (MaSuitePlayerGroup.groups.containsKey(p.getUniqueId())) {
-            debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [UUID] returned group from cache.");
+        if (MaSuitePlayerGroup.groups.containsKey(uuid)) {
+            debugger.sendMessage("[MaSuite] [Core] [MaSuitePlayer] [Group] [UUID] returned group from cache.");
             return MaSuitePlayerGroup.groups.get(uuid);
         } else {
             try {
@@ -212,7 +211,7 @@ public class MaSuitePlayer {
             final Group[] group = {new Group()};
             ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), () -> {
                 group[0] = MaSuitePlayerGroup.groups.get(uuid);
-                debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] [Group] [MSP] returned group from plugin message.");
+                debugger.sendMessage("[MaSuite] [Core] [MaSuitePlayer] [Group] [UUID] returned group from plugin message.");
             }, 50, TimeUnit.MILLISECONDS);
             return group[0];
         }
@@ -225,7 +224,7 @@ public class MaSuitePlayer {
             statement = connection.prepareStatement(insert);
             statement.setString(1, this.username);
             statement.setString(2, this.nickname);
-            statement.setString(3, String.valueOf(this.UUID));
+            statement.setString(3, this.UUID.toString());
             statement.setString(4, this.ipAddress);
             statement.setLong(5, this.firstLogin);
             statement.setLong(6, this.lastLogin);
@@ -235,16 +234,16 @@ public class MaSuitePlayer {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if (connection != null) {
+            if(statement != null){
                 try {
-                    connection.close();
+                    statement.close();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
             }
-            if(statement != null){
+            if (connection != null) {
                 try {
-                    statement.close();
+                    connection.close();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
@@ -253,23 +252,34 @@ public class MaSuitePlayer {
     }
 
     public MaSuitePlayer find(UUID uuid) {
+        System.out.println(uuid);
+        if(uuid == null){
+            System.out.println("[MaSuite] [Core] There was an error while getting [MaSuitePlayer]");
+            return null;
+        }
         MaSuitePlayer msp = new MaSuitePlayer();
-        ResultSet resultSet = null;
-
+        ResultSet rs = null;
         try {
-            connection = db.hikari.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE uuid = ?");
+            connection = MaSuiteCore.db.hikari.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE uuid = ?;");
             statement.setString(1, String.valueOf(uuid));
-            resultSet = statement.executeQuery();
+            rs = statement.executeQuery();
 
-            setupPlayer(msp, resultSet);
+            while (rs.next()) {
+                msp.setUsername(rs.getString("username"));
+                msp.setNickname(rs.getString("nickname"));
+                msp.setUUID(java.util.UUID.fromString(rs.getString("uuid")));
+                msp.setIpAddress(rs.getString("ipAddress"));
+                msp.setFirstLogin(rs.getLong("firstLogin"));
+                msp.setLastLogin(rs.getLong("lastLogin"));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (resultSet != null) {
+            if (rs != null) {
                 try {
-                    resultSet.close();
+                    rs.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -294,20 +304,26 @@ public class MaSuitePlayer {
 
     public MaSuitePlayer find(String name) {
         MaSuitePlayer msp = new MaSuitePlayer();
-        ResultSet resultSet = null;
+        ResultSet rs = null;
         try {
-            System.out.println(db.hikari.getConnection().getClientInfo().toString());
             connection = db.hikari.getConnection();
-            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE username = ?");
+            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE username = ?;");
             statement.setString(1, name);
-            resultSet = statement.executeQuery();
-            setupPlayer(msp, resultSet);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                msp.setUsername(rs.getString("username"));
+                msp.setNickname(rs.getString("nickname"));
+                msp.setUUID(java.util.UUID.fromString(rs.getString("uuid")));
+                msp.setIpAddress(rs.getString("ipAddress"));
+                msp.setFirstLogin(rs.getLong("firstLogin"));
+                msp.setLastLogin(rs.getLong("lastLogin"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (resultSet != null) {
+            if (rs != null) {
                 try {
-                    resultSet.close();
+                    rs.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -331,14 +347,7 @@ public class MaSuitePlayer {
     }
 
     private void setupPlayer(MaSuitePlayer msp, ResultSet resultSet) throws SQLException {
-        while (resultSet.next()) {
-            msp.setUsername(resultSet.getString("username"));
-            msp.setNickname(resultSet.getString("nickname"));
-            msp.setUUID(java.util.UUID.fromString(resultSet.getString("uuid")));
-            msp.setIpAddress(resultSet.getString("ipAddress"));
-            msp.setFirstLogin(resultSet.getLong("firstLogin"));
-            msp.setLastLogin(resultSet.getLong("lastLogin"));
-        }
+
     }
 
 
@@ -351,7 +360,7 @@ public class MaSuitePlayer {
             statement.setString(2, msp.getNickname());
             statement.setString(3, msp.getIpAddress());
             statement.setLong(4, msp.getLastLogin());
-            statement.setString(5, String.valueOf(msp.getUUID()));
+            statement.setString(5, msp.getUUID().toString());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -22,9 +22,9 @@ public class MaSuitePlayerGroup implements Listener {
             DataInputStream in = new DataInputStream(new ByteArrayInputStream(e.getData()));
             String subchannel = in.readUTF();
             if(subchannel.equals("MaSuitePlayerGroup")){
-                debugger.sendMessage("[MaSuiteCore] [MaSuitePlayerGroup] group received");
+                debugger.sendMessage("[MaSuite] [Core] [MaSuitePlayerGroup] group received");
                 groups.put(UUID.fromString(in.readUTF()), new Group(in.readUTF(), in.readUTF()));
-                debugger.sendMessage("[MaSuiteCore] [MaSuitePlayerGroup] group saved to cache");
+                debugger.sendMessage("[MaSuite] [Core] [MaSuitePlayerGroup] group saved for later use!");
             }
         }
     }

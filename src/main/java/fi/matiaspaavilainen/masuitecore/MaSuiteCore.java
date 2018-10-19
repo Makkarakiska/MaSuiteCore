@@ -6,19 +6,9 @@ import fi.matiaspaavilainen.masuitecore.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerGroup;
 import fi.matiaspaavilainen.masuitecore.listeners.MaSuitePlayerLocation;
-import fi.matiaspaavilainen.masuitecore.managers.Group;
-import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.PluginDescription;
-import net.md_5.bungee.event.EventHandler;
 import org.bstats.bungeecord.Metrics;
-
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.UUID;
 
 public class MaSuiteCore extends Plugin implements Listener {
 

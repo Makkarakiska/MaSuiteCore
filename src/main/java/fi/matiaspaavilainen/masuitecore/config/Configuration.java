@@ -25,6 +25,7 @@ public class Configuration {
         return null;
     }
 
+    @Deprecated
     public net.md_5.bungee.config.Configuration load(String config) {
         net.md_5.bungee.config.Configuration configuration = null;
         try {
