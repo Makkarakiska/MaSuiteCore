@@ -252,7 +252,6 @@ public class MaSuitePlayer {
     }
 
     public MaSuitePlayer find(UUID uuid) {
-        System.out.println(uuid);
         if(uuid == null){
             System.out.println("[MaSuite] [Core] There was an error while getting [MaSuitePlayer]");
             return null;
