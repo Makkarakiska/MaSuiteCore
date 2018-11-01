@@ -13,6 +13,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -234,7 +236,7 @@ public class MaSuitePlayer {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            if(statement != null){
+            if (statement != null) {
                 try {
                     statement.close();
                 } catch (SQLException e1) {
@@ -252,7 +254,7 @@ public class MaSuitePlayer {
     }
 
     public MaSuitePlayer find(UUID uuid) {
-        if(uuid == null){
+        if (uuid == null) {
             System.out.println("[MaSuite] [Core] There was an error while getting [MaSuitePlayer]");
             return null;
         }
@@ -345,8 +347,49 @@ public class MaSuitePlayer {
         return msp;
     }
 
-    private void setupPlayer(MaSuitePlayer msp, ResultSet resultSet) throws SQLException {
-
+    public Set<MaSuitePlayer> findAll() {
+        Set<MaSuitePlayer> maSuitePlayers = new HashSet<>();
+        ResultSet rs = null;
+        try {
+            connection = db.hikari.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players;");
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                MaSuitePlayer msp = new MaSuitePlayer();
+                msp.setUsername(rs.getString("username"));
+                msp.setNickname(rs.getString("nickname"));
+                msp.setUUID(java.util.UUID.fromString(rs.getString("uuid")));
+                msp.setIpAddress(rs.getString("ipAddress"));
+                msp.setFirstLogin(rs.getLong("firstLogin"));
+                msp.setLastLogin(rs.getLong("lastLogin"));
+                maSuitePlayers.add(msp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return maSuitePlayers;
     }
 
 
