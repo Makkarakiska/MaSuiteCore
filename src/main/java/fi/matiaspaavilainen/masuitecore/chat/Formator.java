@@ -10,6 +10,6 @@ public class Formator {
     }
 
     public void sendMessage(ProxiedPlayer p, String message) {
-        p.sendMessage(MDChat.getMessageFromString(ChatColor.translateAlternateColorCodes('&', message)));
+        p.sendMessage(MDChat.getMessageFromString(colorize(message)));
     }
 }

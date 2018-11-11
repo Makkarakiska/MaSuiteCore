@@ -11,13 +11,21 @@ import net.md_5.bungee.event.EventHandler;
 import java.util.concurrent.TimeUnit;
 
 public class LoginEvent implements Listener {
+
+    private MaSuiteCore plugin;
+
+    public LoginEvent(MaSuiteCore p) {
+        plugin = p;
+    }
+
     private Debugger debugger = new Debugger();
+
     @EventHandler
     public void onLogin(PostLoginEvent e) {
         MaSuitePlayer msp = new MaSuitePlayer();
-        if(msp.find(e.getPlayer().getUniqueId()).getUUID() != null){
+        if (msp.find(e.getPlayer().getUniqueId()).getUUID() != null) {
             msp = msp.find(e.getPlayer().getUniqueId());
-            if(msp.getNickname() != null){
+            if (msp.getNickname() != null) {
                 e.getPlayer().setDisplayName(msp.getNickname());
             }
         }
@@ -28,6 +36,11 @@ public class LoginEvent implements Listener {
         msp.setFirstLogin(System.currentTimeMillis() / 1000);
         msp.insert();
         debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] saved to database");
-        ProxyServer.getInstance().getScheduler().schedule(new MaSuiteCore(), msp::getGroup, 2, TimeUnit.SECONDS);
+        if(e.getPlayer() != null){
+            ProxyServer.getInstance().getScheduler().schedule(plugin, msp::getGroup, 2, TimeUnit.SECONDS);
+        } else {
+            ProxyServer.getInstance().getScheduler().schedule(plugin, msp::getGroup, 5, TimeUnit.SECONDS);
+        }
+
     }
 }

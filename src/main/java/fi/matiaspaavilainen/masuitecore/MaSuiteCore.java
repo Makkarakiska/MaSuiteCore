@@ -21,7 +21,7 @@ public class MaSuiteCore extends Plugin implements Listener {
         config.create(this, null,"messages.yml");
         db.connect();
         db.createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, ipAddress VARCHAR(15) NOT NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
-        getProxy().getPluginManager().registerListener(this, new LoginEvent());
+        getProxy().getPluginManager().registerListener(this, new LoginEvent(this));
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerLocation());
         getProxy().getPluginManager().registerListener(this, new MaSuitePlayerGroup());
