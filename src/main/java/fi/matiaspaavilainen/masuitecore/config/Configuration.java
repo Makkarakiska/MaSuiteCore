@@ -8,6 +8,13 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.*;
 
 public class Configuration {
+
+    /**
+     * Loads configuration file
+     * @param folder module folder
+     * @param config file name
+     * @return configuration file to use
+     */
     public net.md_5.bungee.config.Configuration load(String folder, String config) {
         net.md_5.bungee.config.Configuration configuration = null;
         File f = null;
@@ -25,6 +32,12 @@ public class Configuration {
         return null;
     }
 
+
+    /**
+     * Loads configuration file
+     * @param config file name
+     * @return configuration file to use
+     */
     @Deprecated
     public net.md_5.bungee.config.Configuration load(String config) {
         net.md_5.bungee.config.Configuration configuration = null;
@@ -37,6 +50,12 @@ public class Configuration {
         return null;
     }
 
+    /**
+     * Creates configuration file
+     * @param p plugin to use
+     * @param folder module folder
+     * @param config file name
+     */
     public void create(Plugin p, String folder, String config) {
         File f = null;
         if (folder != null) {
@@ -62,6 +81,11 @@ public class Configuration {
         }
     }
 
+    /**
+     * Creates configuration file
+     * @param p plugin to use
+     * @param config file name
+     */
     public void create(Plugin p, String config) {
         File f = new File("plugins/MaSuite");
         if (!f.exists()) {
@@ -71,6 +95,11 @@ public class Configuration {
         configChecker(p, config, configFile);
     }
 
+    /**
+     * Saves the configuration file
+     * @param config file
+     * @param file file name
+     */
     public void save(net.md_5.bungee.config.Configuration config, String file) {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, new File("plugins/MaSuite", file));

@@ -261,7 +261,7 @@ public class MaSuitePlayer {
         MaSuitePlayer msp = new MaSuitePlayer();
         ResultSet rs = null;
         try {
-            connection = MaSuiteCore.db.hikari.getConnection();
+            connection = db.hikari.getConnection();
             statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "players WHERE uuid = ?;");
             statement.setString(1, String.valueOf(uuid));
             rs = statement.executeQuery();

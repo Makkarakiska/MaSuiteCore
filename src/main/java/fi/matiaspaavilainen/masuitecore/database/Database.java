@@ -29,12 +29,18 @@ public class Database {
 
     }
 
+
+    /**
+     * Create table with fields
+     * @param name table name
+     * @param SQL SQL code to execute
+     */
     public void createTable(String name, String SQL) {
         Connection connection = null;
         PreparedStatement statement = null;
         String tablePrefix = new Configuration().load(null, "config.yml").getString("database.table-prefix");
         try {
-            connection = MaSuiteCore.db.hikari.getConnection();
+            connection = hikari.getConnection();
             statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + name + " " + SQL);
             statement.executeUpdate();
         } catch (SQLException e) {
