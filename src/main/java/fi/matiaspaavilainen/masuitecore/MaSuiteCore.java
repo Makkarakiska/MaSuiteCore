@@ -28,6 +28,12 @@ public class MaSuiteCore extends Plugin implements Listener {
         // Detect if new version on spigot
         Updator updator = new Updator();
         updator.checkVersion(this.getDescription(), "60037");
+
+        net.md_5.bungee.config.Configuration settings = config.load(null, "config.yml");
+        if (settings.get("get-group-on-join") == null) {
+            settings.set("get-group-on-join", true);
+            config.save(settings, "config.yml");
+        }
     }
 
     @Override

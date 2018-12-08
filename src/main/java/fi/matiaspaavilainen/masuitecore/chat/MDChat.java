@@ -128,10 +128,8 @@ public class MDChat {
     public static boolean isURL(String url) {
         try {
             new URL(url);
-            System.out.println("sadf");
             return true;
         } catch (Exception e) {
-            System.out.println("saadaddf");
             return false;
         }
     }

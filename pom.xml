@@ -62,18 +62,10 @@
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
             <version>LATEST</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>LATEST</version>
-            <type>javadoc</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats.bStats-Metrics</groupId>
+            <groupId>org.bstats</groupId>
             <artifactId>bstats-bungeecord</artifactId>
             <version>1.4</version>
             <scope>compile</scope>

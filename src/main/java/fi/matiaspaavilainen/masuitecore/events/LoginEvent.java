@@ -2,6 +2,7 @@ package fi.matiaspaavilainen.masuitecore.events;
 
 import fi.matiaspaavilainen.masuitecore.Debugger;
 import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
+import fi.matiaspaavilainen.masuitecore.config.Configuration;
 import fi.matiaspaavilainen.masuitecore.managers.MaSuitePlayer;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -36,11 +37,14 @@ public class LoginEvent implements Listener {
         msp.setFirstLogin(System.currentTimeMillis() / 1000);
         msp.insert();
         debugger.sendMessage("[MaSuiteCore] [MaSuitePlayer] saved to database");
-        if(e.getPlayer() != null){
-            ProxyServer.getInstance().getScheduler().schedule(plugin, msp::getGroup, 2, TimeUnit.SECONDS);
-        } else {
-            ProxyServer.getInstance().getScheduler().schedule(plugin, msp::getGroup, 5, TimeUnit.SECONDS);
+        if(new Configuration().load(null, "config.yml").getBoolean("get-group-on-join")){
+            if(e.getPlayer() != null){
+                ProxyServer.getInstance().getScheduler().schedule(plugin, msp::getGroup, 2, TimeUnit.SECONDS);
+            } else {
+                ProxyServer.getInstance().getScheduler().schedule(plugin, msp::getGroup, 5, TimeUnit.SECONDS);
+            }
         }
+
 
     }
 }
