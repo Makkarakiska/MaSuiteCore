@@ -95,8 +95,8 @@ public class MDChat {
                 }
                 chatMessage.addExtra(last);
                 if(links){
-                    if (isURL(part.substring(2))) {
-                        chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, part.substring(2)));
+                    if (isURL(part.substring(1))) {
+                        chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, part.substring(1)));
                     }
                 }
                 last = last.duplicate();
@@ -127,7 +127,7 @@ public class MDChat {
 
     public static boolean isURL(String url) {
         try {
-            new URL(url);
+            new URL(url.replace(" ", ""));
             return true;
         } catch (Exception e) {
             return false;
