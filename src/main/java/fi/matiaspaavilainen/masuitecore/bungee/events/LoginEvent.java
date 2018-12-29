@@ -1,6 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bungee.events;
 
-import fi.matiaspaavilainen.masuitecore.core.managers.MaSuitePlayer;
+import fi.matiaspaavilainen.masuitecore.core.objects.MaSuitePlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;

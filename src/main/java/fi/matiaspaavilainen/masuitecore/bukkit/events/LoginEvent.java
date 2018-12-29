@@ -1,6 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bukkit.events;
 
-import fi.matiaspaavilainen.masuitecore.core.managers.MaSuitePlayer;
+import fi.matiaspaavilainen.masuitecore.core.objects.MaSuitePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
