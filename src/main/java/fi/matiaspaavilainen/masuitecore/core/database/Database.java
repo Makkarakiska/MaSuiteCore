@@ -1,7 +1,6 @@
-package fi.matiaspaavilainen.masuitecore.database;
+package fi.matiaspaavilainen.masuitecore.core.database;
 
 import com.zaxxer.hikari.HikariDataSource;
-import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.config.Configuration;
 
 import java.sql.Connection;
@@ -12,6 +11,9 @@ public class Database {
 
     public HikariDataSource hikari;
 
+    /**
+     * Create connection by using credentials from config.yml
+     */
     public void connect() {
         try {
             net.md_5.bungee.config.Configuration config = new Configuration().load(null, "config.yml");
