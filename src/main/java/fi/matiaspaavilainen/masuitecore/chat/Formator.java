@@ -15,8 +15,8 @@ public class Formator {
     }
 
     /**
-     * Sends message to player
-     * @param p Target player
+     * Sends message to {@link ProxiedPlayer}
+     * @param p target player
      * @param message message to send
      */
     public void sendMessage(ProxiedPlayer p, String message) {
