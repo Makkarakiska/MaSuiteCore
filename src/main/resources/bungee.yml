@@ -1,4 +1,4 @@
 name: MaSuiteCore
-main: fi.matiaspaavilainen.masuitecore.bukkit.MaSuiteCore
+main: fi.matiaspaavilainen.masuitecore.bungee.MaSuiteCore
 version: ${project.version}
 author: Masagameplay
