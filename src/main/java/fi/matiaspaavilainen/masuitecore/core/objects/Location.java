@@ -1,4 +1,4 @@
-package fi.matiaspaavilainen.masuitecore.core.managers;
+package fi.matiaspaavilainen.masuitecore.core.objects;
 
 import net.md_5.bungee.api.config.ServerInfo;
 
