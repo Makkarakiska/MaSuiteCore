@@ -1,7 +1,7 @@
-package fi.matiaspaavilainen.masuitecore.core.managers;
+package fi.matiaspaavilainen.masuitecore.core.objects;
 
-import fi.matiaspaavilainen.masuitecore.MaSuiteCore;
-import fi.matiaspaavilainen.masuitecore.config.Configuration;
+import fi.matiaspaavilainen.masuitecore.bungee.MaSuiteCore;
+import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.database.Database;
 
 import java.sql.Connection;
@@ -17,7 +17,7 @@ public class MaSuitePlayer {
     private Connection connection = null;
     private PreparedStatement statement = null;
     private Database db = MaSuiteCore.db;
-    private Configuration config = new Configuration();
+    private BungeeConfiguration config = new BungeeConfiguration();
     private String tablePrefix = config.load(null, "config.yml").getString("database.table-prefix");
     private String username;
     private String nickname;
