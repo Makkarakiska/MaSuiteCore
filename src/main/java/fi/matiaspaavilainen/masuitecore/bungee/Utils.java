@@ -1,12 +1,12 @@
-package fi.matiaspaavilainen.masuitecore;
+package fi.matiaspaavilainen.masuitecore.bungee;
 
 import fi.matiaspaavilainen.masuitecore.chat.Formator;
-import fi.matiaspaavilainen.masuitecore.config.Configuration;
+import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Utils {
 
-    private Configuration config = new Configuration();
+    private BungeeConfiguration config = new BungeeConfiguration();
     private Formator formator = new Formator();
 
 
