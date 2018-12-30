@@ -1,7 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.core.objects;
 
-import fi.matiaspaavilainen.masuitecore.bungee.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
+import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
 import fi.matiaspaavilainen.masuitecore.core.database.Database;
 
 import java.sql.Connection;
@@ -16,7 +16,7 @@ public class MaSuitePlayer {
 
     private Connection connection = null;
     private PreparedStatement statement = null;
-    private Database db = MaSuiteCore.db;
+    private Database db = ConnectionManager.db;
     private BungeeConfiguration config = new BungeeConfiguration();
     private String tablePrefix = config.load(null, "config.yml").getString("database.table-prefix");
     private String username;
@@ -25,19 +25,6 @@ public class MaSuitePlayer {
 
     private Long firstLogin;
     private Long lastLogin;
-
-    /**
-     * Use instead uniqueId
-     */
-    @Deprecated
-    private java.util.UUID UUID;
-
-    /**
-     * Removed due GDPR things
-     */
-    @Deprecated
-    private String ipAddress;
-
 
     /**
      * An empty constructor for MaSuitePlayer
@@ -66,16 +53,16 @@ public class MaSuitePlayer {
      * Saves user's data to database
      */
     public void create() {
-        String insert = "INSERT INTO " + tablePrefix + "players (username, nickname, uuid, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?;";
+        String sql = "INSERT INTO " + tablePrefix + "players (username, nickname, uuid, firstLogin, lastLogin) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE username = ?;";
         try {
             connection = db.hikari.getConnection();
-            statement = connection.prepareStatement(insert);
+            statement = connection.prepareStatement(sql);
             statement.setString(1, this.username);
             statement.setString(2, this.nickname);
             statement.setString(3, this.uniqueId.toString());
-            statement.setLong(5, this.firstLogin);
-            statement.setLong(6, this.lastLogin);
-            statement.setString(7, this.username);
+            statement.setLong(4, this.firstLogin);
+            statement.setLong(5, this.lastLogin);
+            statement.setString(6, this.username);
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -186,8 +173,8 @@ public class MaSuitePlayer {
             statement = connection.prepareStatement(update);
             statement.setString(1, this.username);
             statement.setString(2, this.nickname);
-            statement.setLong(4, this.lastLogin);
-            statement.setString(5, this.uniqueId.toString());
+            statement.setLong(3, this.lastLogin);
+            statement.setString(4, this.uniqueId.toString());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,7 +206,7 @@ public class MaSuitePlayer {
     private void setupMSP(ResultSet rs, MaSuitePlayer msp) throws SQLException {
         msp.setUsername(rs.getString("username"));
         msp.setNickname(rs.getString("nickname"));
-        msp.setUniqueId(java.util.UUID.fromString(rs.getString("uuid")));
+        msp.setUniqueId(UUID.fromString(rs.getString("uuid")));
         msp.setFirstLogin(rs.getLong("firstLogin"));
         msp.setLastLogin(rs.getLong("lastLogin"));
     }
@@ -279,26 +266,6 @@ public class MaSuitePlayer {
      */
     public String getNickname() {
         return nickname;
-    }
-
-    @Deprecated
-    public java.util.UUID getUUID() {
-        return UUID;
-    }
-
-    @Deprecated
-    public void setUUID(java.util.UUID UUID) {
-        this.UUID = UUID;
-    }
-
-    @Deprecated
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    @Deprecated
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
     /**
