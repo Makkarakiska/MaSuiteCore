@@ -12,6 +12,7 @@ public class Utils {
 
     /**
      * Check player's status
+     *
      * @param target check's target
      * @return Returns boolean
      */
@@ -21,6 +22,7 @@ public class Utils {
 
     /**
      * Check player's status
+     *
      * @param target check's target
      * @param sender check's requester
      * @return Returns boolean
@@ -31,5 +33,28 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Send debug message to console
+     *
+     * @param message the message to send
+     */
+    public void sendMessage(String message) {
+        if (config.load(null, "config.yml").getBoolean("debug")) {
+            System.out.println(formator.colorize(message));
+        }
+    }
+
+    /**
+     * Send debug message to {@link ProxiedPlayer}
+     *
+     * @param player  player to send the message
+     * @param message the message to send
+     */
+    public void sendMessage(ProxiedPlayer player, String message) {
+        if (config.load(null, "config.yml").getBoolean("debug")) {
+            formator.sendMessage(player, message);
+        }
     }
 }
