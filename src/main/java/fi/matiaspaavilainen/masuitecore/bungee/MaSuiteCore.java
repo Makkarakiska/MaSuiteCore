@@ -1,20 +1,20 @@
 package fi.matiaspaavilainen.masuitecore.bungee;
 
-import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.bungee.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bungee.events.LoginEvent;
+import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
-import fi.matiaspaavilainen.masuitecore.core.database.Database;
+import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.config.Configuration;
 import org.bstats.bungeecord.Metrics;
 
-import java.sql.SQLException;
 
 public class MaSuiteCore extends Plugin implements Listener {
 
-    public static Database db = new Database();
     private BungeeConfiguration config = new BungeeConfiguration();
+    private ConnectionManager cm = null;
 
     @Override
     public void onEnable() {
@@ -26,8 +26,10 @@ public class MaSuiteCore extends Plugin implements Listener {
         config.create(null, "messages.yml");
 
         // Connect to database and create table
-        db.connect();
-        db.createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, ipAddress VARCHAR(15) NOT NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
+        Configuration dbInfo = config.load(null, "config.yml");
+        cm = new ConnectionManager(dbInfo.getString("database.table-prefix"), dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
+        cm.connect();
+        cm.getDatabase().createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
 
         // Register listeners
         registerListeners();
@@ -38,14 +40,7 @@ public class MaSuiteCore extends Plugin implements Listener {
 
     @Override
     public void onDisable() {
-        // Close connection if it is not null
-        try {
-            if (db.hikari.getConnection() != null) {
-                db.hikari.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        cm.close();
     }
 
     /**
