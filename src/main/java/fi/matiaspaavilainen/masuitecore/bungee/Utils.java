@@ -1,6 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bungee;
 
-import fi.matiaspaavilainen.masuitecore.chat.Formator;
+import fi.matiaspaavilainen.masuitecore.bungee.chat.Formator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 

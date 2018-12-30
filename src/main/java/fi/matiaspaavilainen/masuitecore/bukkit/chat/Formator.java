@@ -1,7 +1,8 @@
-package fi.matiaspaavilainen.masuitecore.chat;
+package fi.matiaspaavilainen.masuitecore.bukkit.chat;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.entity.Player;
 
 public class Formator {
 
@@ -15,11 +16,11 @@ public class Formator {
     }
 
     /**
-     * Sends message to {@link ProxiedPlayer}
+     * Sends message to {@link Player}
      * @param p target player
      * @param message message to send
      */
-    public void sendMessage(ProxiedPlayer p, String message) {
-        p.sendMessage(MDChat.getMessageFromString(colorize(message)));
+    public void sendMessage(Player p, String message) {
+        p.spigot().sendMessage(TextComponent.fromLegacyText(colorize(message)));
     }
 }

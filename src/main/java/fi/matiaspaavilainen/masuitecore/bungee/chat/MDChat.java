@@ -1,4 +1,4 @@
-package fi.matiaspaavilainen.masuitecore.chat;
+package fi.matiaspaavilainen.masuitecore.bungee.chat;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;

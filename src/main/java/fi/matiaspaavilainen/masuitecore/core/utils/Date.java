@@ -1,4 +1,4 @@
-package fi.matiaspaavilainen.masuitecore.chat;
+package fi.matiaspaavilainen.masuitecore.core.utils;
 
 import java.text.SimpleDateFormat;
 
