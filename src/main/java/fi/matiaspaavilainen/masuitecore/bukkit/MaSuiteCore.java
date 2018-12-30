@@ -4,6 +4,8 @@ import fi.matiaspaavilainen.masuitecore.bukkit.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
+import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,12 +17,12 @@ import java.io.IOException;
 
 public class MaSuiteCore extends JavaPlugin implements Listener {
 
-    BukkitConfiguration config = new BukkitConfiguration(this);
+    private BukkitConfiguration config = new BukkitConfiguration(this);
+    private ConnectionManager cm = new ConnectionManager();
     public static boolean bungee = true;
 
     @Override
     public void onEnable() {
-        // ;
         config.create(null, "messages.yml");
         config.load(null, "messages.yml").getString("player-not-online");
         // Detect if new version on spigot
@@ -31,16 +33,23 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        if (!bungee) {
+            cm.close();
+        }
     }
 
     /**
-     * Detect if BungeeCord is enabled in spigot.yml
+     * Detect if BungeeCord is enabled in spigot.yml and if disabled run {@link #setupNoBungee()}
      */
     private void detectBungee() {
         try {
             FileConfiguration conf = new YamlConfiguration();
             conf.load(new File(getServer().getWorldContainer().getAbsolutePath(), "spigot.yml"));
             bungee = conf.getBoolean("settings.bungeecord");
+            if (!bungee) {
+                setupNoBungee();
+            }
+
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -57,8 +66,15 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new CoreMessageListener(this));
         }
+    }
 
-
+    /**
+     * Setup for standalone server
+     */
+    private void setupNoBungee() {
+        Metrics metrics = new Metrics(this);
+        cm.connect();
+        cm.getDatabase().createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
     }
 
 }
