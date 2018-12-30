@@ -7,5 +7,4 @@ database:
   password: minecraft
   table-prefix: masuite_
 
-get-group-on-join: true
 debug: false #Set true for debug messages
