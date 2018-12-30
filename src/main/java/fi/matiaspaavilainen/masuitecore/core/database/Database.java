@@ -1,7 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.core.database;
 
 import com.zaxxer.hikari.HikariDataSource;
-import fi.matiaspaavilainen.masuitecore.config.Configuration;
+import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ public class Database {
      */
     public void connect() {
         try {
-            net.md_5.bungee.config.Configuration config = new Configuration().load(null, "config.yml");
+            net.md_5.bungee.config.Configuration config = new BungeeConfiguration().load(null, "config.yml");
             hikari = new HikariDataSource();
             hikari.setMaximumPoolSize(10);
             hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
@@ -40,7 +40,7 @@ public class Database {
     public void createTable(String name, String SQL) {
         Connection connection = null;
         PreparedStatement statement = null;
-        String tablePrefix = new Configuration().load(null, "config.yml").getString("database.table-prefix");
+        String tablePrefix = new BungeeConfiguration().load(null, "config.yml").getString("database.table-prefix");
         try {
             connection = hikari.getConnection();
             statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + name + " " + SQL);
