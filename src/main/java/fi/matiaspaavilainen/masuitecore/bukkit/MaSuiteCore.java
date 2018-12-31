@@ -23,8 +23,6 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        config.create(null, "messages.yml");
-        config.load(null, "messages.yml").getString("player-not-online");
         // Detect if new version on spigot
         new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
         detectBungee();
@@ -73,8 +71,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
      */
     private void setupNoBungee() {
         Metrics metrics = new Metrics(this);
-        config.create(null, "config.yml");
-        FileConfiguration dbInfo = config.load(null, "config.yml");
+        config.create(null, "bungee/config.yml");
+        FileConfiguration dbInfo = config.load(null, "bungee/config.yml");
         cm = new ConnectionManager(dbInfo.getString("database.table-prefix"), dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
         cm.connect();
         cm.getDatabase().createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
