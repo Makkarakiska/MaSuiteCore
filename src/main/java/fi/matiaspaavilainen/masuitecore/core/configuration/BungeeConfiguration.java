@@ -1,6 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.core.configuration;
 
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -12,11 +13,22 @@ public class BungeeConfiguration {
     private Configuration configuration;
     private File file;
 
+    private Plugin plugin;
+
     /**
      * An empty constructor for BungeeConfiguration
      */
     public BungeeConfiguration() {
 
+    }
+
+    /**
+     * Constructor for BungeeConfiguration
+     *
+     * @param plugin{@link Plugin}
+     */
+    public BungeeConfiguration(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     /**
@@ -53,6 +65,7 @@ public class BungeeConfiguration {
         }
         return null;
     }
+
     /**
      * Add default value to config file
      *
@@ -62,7 +75,7 @@ public class BungeeConfiguration {
     public void addDefault(String path, Object value) {
         if (this.configuration.get(path) == null) {
             this.configuration.set(path, value);
-            new BungeeConfiguration().save(this.configuration, this.file.getName());
+            this.save(this.configuration, this.file.getName());
         }
     }
 
@@ -87,7 +100,7 @@ public class BungeeConfiguration {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-                try (InputStream is = getClass().getResourceAsStream(config);
+                try (InputStream is = plugin.getResourceAsStream("bungee/" + config);
                      OutputStream os = new FileOutputStream(configFile)) {
                     ByteStreams.copy(is, os);
                 }

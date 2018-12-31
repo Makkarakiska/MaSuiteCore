@@ -64,7 +64,7 @@ public class BukkitConfiguration {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-                try (InputStream is = plugin.getResource(config);
+                try (InputStream is = plugin.getResource("bukkit/" + config);
                      OutputStream os = new FileOutputStream(configFile)) {
                     ByteStreams.copy(is, os);
                 }
