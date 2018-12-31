@@ -5,6 +5,7 @@ import fi.matiaspaavilainen.masuitecore.core.configuration.SpongeConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
 import fi.matiaspaavilainen.masuitecore.sponge.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.sponge.events.LoginEvent;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.slf4j.Logger;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -14,21 +15,18 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
 
-@Plugin(id = "masuitecore", name = "MaSuiteCore", version = "1.5", description = "")
+@Plugin(id = "masuitecore", name = "MaSuiteCore", version = "1.5")
 public class MaSuiteCore {
 
-
-    public static SpongeConfiguration sc = null;
     public static boolean bungee = true;
-    private ConnectionManager cm = null;
+    public SpongeConfiguration sc = new SpongeConfiguration();
+    private ConnectionManager cm = new ConnectionManager();
+
     @Inject
     @ConfigDir(sharedRoot = false)
-    private Path configDir;
-
-    private Path configFile = Paths.get(configDir + "/config.yml");
+    private File config;
 
 
     @Inject
@@ -45,7 +43,17 @@ public class MaSuiteCore {
     @Listener
     public void onPreInit(GamePreInitializationEvent e) {
         logger.info("Loading config file...");
-
+        sc.setup(config);
+        sc.create(null, "config.conf");
+        sc.getConfig().getNode("database").setComment("Database settings");
+        sc.getConfig().getNode("database", "name").setValue("minecraft");
+        sc.getConfig().getNode("database", "address").setValue("localhost");
+        sc.getConfig().getNode("database", "port").setValue(3306);
+        sc.getConfig().getNode("database", "username").setValue("minecraft");
+        sc.getConfig().getNode("database", "password").setValue("minecraft");
+        sc.getConfig().getNode("database", "table-prefix").setValue("masuite_");
+        sc.getConfig().getNode("debug").setValue(false).setComment("Set true for debug messages");
+        sc.save();
     }
 
     @Listener
@@ -70,8 +78,8 @@ public class MaSuiteCore {
 
     private void setupNoBungee() {
         // TODO: Add configs
-        String[] dbInfo = {"prefix", "address", "port", "name", "username", "password"};
-        cm = new ConnectionManager(dbInfo[0], dbInfo[1], Integer.valueOf(dbInfo[2]), dbInfo[3], dbInfo[4], dbInfo[5]);
+        CommentedConfigurationNode dbInfo = sc.getConfig();
+        cm = new ConnectionManager();
         cm.connect();
         cm.getDatabase().createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
     }
