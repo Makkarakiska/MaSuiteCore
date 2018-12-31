@@ -15,6 +15,10 @@ public class ConnectionManager {
 
     /**
      * An empty constructor for ConnectionManager
+     */
+    public ConnectionManager() {}
+    /**
+     * Constructor for ConnectionManager
      *
      * @param tablePrefix prefix of all MaSuite tables
      * @param address     address of the MySQL server
