@@ -24,6 +24,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         // Detect if new version on spigot
+        config.create(this, null, "messages.yml");
         new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
         detectBungee();
         registerListeners();
@@ -71,7 +72,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
      */
     private void setupNoBungee() {
         Metrics metrics = new Metrics(this);
-        config.create(this,null, "bungee/config.yml");
+        config.create(this, null, "bungee/config.yml");
         FileConfiguration dbInfo = config.load(null, "bungee/config.yml");
         cm = new ConnectionManager(dbInfo.getString("database.table-prefix"), dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
         cm.connect();
