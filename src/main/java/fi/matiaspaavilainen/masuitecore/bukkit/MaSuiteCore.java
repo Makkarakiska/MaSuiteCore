@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class MaSuiteCore extends JavaPlugin implements Listener {
 
-    private BukkitConfiguration config = new BukkitConfiguration(this);
+    private BukkitConfiguration config = new BukkitConfiguration();
     private ConnectionManager cm = null;
     public static boolean bungee = true;
 
@@ -71,7 +71,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
      */
     private void setupNoBungee() {
         Metrics metrics = new Metrics(this);
-        config.create(null, "bungee/config.yml");
+        config.create(this,null, "bungee/config.yml");
         FileConfiguration dbInfo = config.load(null, "bungee/config.yml");
         cm = new ConnectionManager(dbInfo.getString("database.table-prefix"), dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
         cm.connect();
