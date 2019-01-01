@@ -73,6 +73,7 @@ public class BungeeConfiguration {
     /**
      * Creates configuration file
      *
+     * @param plugin {@link Plugin} to use
      * @param folder module folder
      * @param config file name
      */
