@@ -6,14 +6,14 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteCore</artifactId>
-    <version>1.4.8</version>
+    <version>1.5</version>
     <build>
         <finalName>MaSuiteCore</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.1</version>
                 <configuration>
                     <relocations>
                         <relocation>
@@ -32,6 +32,16 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>mysql:*</include>
+                                    <include>org.slf4j:*</include>
+                                    <include>com.zaxxer:*</include>
+                                    <include>org.bstats:*</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -133,6 +143,11 @@
             <artifactId>log4j-core</artifactId>
             <version>2.11.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.47</version>
         </dependency>
     </dependencies>
 </project>

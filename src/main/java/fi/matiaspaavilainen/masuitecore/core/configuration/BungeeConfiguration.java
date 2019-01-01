@@ -25,15 +25,6 @@ public class BungeeConfiguration {
     /**
      * Constructor for BungeeConfiguration
      *
-     * @param plugin{@link Plugin}
-     */
-    public BungeeConfiguration(Plugin plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * Constructor for BungeeConfiguration
-     *
      * @param configuration {@link Configuration} to use
      * @param file          {@link File} to use
      */
@@ -85,7 +76,7 @@ public class BungeeConfiguration {
      * @param folder module folder
      * @param config file name
      */
-    public void create(String folder, String config) {
+    public void create(Plugin plugin, String folder, String config) {
         File f = null;
         if (folder != null) {
             f = new File("plugins/MaSuite/" + folder);

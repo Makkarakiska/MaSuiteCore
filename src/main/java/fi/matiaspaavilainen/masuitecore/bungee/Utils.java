@@ -29,7 +29,7 @@ public class Utils {
      */
     public boolean isOnline(ProxiedPlayer target, ProxiedPlayer sender) {
         if (target == null) {
-            formator.sendMessage(sender, config.load(null, "messages.yml").getString("player-not-online"));
+            formator.sendMessage(sender, config.load(null, "bungee/messages.yml").getString("player-not-online"));
             return false;
         }
         return true;
@@ -41,7 +41,7 @@ public class Utils {
      * @param message the message to send
      */
     public void sendMessage(String message) {
-        if (config.load(null, "config.yml").getBoolean("debug")) {
+        if (config.load(null, "bungee/config.yml").getBoolean("debug")) {
             System.out.println(formator.colorize(message));
         }
     }
@@ -53,7 +53,7 @@ public class Utils {
      * @param message the message to send
      */
     public void sendMessage(ProxiedPlayer player, String message) {
-        if (config.load(null, "config.yml").getBoolean("debug")) {
+        if (config.load(null, "bungee/config.yml").getBoolean("debug")) {
             formator.sendMessage(player, message);
         }
     }
