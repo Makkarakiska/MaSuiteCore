@@ -12,11 +12,9 @@ public class BukkitConfiguration {
     private JavaPlugin plugin;
 
     /**
-     * Constructor for BukkitConfiguration
+     * An empty constructor for BukkitConfiguration
      */
-    public BukkitConfiguration(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    public BukkitConfiguration() { }
 
     /**
      * Loads configuration file
@@ -49,7 +47,7 @@ public class BukkitConfiguration {
      * @param folder module folder
      * @param config file name
      */
-    public void create(String folder, String config) {
+    public void create(JavaPlugin plugin, String folder, String config) {
         File f = null;
         if (folder != null) {
             f = new File("plugins/MaSuite/" + folder);
