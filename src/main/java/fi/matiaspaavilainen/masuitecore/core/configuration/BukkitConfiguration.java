@@ -14,7 +14,8 @@ public class BukkitConfiguration {
     /**
      * An empty constructor for BukkitConfiguration
      */
-    public BukkitConfiguration() { }
+    public BukkitConfiguration() {
+    }
 
     /**
      * Loads configuration file
@@ -44,6 +45,7 @@ public class BukkitConfiguration {
     /**
      * Creates configuration file
      *
+     * @param plugin {@link JavaPlugin} to use
      * @param folder module folder
      * @param config file name
      */
@@ -63,6 +65,38 @@ public class BukkitConfiguration {
             try {
                 configFile.createNewFile();
                 try (InputStream is = plugin.getResource("bukkit/" + config);
+                     OutputStream os = new FileOutputStream(configFile)) {
+                    ByteStreams.copy(is, os);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Unable to create configuration file", e);
+            }
+        }
+    }
+
+    /**
+     * Copy from bungee dir
+     *
+     * @param plugin {@link JavaPlugin} to use
+     * @param folder
+     * @param config
+     */
+    public void copyFromBungee(JavaPlugin plugin, String folder, String config) {
+        File f = null;
+        if (folder != null) {
+            f = new File("plugins/MaSuite/" + folder);
+        } else {
+            f = new File("plugins/MaSuite");
+        }
+
+        if (!f.exists()) {
+            f.mkdir();
+        }
+        File configFile = new File(f, config);
+        if (!configFile.exists()) {
+            try {
+                configFile.createNewFile();
+                try (InputStream is = plugin.getResource("bungee/" + config);
                      OutputStream os = new FileOutputStream(configFile)) {
                     ByteStreams.copy(is, os);
                 }
