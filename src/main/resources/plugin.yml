@@ -2,3 +2,8 @@ name: MaSuiteCore
 main: fi.matiaspaavilainen.masuitecore.bukkit.MaSuiteCore
 version: ${project.version}
 author: Masagameplay
+commands:
+  masuite:
+    description: Information about MaSuite
+    aliases: [masuiteinfo, masuitecoreinfo, msinfo]
+    permission: masuite.info
