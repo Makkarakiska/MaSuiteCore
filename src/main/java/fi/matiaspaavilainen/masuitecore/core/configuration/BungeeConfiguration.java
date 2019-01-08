@@ -60,13 +60,16 @@ public class BungeeConfiguration {
     /**
      * Add default value to config file
      *
-     * @param path  path to value
-     * @param value value
+     * @param filePath location of the file
+     * @param path     path to value
+     * @param value    value
      */
-    public void addDefault(String path, Object value) {
-        if (this.configuration.get(path) == null) {
-            this.configuration.set(path, value);
-            this.save(this.configuration, this.file.getName());
+    public void addDefault(String filePath, String path, Object value) {
+        String[] fullpath = filePath.split("/");
+        Configuration config = this.load(fullpath[0], fullpath[1]);
+        if (config.get(path) == null) {
+            config.set(path, value);
+            this.save(config, filePath);
         }
     }
 
