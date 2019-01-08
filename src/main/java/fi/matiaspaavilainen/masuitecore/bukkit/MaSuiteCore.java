@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bukkit;
 
+import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
@@ -10,6 +11,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -18,6 +20,7 @@ import java.io.IOException;
 public class MaSuiteCore extends JavaPlugin implements Listener {
 
     private BukkitConfiguration config = new BukkitConfiguration();
+
     private ConnectionManager cm = null;
     public static boolean bungee = true;
 
@@ -28,6 +31,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
         new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
         detectBungee();
         registerListeners();
+
+        getCommand("masuite").setExecutor(new MaSuiteCommand(this));
     }
 
     @Override
@@ -72,8 +77,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
      */
     private void setupNoBungee() {
         Metrics metrics = new Metrics(this);
-        config.create(this, null, "bungee/config.yml");
-        FileConfiguration dbInfo = config.load(null, "bungee/config.yml");
+        config.copyFromBungee(this, null, "config.yml");
+        FileConfiguration dbInfo = config.load(null, "config.yml");
         cm = new ConnectionManager(dbInfo.getString("database.table-prefix"), dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
         cm.connect();
         cm.getDatabase().createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
