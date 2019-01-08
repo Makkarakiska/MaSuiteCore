@@ -22,8 +22,8 @@ public class MaSuiteCore extends Plugin implements Listener {
         Metrics metrics = new Metrics(this);
 
         // Create configuration files
-        config.create(this,null, "config.yml");
-        config.create(this,null, "messages.yml");
+        config.create(this, null, "config.yml");
+        config.create(this, null, "messages.yml");
 
         // Connect to database and create table
         Configuration dbInfo = config.load(null, "config.yml");
@@ -49,5 +49,6 @@ public class MaSuiteCore extends Plugin implements Listener {
     private void registerListeners() {
         getProxy().getPluginManager().registerListener(this, new LoginEvent());
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
+        getProxy().getPluginManager().registerListener(this, this);
     }
 }
