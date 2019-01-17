@@ -2,6 +2,8 @@ package fi.matiaspaavilainen.masuitecore.bungee;
 
 import fi.matiaspaavilainen.masuitecore.bungee.chat.Formator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class Utils {
@@ -29,7 +31,7 @@ public class Utils {
      */
     public boolean isOnline(ProxiedPlayer target, ProxiedPlayer sender) {
         if (target == null) {
-            formator.sendMessage(sender, config.load(null, "bungee/messages.yml").getString("player-not-online"));
+            formator.sendMessage(sender, config.load(null, "messages.yml").getString("player-not-online"));
             return false;
         }
         return true;
@@ -41,7 +43,7 @@ public class Utils {
      * @param message the message to send
      */
     public void sendMessage(String message) {
-        if (config.load(null, "bungee/config.yml").getBoolean("debug")) {
+        if (config.load(null, "config.yml").getBoolean("debug")) {
             System.out.println(formator.colorize(message));
         }
     }
@@ -53,8 +55,16 @@ public class Utils {
      * @param message the message to send
      */
     public void sendMessage(ProxiedPlayer player, String message) {
-        if (config.load(null, "bungee/config.yml").getBoolean("debug")) {
+        if (config.load(null, "config.yml").getBoolean("debug")) {
             formator.sendMessage(player, message);
         }
+    }
+
+    /**
+     * Broadcast a message
+     * @param message message to broadcast
+     */
+    public void broadcast(String message){
+        ProxyServer.getInstance().broadcast(new TextComponent(formator.colorize(message)));
     }
 }
