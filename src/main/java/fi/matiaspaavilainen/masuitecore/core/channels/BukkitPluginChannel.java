@@ -13,13 +13,13 @@ public class BukkitPluginChannel {
     private Object[] params;
 
     /**
-     * An empty constructor for PluginChannel
+     * An empty constructor for BukkitPluginChannel
      */
     public BukkitPluginChannel() {
     }
 
     /**
-     * A constructor for PluginChannel
+     * A constructor for BukkitPluginChannel
      *
      * @param plugin plugin to use
      * @param player player to use send messages

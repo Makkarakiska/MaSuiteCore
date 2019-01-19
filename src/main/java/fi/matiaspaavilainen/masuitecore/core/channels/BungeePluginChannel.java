@@ -15,13 +15,13 @@ public class BungeePluginChannel {
     private Object[] params;
 
     /**
-     * An empty constructor for PluginChannel
+     * An empty constructor for BungeePluginChannel
      */
     public BungeePluginChannel() {
     }
 
     /**
-     * A constructor for PluginChannel
+     * A constructor for BungeePluginChannel
      *
      * @param plugin plugin to use
      * @param server server to send messages
