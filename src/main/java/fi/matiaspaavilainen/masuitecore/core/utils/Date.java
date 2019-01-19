@@ -2,10 +2,12 @@ package fi.matiaspaavilainen.masuitecore.core.utils;
 
 import java.text.SimpleDateFormat;
 
+@Deprecated
 public class Date {
 
     /**
      * Create formatted timestamp
+     *
      * @param date to format
      * @return formatted date
      */
