@@ -2,6 +2,7 @@ package fi.matiaspaavilainen.masuitecore.bungee;
 
 import fi.matiaspaavilainen.masuitecore.bungee.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bungee.events.LoginEvent;
+import fi.matiaspaavilainen.masuitecore.bungee.listeners.CoreMessageListener;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
@@ -49,6 +50,6 @@ public class MaSuiteCore extends Plugin implements Listener {
     private void registerListeners() {
         getProxy().getPluginManager().registerListener(this, new LoginEvent());
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
-        getProxy().getPluginManager().registerListener(this, this);
+        getProxy().getPluginManager().registerListener(this, new CoreMessageListener());
     }
 }
