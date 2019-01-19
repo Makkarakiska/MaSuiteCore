@@ -5,17 +5,26 @@ import fi.matiaspaavilainen.masuitecore.core.configuration.SpongeConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
 import fi.matiaspaavilainen.masuitecore.sponge.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.sponge.events.LoginEvent;
+import fi.matiaspaavilainen.masuitecore.sponge.listeners.CoreMessageListener;
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.slf4j.Logger;
+import org.spongepowered.api.Platform;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.network.ChannelBinding;
+import org.spongepowered.api.network.ChannelRegistrar;
 import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.scheduler.Task;
 
 import java.io.File;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Plugin(id = "masuitecore", name = "MaSuiteCore", version = "1.5")
 public class MaSuiteCore {
@@ -24,6 +33,8 @@ public class MaSuiteCore {
     public SpongeConfiguration sc = new SpongeConfiguration();
     private ConnectionManager cm = new ConnectionManager();
 
+
+    private ChannelBinding.RawDataChannel channel;
     @Inject
     @ConfigDir(sharedRoot = false)
     private File config;
@@ -37,7 +48,6 @@ public class MaSuiteCore {
         logger.info("Successfully running MaSuiteCore!");
         detectBungee();
         registerListeners();
-        setupNoBungee();
     }
 
     @Listener
@@ -58,13 +68,35 @@ public class MaSuiteCore {
 
     @Listener
     public void onClose(GameStoppingServerEvent e) {
-        cm.close();
+        if (!bungee) {
+            cm.close();
+        }
+        Sponge.getChannelRegistrar().unbindChannel(channel);
     }
+
+    @Listener
+    public void onJoin(ClientConnectionEvent e) {
+        Optional<Player> player = e.getCause().first(Player.class);
+        if (player.isPresent()) {
+            Player p = player.get();
+            Task task = Task.builder()
+                    .execute(() -> {
+                        channel.sendTo(p, buffer -> buffer.writeUTF("MaSuiteDebugMessage").writeUTF(p.getName()));
+                        System.out.println("Send");
+                    })
+                    .async().delay(500, TimeUnit.MILLISECONDS).submit(this);
+        }
+    }
+
 
     private void registerListeners() {
         if (!bungee) {
             Sponge.getEventManager().registerListeners(this, new LoginEvent());
             Sponge.getEventManager().registerListeners(this, new LeaveEvent());
+        } else {
+            ChannelBinding.RawDataChannel channel = Sponge.getGame().getChannelRegistrar().createRawChannel(this, "BungeeCord");
+            channel.addListener(Platform.Type.SERVER, new CoreMessageListener(channel));
+            this.channel = channel;
         }
     }
 
