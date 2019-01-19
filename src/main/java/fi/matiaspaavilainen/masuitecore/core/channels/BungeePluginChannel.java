@@ -1,7 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.core.channels;
 
 
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.ByteArrayOutputStream;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class BungeePluginChannel {
 
     private Plugin plugin;
-    private ProxiedPlayer player;
+    private ServerInfo server;
     private Object[] params;
 
     /**
@@ -24,12 +24,12 @@ public class BungeePluginChannel {
      * A constructor for PluginChannel
      *
      * @param plugin plugin to use
-     * @param player player to use send messages
+     * @param server server to send messages
      * @param params params to send
      */
-    public BungeePluginChannel(Plugin plugin, ProxiedPlayer player, Object[] params) {
+    public BungeePluginChannel(Plugin plugin, ServerInfo server, Object[] params) {
         this.plugin = plugin;
-        this.player = player;
+        this.server = server;
         this.params = params;
     }
 
@@ -60,7 +60,7 @@ public class BungeePluginChannel {
                     out.writeChar((char) param);
                 }
             }
-            this.plugin.getProxy().getScheduler().runAsync(this.plugin, () -> this.player.getServer().sendData("BungeeCord", b.toByteArray()));
+            this.plugin.getProxy().getScheduler().runAsync(this.plugin, () -> server.sendData("BungeeCord", b.toByteArray()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,17 +81,17 @@ public class BungeePluginChannel {
     }
 
     /**
-     * @return get the player to send messages
+     * @return get the server to send messages
      */
-    public ProxiedPlayer getPlayer() {
-        return player;
+    public ServerInfo getServer() {
+        return server;
     }
 
     /**
-     * @param player get the player to send messages
+     * @param server get the player to send messages
      */
-    public void setPlayer(ProxiedPlayer player) {
-        this.player = player;
+    public void setServer(ServerInfo server) {
+        this.server = server;
     }
 
     /**
