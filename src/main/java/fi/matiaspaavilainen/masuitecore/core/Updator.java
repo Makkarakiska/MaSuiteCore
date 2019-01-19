@@ -13,6 +13,7 @@ public class Updator {
 
     /**
      * Constructor for Info
+     *
      * @param info version, name, id
      */
     public Updator(String[] info) {
@@ -30,11 +31,10 @@ public class Updator {
                 con.setRequestMethod("GET");
                 String version = new BufferedReader(new InputStreamReader(con.getInputStream())).readLine();
 
-                if (!(version.equals(info[0]))) {
+                if (!(version.equals(info[0].replace("-SNAPSHOT", "")))) {
                     System.out.println("[MaSuite] An update for " + info[1] + " is available! Download it now at https://www.spigotmc.org/resources/" + info[2]);
                 }
             } catch (IOException ignored) {
-                // For some reason the update check failed, this is very rare so the exception isn't printed.
                 System.out.println("[MaSuite] Failed to check for an update!");
             }
         });
