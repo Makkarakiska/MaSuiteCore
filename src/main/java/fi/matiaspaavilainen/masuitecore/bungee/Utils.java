@@ -1,10 +1,13 @@
 package fi.matiaspaavilainen.masuitecore.bungee;
 
 import fi.matiaspaavilainen.masuitecore.bungee.chat.Formator;
+import fi.matiaspaavilainen.masuitecore.core.channels.BungeePluginChannel;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
+import fi.matiaspaavilainen.masuitecore.core.objects.Location;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Plugin;
 
 public class Utils {
 
@@ -62,9 +65,26 @@ public class Utils {
 
     /**
      * Broadcast a message
+     *
      * @param message message to broadcast
      */
-    public void broadcast(String message){
+    public void broadcast(String message) {
         ProxyServer.getInstance().broadcast(new TextComponent(formator.colorize(message)));
+    }
+
+    /**
+     * Play sound to user
+     *
+     * @param plugin   {@link Plugin} to use
+     * @param location {@link Location} where to play the sound
+     * @param player   {@link ProxiedPlayer} who will hear the sound
+     * @param sound    sound to use
+     * @param volume   volume of the sound
+     * @param pitch    pitch of the sound
+     */
+    public void playSound(Plugin plugin, Location location, ProxiedPlayer player, String sound, float volume, float pitch) {
+        new BungeePluginChannel(plugin, player.getServer().getInfo(),
+                new Object[]{"PlaySound", player.getUniqueId().toString(), location.toString(), sound, volume, pitch}
+                ).send();
     }
 }
