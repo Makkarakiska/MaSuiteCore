@@ -188,4 +188,31 @@ public class Location {
     public void setPitch(Float pitch) {
         this.pitch = pitch;
     }
+
+    /**
+     * Convert {@link Location} to string
+     */
+    public String toString() {
+        if (this.yaw.isNaN()) {
+            return this.world + ":" + this.x + ":" + this.y + ":" + this.z;
+        } else {
+            return this.world + ":" + this.x + ":" + this.y + ":" + this.z + ":" + this.yaw + ":" + this.pitch;
+        }
+
+    }
+
+    /**
+     * Convert string to {@link Location}
+     *
+     * @param string build from {@link #toString()}
+     * @return {@link Location} built from {@link #toString()}
+     */
+    public Location fromString(String string) {
+        String[] loc = string.split(":");
+        if (loc.length == 4) {
+            return new Location(loc[0], Double.parseDouble(loc[1]), Double.parseDouble(loc[2]), Double.parseDouble(loc[3]));
+        } else {
+            return new Location(loc[0], Double.parseDouble(loc[1]), Double.parseDouble(loc[2]), Double.parseDouble(loc[3]), Float.parseFloat(loc[4]), Float.parseFloat(loc[5]));
+        }
+    }
 }
