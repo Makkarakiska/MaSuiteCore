@@ -47,10 +47,13 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     private void detectBungee() {
         try {
             FileConfiguration conf = new YamlConfiguration();
-            conf.load(new File(getServer().getWorldContainer().getAbsolutePath(), "spigot.yml"));
+            conf.load(new File("spigot.yml"));
             bungee = conf.getBoolean("settings.bungeecord");
             if (!bungee) {
                 setupNoBungee();
+                System.out.println("[MaSuite] Bungeecord not detected... Using standalone version!");
+            } else {
+                System.out.println("[MaSuite] Bungeecord detected!");
             }
 
         } catch (IOException | InvalidConfigurationException e) {
