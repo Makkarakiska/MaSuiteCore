@@ -48,7 +48,7 @@ public class MaSuiteCore extends Plugin implements Listener {
      * Register listeners
      */
     private void registerListeners() {
-        getProxy().getPluginManager().registerListener(this, new LoginEvent());
+        getProxy().getPluginManager().registerListener(this, new LoginEvent(this));
         getProxy().getPluginManager().registerListener(this, new LeaveEvent());
         getProxy().getPluginManager().registerListener(this, new CoreMessageListener());
     }
