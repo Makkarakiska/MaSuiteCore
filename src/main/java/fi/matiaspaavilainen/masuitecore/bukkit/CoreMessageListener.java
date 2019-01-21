@@ -1,13 +1,17 @@
 package fi.matiaspaavilainen.masuitecore.bukkit;
 
+import fi.matiaspaavilainen.masuitecore.core.adapters.BukkitAdapter;
+import fi.matiaspaavilainen.masuitecore.core.objects.Location;
+import org.apache.commons.lang3.EnumUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.io.*;
 import java.util.UUID;
 
-public class CoreMessageListener implements org.bukkit.plugin.messaging.PluginMessageListener{
+public class CoreMessageListener implements PluginMessageListener {
 
     private MaSuiteCore plugin;
 
@@ -27,22 +31,20 @@ public class CoreMessageListener implements org.bukkit.plugin.messaging.PluginMe
             ByteArrayOutputStream b = new ByteArrayOutputStream();
             DataOutputStream out = new DataOutputStream(b);
 
-            if (subchannel.equals("MaSuitePlayerLocation")) {
+            if (subchannel.equals("PlaySound")) {
                 Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
                 if (p == null) {
                     return;
                 }
-                Location loc = p.getLocation();
 
-                out.writeUTF("MaSuitePlayerLocation");
-                out.writeUTF(String.valueOf(p.getUniqueId()));
-                out.writeUTF(loc.getWorld().getName());
-                out.writeDouble(loc.getX());
-                out.writeDouble(loc.getY());
-                out.writeDouble(loc.getZ());
-                out.writeFloat(loc.getYaw());
-                out.writeFloat(loc.getPitch());
-                player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
+                Location location = new Location().fromString(in.readUTF());
+
+                String soundString = in.readUTF().toUpperCase();
+                if (EnumUtils.isValidEnum(Sound.class, soundString)) {
+                    player.playSound(BukkitAdapter.adapt(location), Sound.valueOf(soundString), in.readFloat(), in.readFloat());
+                } else {
+                    System.out.println("[MaSuite] (" + soundString + " ) is not a valid sound!! ");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
