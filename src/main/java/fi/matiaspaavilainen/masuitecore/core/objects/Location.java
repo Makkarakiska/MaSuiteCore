@@ -9,8 +9,8 @@ public class Location {
     private Double x;
     private Double y;
     private Double z;
-    private Float yaw;
-    private Float pitch;
+    private Float yaw = 0.0F;
+    private Float pitch = 0.0F;
 
     /**
      * Empty constructor for BungeeCord Location
@@ -193,11 +193,7 @@ public class Location {
      * Convert {@link Location} to string
      */
     public String toString() {
-        if (this.yaw.isNaN()) {
-            return this.world + ":" + this.x + ":" + this.y + ":" + this.z;
-        } else {
-            return this.world + ":" + this.x + ":" + this.y + ":" + this.z + ":" + this.yaw + ":" + this.pitch;
-        }
+        return this.world + ":" + this.x + ":" + this.y + ":" + this.z + ":" + this.yaw + ":" + this.pitch;
 
     }
 
@@ -209,10 +205,11 @@ public class Location {
      */
     public Location fromString(String string) {
         String[] loc = string.split(":");
-        if (loc.length == 4) {
-            return new Location(loc[0], Double.parseDouble(loc[1]), Double.parseDouble(loc[2]), Double.parseDouble(loc[3]));
-        } else {
-            return new Location(loc[0], Double.parseDouble(loc[1]), Double.parseDouble(loc[2]), Double.parseDouble(loc[3]), Float.parseFloat(loc[4]), Float.parseFloat(loc[5]));
-        }
+        return new Location(loc[0],
+                Double.parseDouble(loc[1]),
+                Double.parseDouble(loc[2]),
+                Double.parseDouble(loc[3]),
+                Float.parseFloat(loc[4]),
+                Float.parseFloat(loc[5]));
     }
 }
