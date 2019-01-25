@@ -41,6 +41,7 @@ public class MaSuiteCommand implements CommandExecutor {
             formator.sendMessage(sender, " &8&lMaSuitePortals &9v" + pm.getPlugin("MaSuitePortals").getDescription().getVersion());
         }
         formator.sendMessage(sender, " &8&lSupport link &9https://discord.gg/sZZG6Jq");
+
         return true;
     }
 }
