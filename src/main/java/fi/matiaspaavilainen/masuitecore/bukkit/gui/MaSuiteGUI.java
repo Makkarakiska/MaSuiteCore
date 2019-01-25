@@ -58,24 +58,6 @@ public class MaSuiteGUI {
     }
 
     /**
-     * Colorize a string
-     *
-     * @param string string to color
-     * @return colored string
-     */
-    private String colorize(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
-
-    public Inventory getSourceInventory() {
-        return inv;
-    }
-
-    public int getSize() {
-        return inv.getSize();
-    }
-
-    /**
      * Set GUI item to inventory
      *
      * @param itemStack      item of the button
@@ -219,5 +201,29 @@ public class MaSuiteGUI {
      */
     public static abstract class CloseRunnable {
         public abstract void run(InventoryCloseEvent e);
+    }
+
+    /**
+     * Colorize a string
+     *
+     * @param string string to color
+     * @return colored string
+     */
+    private String colorize(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    /**
+     * @return the inventory
+     */
+    public Inventory getSourceInventory() {
+        return inv;
+    }
+
+    /**
+     * @return the size of the inventory
+     */
+    public int getSize() {
+        return inv.getSize();
     }
 }
