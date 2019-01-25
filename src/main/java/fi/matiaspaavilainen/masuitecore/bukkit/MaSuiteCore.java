@@ -3,6 +3,7 @@ package fi.matiaspaavilainen.masuitecore.bukkit;
 import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LoginEvent;
+import fi.matiaspaavilainen.masuitecore.bukkit.gui.MaSuiteGUI;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
@@ -72,6 +73,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new CoreMessageListener(this));
         }
+        getServer().getPluginManager().registerEvents(MaSuiteGUI.getListener(), this);
     }
 
     /**
