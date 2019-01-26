@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -71,11 +72,11 @@ public class MaSuiteGUI {
     /**
      * Set GUI item to inventory
      *
-     * @param itemStack item of the button
-     * @param displayName name of the item
-     * @param slot in which slot the item is located
+     * @param itemStack      item of the button
+     * @param displayName    name of the item
+     * @param slot           in which slot the item is located
      * @param executeOnClick what happens when player clicks in the menu
-     * @param description description of the item
+     * @param description    description of the item
      */
     public void setItem(ItemStack itemStack, String displayName, Integer slot, ClickRunnable executeOnClick, String... description) {
         ItemMeta im = itemStack.getItemMeta();
@@ -102,6 +103,7 @@ public class MaSuiteGUI {
 
     /**
      * Remove item from slot
+     *
      * @param slot slot to remove
      */
     public void removeItem(int slot) {
@@ -110,8 +112,9 @@ public class MaSuiteGUI {
 
     /**
      * Set item to slot
+     *
      * @param itemStack item to set
-     * @param slot slot to be used
+     * @param slot      slot to be used
      */
     public void setItem(ItemStack itemStack, Integer slot) {
         inv.setItem(slot, itemStack);
@@ -120,6 +123,7 @@ public class MaSuiteGUI {
 
     /**
      * Register listener
+     *
      * @return listener to register
      */
     public static Listener getListener() {
@@ -143,6 +147,10 @@ public class MaSuiteGUI {
                             }
                         }
                     }
+
+                    if(inventories.containsKey(e.getView().getTopInventory().getName())){
+                        e.setCancelled(true);
+                    }
                 }
             }
 
@@ -162,11 +170,23 @@ public class MaSuiteGUI {
                     }
                 }
             }
+
+            @EventHandler
+            public void onItemMove(InventoryMoveItemEvent e) {
+                Inventory currentinv;
+                if (e.getDestination() == null) {
+                    return;
+                }
+                if (inventories.containsKey(e.getDestination().getName())) {
+                    e.setCancelled(true);
+                }
+            }
         };
     }
 
     /**
      * Open inventory for player
+     *
      * @param player player to use
      */
     public void openInventory(Player player) {
