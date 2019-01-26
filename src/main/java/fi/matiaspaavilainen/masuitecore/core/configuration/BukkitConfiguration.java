@@ -1,6 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.core.configuration;
 
 import com.google.common.io.ByteStreams;
+import net.md_5.bungee.config.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +71,27 @@ public class BukkitConfiguration {
                 }
             } catch (IOException e) {
                 throw new RuntimeException("Unable to create configuration file", e);
+            }
+        }
+    }
+
+
+    /**
+     * Add default value to config file
+     *
+     * @param filePath location of the file
+     * @param path     path to value
+     * @param value    value
+     */
+    public void addDefault(String filePath, String path, Object value) {
+        String[] fullPath = filePath.split("/");
+        FileConfiguration config = this.load(fullPath[0], fullPath[1]);
+        if (config.get(path) == null) {
+            config.set(path, value);
+            try {
+                config.save(new File(config.getCurrentPath()));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
