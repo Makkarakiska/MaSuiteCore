@@ -26,20 +26,31 @@ public class BukkitConfiguration {
      **/
     public FileConfiguration load(String folder, String config) {
         FileConfiguration configuration = null;
+        try {
+            configuration = new YamlConfiguration();
+            configuration.load(loadFile(folder, config));
+            return configuration;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Load file
+     *
+     * @param folder module folder
+     * @param config file name
+     * @return file to use
+     */
+    public File loadFile(String folder, String config) {
         File f = null;
         if (folder != null) {
             f = new File("plugins/MaSuite/" + folder);
         } else {
             f = new File("plugins/MaSuite");
         }
-        try {
-            configuration = new YamlConfiguration();
-            configuration.load(new File(f, config));
-            return configuration;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return new File(f, config);
     }
 
     /**
@@ -84,11 +95,12 @@ public class BukkitConfiguration {
      */
     public void addDefault(String filePath, String path, Object value) {
         String[] fullPath = filePath.split("/");
-        FileConfiguration config = this.load(fullPath[0], fullPath[1]);
+        File file = this.loadFile(fullPath[0], fullPath[1]);
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (config.get(path) == null) {
             config.set(path, value);
             try {
-                config.save(new File(filePath));
+                config.save(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
