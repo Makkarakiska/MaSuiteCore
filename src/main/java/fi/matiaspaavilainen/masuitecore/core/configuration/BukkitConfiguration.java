@@ -1,7 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.core.configuration;
 
 import com.google.common.io.ByteStreams;
-import net.md_5.bungee.config.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -89,7 +88,7 @@ public class BukkitConfiguration {
         if (config.get(path) == null) {
             config.set(path, value);
             try {
-                config.save(new File(config.getCurrentPath()));
+                config.save(new File(filePath));
             } catch (IOException e) {
                 e.printStackTrace();
             }
