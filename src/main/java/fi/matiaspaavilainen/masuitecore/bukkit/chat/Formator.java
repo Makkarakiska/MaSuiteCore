@@ -24,16 +24,17 @@ public class Formator {
     /**
      * Sends message to {@link Player}
      *
-     * @param p       target player
+     * @param player  target player
      * @param message message to send
      */
-    public void sendMessage(Player p, String message) {
-        if (Bukkit.getVersion().contains("1.8")) {
-            p.sendMessage(new TextComponent(colorize(message)).toLegacyText());
-        } else {
-            p.spigot().sendMessage(TextComponent.fromLegacyText(colorize(message)));
+    public void sendMessage(Player player, String message) {
+        if (player != null) {
+            if (Bukkit.getVersion().contains("1.8")) {
+                player.sendMessage(new TextComponent(colorize(message)).toLegacyText());
+            } else {
+                player.spigot().sendMessage(TextComponent.fromLegacyText(colorize(message)));
+            }
         }
-
     }
 
     /**
@@ -43,10 +44,12 @@ public class Formator {
      * @param message message to send
      */
     public void sendMessage(CommandSender cs, String message) {
-        if (Bukkit.getVersion().contains("1.8")) {
-            cs.sendMessage(new TextComponent(colorize(message)).toLegacyText());
-        } else {
-            cs.spigot().sendMessage(TextComponent.fromLegacyText(colorize(message)));
+        if (cs != null) {
+            if (Bukkit.getVersion().contains("1.8")) {
+                cs.sendMessage(new TextComponent(colorize(message)).toLegacyText());
+            } else {
+                cs.spigot().sendMessage(TextComponent.fromLegacyText(colorize(message)));
+            }
         }
     }
 
