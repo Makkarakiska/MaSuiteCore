@@ -2,6 +2,7 @@ package fi.matiaspaavilainen.masuitecore.bungee.chat;
 
 import fi.matiaspaavilainen.masuitecore.bungee.Utils;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.text.SimpleDateFormat;
@@ -22,12 +23,24 @@ public class Formator {
     /**
      * Sends message to {@link ProxiedPlayer}
      *
-     * @param p       target player
+     * @param player  target player
      * @param message message to send
      */
-    public void sendMessage(ProxiedPlayer p, String message) {
-        if (new Utils().isOnline(p)) {
-            p.sendMessage(MDChat.getMessageFromString(colorize(message)));
+    public void sendMessage(ProxiedPlayer player, String message) {
+        if (new Utils().isOnline(player)) {
+            player.sendMessage(MDChat.getMessageFromString(colorize(message)));
+        }
+    }
+
+    /**
+     * Send {@link BaseComponent} to player
+     *
+     * @param player    player who will receive the message
+     * @param component component to send
+     */
+    public void sendMessage(ProxiedPlayer player, BaseComponent component) {
+        if (new Utils().isOnline(player)) {
+            player.sendMessage(component);
         }
     }
 
