@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bungee.chat;
 
+import fi.matiaspaavilainen.masuitecore.bungee.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -25,7 +26,9 @@ public class Formator {
      * @param message message to send
      */
     public void sendMessage(ProxiedPlayer p, String message) {
-        p.sendMessage(MDChat.getMessageFromString(colorize(message)));
+        if (new Utils().isOnline(p)) {
+            p.sendMessage(MDChat.getMessageFromString(colorize(message)));
+        }
     }
 
     /**
