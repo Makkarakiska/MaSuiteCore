@@ -19,7 +19,7 @@ public class MaSuitePlayer {
     private String tablePrefix = db.getTablePrefix();
     private String username;
     private String nickname;
-    private java.util.UUID uniqueId;
+    private UUID uniqueId;
 
     private Long firstLogin;
     private Long lastLogin;
@@ -39,7 +39,7 @@ public class MaSuitePlayer {
      * @param firstLogin user's first login
      * @param lastLogin  user's last login
      */
-    public MaSuitePlayer(String username, String nickname, java.util.UUID uniqueId, Long firstLogin, Long lastLogin) {
+    public MaSuitePlayer(String username, String nickname, UUID uniqueId, Long firstLogin, Long lastLogin) {
         this.username = username;
         this.nickname = nickname;
         this.uniqueId = uniqueId;
