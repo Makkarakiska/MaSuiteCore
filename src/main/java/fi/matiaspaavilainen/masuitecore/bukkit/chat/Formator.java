@@ -45,7 +45,7 @@ public class Formator {
      */
     public void sendMessage(CommandSender cs, String message) {
         if (cs != null) {
-            if (Bukkit.getVersion().contains("1.8")) {
+            if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11")) {
                 cs.sendMessage(new TextComponent(colorize(message)).toLegacyText());
             } else {
                 cs.spigot().sendMessage(TextComponent.fromLegacyText(colorize(message)));
