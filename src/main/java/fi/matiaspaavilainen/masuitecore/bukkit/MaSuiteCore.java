@@ -1,6 +1,7 @@
 package fi.matiaspaavilainen.masuitecore.bukkit;
 
 import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
+import fi.matiaspaavilainen.masuitecore.bukkit.commands.PlayerTabCompleter;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.gui.MaSuiteGUI;
@@ -16,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MaSuiteCore extends JavaPlugin implements Listener {
 
@@ -23,6 +26,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     private ConnectionManager cm = null;
     public static boolean bungee = true;
+    public static List<String> onlinePlayers = new ArrayList<>();
 
     @Override
     public void onEnable() {

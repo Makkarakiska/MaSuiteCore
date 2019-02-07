@@ -28,24 +28,30 @@ public class CoreMessageListener implements PluginMessageListener {
         String subchannel = null;
         try {
             subchannel = in.readUTF();
-            ByteArrayOutputStream b = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(b);
+            if (subchannel.equals("MaSuiteCore")) {
+                String childchannel = in.readUTF();
+                if (childchannel.equals("PlaySound")) {
+                    Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
+                    if (p == null) {
+                        return;
+                    }
 
-            if (subchannel.equals("PlaySound")) {
-                Player p = Bukkit.getPlayer(UUID.fromString(in.readUTF()));
-                if (p == null) {
-                    return;
+                    Location location = new Location().fromString(in.readUTF());
+                    String soundString = in.readUTF().toUpperCase();
+                    if (EnumUtils.isValidEnum(Sound.class, soundString)) {
+                        player.playSound(BukkitAdapter.adapt(location), Sound.valueOf(soundString), in.readFloat(), in.readFloat());
+                    } else {
+                        System.out.println("[MaSuite] (" + soundString + " ) is not a valid sound!! ");
+                    }
                 }
-
-                Location location = new Location().fromString(in.readUTF());
-
-                String soundString = in.readUTF().toUpperCase();
-                if (EnumUtils.isValidEnum(Sound.class, soundString)) {
-                    player.playSound(BukkitAdapter.adapt(location), Sound.valueOf(soundString), in.readFloat(), in.readFloat());
-                } else {
-                    System.out.println("[MaSuite] (" + soundString + " ) is not a valid sound!! ");
+                if (childchannel.equals("AddPlayer")) {
+                    MaSuiteCore.onlinePlayers.add(in.readUTF());
+                }
+                if (childchannel.equals("RemovePlayer")) {
+                    MaSuiteCore.onlinePlayers.remove(in.readUTF());
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

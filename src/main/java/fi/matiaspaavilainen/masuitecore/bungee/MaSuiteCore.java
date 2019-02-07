@@ -11,7 +11,6 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import org.bstats.bungeecord.Metrics;
 
-
 public class MaSuiteCore extends Plugin implements Listener {
 
     private BungeeConfiguration config = new BungeeConfiguration();
@@ -49,7 +48,7 @@ public class MaSuiteCore extends Plugin implements Listener {
      */
     private void registerListeners() {
         getProxy().getPluginManager().registerListener(this, new LoginEvent(this));
-        getProxy().getPluginManager().registerListener(this, new LeaveEvent());
+        getProxy().getPluginManager().registerListener(this, new LeaveEvent(this));
         getProxy().getPluginManager().registerListener(this, new CoreMessageListener());
     }
 }

@@ -84,7 +84,7 @@ public class Utils {
      */
     public void playSound(Plugin plugin, Location location, ProxiedPlayer player, String sound, float volume, float pitch) {
         new BungeePluginChannel(plugin, player.getServer().getInfo(),
-                new Object[]{"PlaySound", player.getUniqueId().toString(), location.toString(), sound, volume, pitch}
+                new Object[]{"MaSuiteCore", "PlaySound", player.getUniqueId().toString(), location.toString(), sound, volume, pitch}
                 ).send();
     }
 }
