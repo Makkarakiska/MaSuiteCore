@@ -36,6 +36,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
         detectBungee();
         registerListeners();
 
+        config.addDefault("/config.yml", "gui.sounds.empty-slot", "ENTITY_ITEM_BREAK");
+        config.addDefault("/config.yml", "gui.sounds.filled-slot", "BLOCK_WOODEN_BUTTON_CLICK_ON");
         getCommand("masuite").setExecutor(new MaSuiteCommand(this));
     }
 

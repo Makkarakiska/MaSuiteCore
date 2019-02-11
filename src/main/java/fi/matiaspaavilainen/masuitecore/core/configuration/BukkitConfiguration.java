@@ -95,7 +95,12 @@ public class BukkitConfiguration {
      */
     public void addDefault(String filePath, String path, Object value) {
         String[] fullPath = filePath.split("/");
-        File file = this.loadFile(fullPath[0], fullPath[1]);
+        File file = null;
+        if (fullPath.length == 1) {
+            file = this.loadFile(null, fullPath[0]);
+        } else {
+            file = this.loadFile(fullPath[0], fullPath[1]);
+        }
         FileConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (config.get(path) == null) {
             config.set(path, value);

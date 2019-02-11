@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bukkit.gui;
 
+import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,6 +26,7 @@ public class MaSuiteGUI {
     private HashMap<Integer, ClickRunnable> runs = new HashMap<>();
     private int currentOpen = 0;
     private boolean registered = false;
+    private static BukkitConfiguration configuration = new BukkitConfiguration();
 
     /**
      * Initialize an empty GUI without placeholders
@@ -138,9 +140,9 @@ public class MaSuiteGUI {
                         e.setCancelled(true);
                         Player p = (Player) e.getWhoClicked();
                         if (current.runs.get(e.getSlot()) == null) {
-                            p.playSound(p.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+                            p.playSound(p.getLocation(), Sound.valueOf(configuration.load(null, "config.yml").getString("gui.sounds.empty-slot").toUpperCase()), 1, 1);
                         } else {
-                            p.playSound(p.getLocation(), Sound.BLOCK_WOODEN_BUTTON_CLICK_ON, 1, 1);
+                            p.playSound(p.getLocation(), Sound.valueOf(configuration.load(null, "config.yml").getString("gui.sounds.filled-slot").toUpperCase()), 1, 1);
                             if (current.runs.get(e.getSlot()) != null) {
                                 current.runs.get(e.getSlot()).run(e);
                             }
