@@ -25,17 +25,19 @@ public class LeaveEvent implements Listener {
         msp.setLastLogin(System.currentTimeMillis() / 1000);
         msp.update();
 
-        for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
-            ServerInfo serverInfo = entry.getValue();
-            serverInfo.ping((result, error) -> {
-                if (error == null) {
-                    new BungeePluginChannel(plugin, serverInfo, new Object[]{
-                            "MaSuiteCore",
-                            "RemovePlayer",
-                            e.getPlayer().getName()
-                    }).send();
-                }
-            });
+        if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
+            for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
+                ServerInfo serverInfo = entry.getValue();
+                serverInfo.ping((result, error) -> {
+                    if (error == null) {
+                        new BungeePluginChannel(plugin, serverInfo, new Object[]{
+                                "MaSuiteCore",
+                                "RemovePlayer",
+                                e.getPlayer().getName()
+                        }).send();
+                    }
+                });
+            }
         }
     }
 

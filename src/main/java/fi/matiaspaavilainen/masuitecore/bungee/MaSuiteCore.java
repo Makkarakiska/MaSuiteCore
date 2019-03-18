@@ -13,7 +13,7 @@ import org.bstats.bungeecord.Metrics;
 
 public class MaSuiteCore extends Plugin implements Listener {
 
-    private BungeeConfiguration config = new BungeeConfiguration();
+    public BungeeConfiguration config = new BungeeConfiguration();
     private ConnectionManager cm = null;
 
     @Override
@@ -36,6 +36,8 @@ public class MaSuiteCore extends Plugin implements Listener {
 
         // Detect if new version on spigot
         new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
+
+        config.addDefault("/config.yml", "use-tab-completer", false);
     }
 
     @Override

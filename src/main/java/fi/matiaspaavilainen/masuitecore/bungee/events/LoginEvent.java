@@ -34,19 +34,21 @@ public class LoginEvent implements Listener {
         msp.setFirstLogin(System.currentTimeMillis() / 1000);
         msp.create();
 
-        plugin.getProxy().getScheduler().schedule(plugin, () -> {
-            for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
-                ServerInfo serverInfo = entry.getValue();
-                serverInfo.ping((result, error) -> {
-                    if (error == null) {
-                        new BungeePluginChannel(plugin, serverInfo, new Object[]{
-                                "MaSuiteCore",
-                                "AddPlayer",
-                                e.getPlayer().getName()
-                        }).send();
-                    }
-                });
-            }
-        }, 1, TimeUnit.SECONDS);
+        if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
+            plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
+                    ServerInfo serverInfo = entry.getValue();
+                    serverInfo.ping((result, error) -> {
+                        if (error == null) {
+                            new BungeePluginChannel(plugin, serverInfo, new Object[]{
+                                    "MaSuiteCore",
+                                    "AddPlayer",
+                                    e.getPlayer().getName()
+                            }).send();
+                        }
+                    });
+                }
+            }, 1, TimeUnit.SECONDS);
+        }
     }
 }
