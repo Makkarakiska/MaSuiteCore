@@ -60,7 +60,7 @@ public class BungeePluginChannel {
                     out.writeChar((char) param);
                 }
             }
-            this.plugin.getProxy().getScheduler().runAsync(this.plugin, () -> server.sendData("BungeeCord", b.toByteArray()));
+            server.sendData("BungeeCord", b.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }
