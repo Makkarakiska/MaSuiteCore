@@ -1,7 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bukkit;
 
 import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
-import fi.matiaspaavilainen.masuitecore.bukkit.commands.PlayerTabCompleter;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LeaveEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.bukkit.gui.MaSuiteGUI;
