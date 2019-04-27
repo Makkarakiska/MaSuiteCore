@@ -28,6 +28,7 @@ public class Formator {
      * @param message message to send
      */
     public void sendMessage(Player player, String message) {
+        if(message.isEmpty()) return;
         if (player != null) {
             if (Bukkit.getVersion().contains("1.8")) {
                 player.sendMessage(new TextComponent(colorize(message)).toLegacyText());
@@ -44,6 +45,7 @@ public class Formator {
      * @param message message to send
      */
     public void sendMessage(CommandSender cs, String message) {
+        if(message.isEmpty()) return;
         if (cs != null) {
             if (Bukkit.getVersion().contains("1.8") || Bukkit.getVersion().contains("1.9") || Bukkit.getVersion().contains("1.10") || Bukkit.getVersion().contains("1.11")) {
                 cs.sendMessage(new TextComponent(colorize(message)).toLegacyText());
