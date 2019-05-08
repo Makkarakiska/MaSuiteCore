@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -135,8 +136,8 @@ public class MaSuiteGUI {
                     if (e.getCurrentItem() == null) {
                         return;
                     }
-                    if (inventories.containsKey(e.getClickedInventory().getName())) {
-                        MaSuiteGUI current = inventories.get(e.getClickedInventory().getName());
+                    if (inventories.containsKey(e.getView().getTitle())) {
+                        MaSuiteGUI current = inventories.get(e.getView().getTitle());
                         e.setCancelled(true);
                         Player p = (Player) e.getWhoClicked();
                         if (current.runs.get(e.getSlot()) == null) {
@@ -149,7 +150,7 @@ public class MaSuiteGUI {
                         }
                     }
 
-                    if(inventories.containsKey(e.getView().getTopInventory().getName())){
+                    if(inventories.containsKey(e.getView().getTitle())){
                         e.setCancelled(true);
                     }
                 }
@@ -159,11 +160,11 @@ public class MaSuiteGUI {
             public void onClose(InventoryCloseEvent e) {
                 if (e.getPlayer() instanceof Player) {
                     Inventory currentinv;
-                    if ((currentinv = e.getInventory()) == null) {
+                    if (e.getInventory() == null) {
                         return;
                     }
-                    if (inventories.containsKey(currentinv.getName())) {
-                        MaSuiteGUI current = inventories.get(currentinv.getName());
+                    if (inventories.containsKey(e.getView().getTitle())) {
+                        MaSuiteGUI current = inventories.get(e.getView().getTitle());
                         current.currentOpen--;
                         if (current.currentOpen == 0) {
                             current.unRegister();
@@ -187,14 +188,16 @@ public class MaSuiteGUI {
 
     private void register() {
         if (!registered) {
-            inventories.put(inv.getName(), this);
+            Container container = (Container) inv.getHolder();
+            inventories.put(container.getCustomName(), this);
             registered = true;
         }
     }
 
     private void unRegister() {
         if (registered) {
-            inventories.remove(inv.getName());
+            Container container = (Container) inv.getHolder();
+            inventories.remove(container.getCustomName());
             registered = false;
         }
     }
