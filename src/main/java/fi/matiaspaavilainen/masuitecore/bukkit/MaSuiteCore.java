@@ -78,7 +78,6 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
             getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new CoreMessageListener(this));
         }
-        getServer().getPluginManager().registerEvents(MaSuiteGUI.getListener(), this);
     }
 
     /**
