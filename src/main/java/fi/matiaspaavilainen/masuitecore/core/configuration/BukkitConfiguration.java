@@ -6,10 +6,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.util.HashMap;
 
 public class BukkitConfiguration {
 
     private JavaPlugin plugin;
+
+    private HashMap<String, FileConfiguration> configs = new HashMap<>();
 
     /**
      * An empty constructor for BukkitConfiguration
@@ -26,9 +29,13 @@ public class BukkitConfiguration {
      **/
     public FileConfiguration load(String folder, String config) {
         FileConfiguration configuration = null;
+        if (configs.containsKey(folder + "/" + config)) {
+            return configs.get(folder + "/" + config);
+        }
         try {
             configuration = new YamlConfiguration();
             configuration.load(loadFile(folder, config));
+            configs.put(folder + "/" + config, configuration);
             return configuration;
         } catch (Exception e) {
             e.printStackTrace();

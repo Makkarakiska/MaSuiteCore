@@ -7,9 +7,11 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.*;
+import java.util.HashMap;
 
 public class BungeeConfiguration {
 
+    private HashMap<String, Configuration> configs = new HashMap<>();
     private Configuration configuration;
     private File file;
 
@@ -43,6 +45,10 @@ public class BungeeConfiguration {
     public Configuration load(String folder, String config) {
         Configuration configuration = null;
         File f = null;
+
+        if (configs.containsKey(folder + "/" + config)) {
+            return configs.get(folder + "/" + config);
+        }
         if (folder != null) {
             f = new File("plugins/MaSuite/" + folder);
         } else {
@@ -50,6 +56,7 @@ public class BungeeConfiguration {
         }
         try {
             configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(f, config));
+            configs.put(folder + "/" + config, configuration);
             return configuration;
         } catch (Exception e) {
             e.printStackTrace();
