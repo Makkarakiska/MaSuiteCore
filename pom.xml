@@ -42,7 +42,7 @@
                         </relocation>
                         <relocation>
                             <pattern>org.hibernate</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
+                            <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate:*</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
