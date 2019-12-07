@@ -44,10 +44,6 @@
                             <pattern>org.hibernate</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>org.hibernate.hibernate-entitymanager</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate-entitymanager</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
