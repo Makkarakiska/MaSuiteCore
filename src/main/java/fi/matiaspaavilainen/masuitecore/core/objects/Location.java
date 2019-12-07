@@ -1,29 +1,29 @@
 package fi.matiaspaavilainen.masuitecore.core.objects;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.md_5.bungee.api.config.ServerInfo;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
+@NoArgsConstructor
 @Embeddable
-@Access(AccessType.PROPERTY)
+@Data
+@Access(AccessType.FIELD)
 public class Location {
 
-    private ServerInfo server;
+
+    @Transient private ServerInfo server;
+
     private String world;
     private Double x;
     private Double y;
     private Double z;
     private Float yaw = 0.0F;
     private Float pitch = 0.0F;
-
-    /**
-     * Empty constructor for BungeeCord Location
-     */
-    public Location() {
-
-    }
 
     /**
      * Minecraft location for BungeeCord
@@ -95,104 +95,6 @@ public class Location {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    /**
-     * @return location's server
-     */
-    public ServerInfo getServer() {
-        return server;
-    }
-
-    /**
-     * @param server location's server
-     */
-    public void setServer(ServerInfo server) {
-        this.server = server;
-    }
-
-    /**
-     * @return location's world
-     */
-    public String getWorld() {
-        return world;
-    }
-
-    /**
-     * @param world location's world
-     */
-    public void setWorld(String world) {
-        this.world = world;
-    }
-
-    /**
-     * @return x-axis of location
-     */
-    public Double getX() {
-        return x;
-    }
-
-    /**
-     * @param x x-axis of location
-     */
-    public void setX(Double x) {
-        this.x = x;
-    }
-
-    /**
-     * @return y-axis of location
-     */
-    public Double getY() {
-        return y;
-    }
-
-    /**
-     * @param y y-axis of location
-     */
-    public void setY(Double y) {
-        this.y = y;
-    }
-
-    /**
-     * @return z-axis of location
-     */
-    public Double getZ() {
-        return z;
-    }
-
-    /**
-     * @param z z-axis of location
-     */
-    public void setZ(Double z) {
-        this.z = z;
-    }
-
-    /**
-     * @return yaw-axis of location
-     */
-    public Float getYaw() {
-        return yaw;
-    }
-
-    /**
-     * @param yaw yaw-axis of location
-     */
-    public void setYaw(Float yaw) {
-        this.yaw = yaw;
-    }
-
-    /**
-     * @return pitch of location
-     */
-    public Float getPitch() {
-        return pitch;
-    }
-
-    /**
-     * @param pitch pitch of location
-     */
-    public void setPitch(Float pitch) {
-        this.pitch = pitch;
     }
 
     /**
