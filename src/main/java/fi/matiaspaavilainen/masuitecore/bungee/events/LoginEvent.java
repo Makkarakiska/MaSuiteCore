@@ -2,7 +2,7 @@ package fi.matiaspaavilainen.masuitecore.bungee.events;
 
 import fi.matiaspaavilainen.masuitecore.bungee.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.core.channels.BungeePluginChannel;
-import fi.matiaspaavilainen.masuitecore.core.objects.MaSuitePlayer;
+import fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -21,18 +21,22 @@ public class LoginEvent implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent e) {
-        MaSuitePlayer msp = new MaSuitePlayer();
-        if (msp.find(e.getPlayer().getUniqueId()).getUniqueId() != null) {
-            msp = msp.find(e.getPlayer().getUniqueId());
+        MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
+        if (msp != null) {
             if (msp.getNickname() != null) {
                 e.getPlayer().setDisplayName(msp.getNickname());
             }
         }
-        msp.setUsername(e.getPlayer().getName());
-        msp.setUniqueId(e.getPlayer().getUniqueId());
-        msp.setLastLogin(System.currentTimeMillis() / 1000);
-        msp.setFirstLogin(System.currentTimeMillis() / 1000);
-        msp.create();
+
+        if (msp == null) {
+            msp = new MaSuitePlayer();
+            msp.setUsername(e.getPlayer().getName());
+            msp.setUniqueId(e.getPlayer().getUniqueId());
+            msp.setLastLogin(System.currentTimeMillis() / 1000);
+            msp.setFirstLogin(System.currentTimeMillis() / 1000);
+            plugin.playerService.createPlayer(msp);
+        }
+
 
         if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
             plugin.getProxy().getScheduler().schedule(plugin, () -> {

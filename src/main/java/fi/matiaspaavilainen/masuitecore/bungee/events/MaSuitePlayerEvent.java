@@ -1,6 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bungee.events;
 
-import fi.matiaspaavilainen.masuitecore.core.objects.MaSuitePlayer;
+import fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer;
 import net.md_5.bungee.api.plugin.Cancellable;
 import net.md_5.bungee.api.plugin.Event;
 

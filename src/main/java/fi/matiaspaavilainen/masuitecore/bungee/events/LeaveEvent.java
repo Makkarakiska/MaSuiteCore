@@ -2,7 +2,7 @@ package fi.matiaspaavilainen.masuitecore.bungee.events;
 
 import fi.matiaspaavilainen.masuitecore.bungee.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.core.channels.BungeePluginChannel;
-import fi.matiaspaavilainen.masuitecore.core.objects.MaSuitePlayer;
+import fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -20,10 +20,9 @@ public class LeaveEvent implements Listener {
 
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e) {
-        MaSuitePlayer msp = new MaSuitePlayer();
-        msp = msp.find(e.getPlayer().getUniqueId());
+        MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
         msp.setLastLogin(System.currentTimeMillis() / 1000);
-        msp.update();
+        plugin.playerService.updatePlayer(msp);
 
         if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
             for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {

@@ -6,6 +6,8 @@ import fi.matiaspaavilainen.masuitecore.bungee.listeners.CoreMessageListener;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
+import fi.matiaspaavilainen.masuitecore.core.services.PlayerService;
+import fi.matiaspaavilainen.masuitecore.core.utils.HibernateUtil;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -13,6 +15,7 @@ import org.bstats.bungeecord.Metrics;
 
 public class MaSuiteCore extends Plugin implements Listener {
 
+    public PlayerService playerService;
     public BungeeConfiguration config = new BungeeConfiguration();
     private ConnectionManager cm = null;
 
@@ -38,11 +41,14 @@ public class MaSuiteCore extends Plugin implements Listener {
         new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
 
         config.addDefault("/config.yml", "use-tab-completer", false);
+
+        playerService = new PlayerService();
     }
 
     @Override
     public void onDisable() {
         cm.close();
+        HibernateUtil.shutdown();
     }
 
     /**
