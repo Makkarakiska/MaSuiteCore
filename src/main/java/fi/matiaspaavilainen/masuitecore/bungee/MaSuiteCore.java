@@ -19,8 +19,11 @@ public class MaSuiteCore extends Plugin implements Listener {
     public BungeeConfiguration config = new BungeeConfiguration();
     private ConnectionManager cm = null;
 
+    private static MaSuiteCore instance;
+
     @Override
     public void onEnable() {
+        instance = this;
         // Load metrics
         Metrics metrics = new Metrics(this);
 
@@ -58,5 +61,9 @@ public class MaSuiteCore extends Plugin implements Listener {
         getProxy().getPluginManager().registerListener(this, new LoginEvent(this));
         getProxy().getPluginManager().registerListener(this, new LeaveEvent(this));
         getProxy().getPluginManager().registerListener(this, new CoreMessageListener());
+    }
+
+    public static MaSuiteCore getInstance() {
+        return instance;
     }
 }
