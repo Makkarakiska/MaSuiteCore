@@ -5,6 +5,7 @@ import fi.matiaspaavilainen.masuitecore.core.utils.HibernateUtil;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PlayerService {
@@ -23,6 +24,16 @@ public class PlayerService {
     }
 
     /**
+     * Get {@link MaSuitePlayer} from username
+     *
+     * @param username username of the player
+     * @return returns {@link MaSuitePlayer} or null
+     */
+    public MaSuitePlayer getPlayer(String username) {
+        return this.loadPlayer(username);
+    }
+
+    /**
      * Loads {@link MaSuitePlayer} from cache or database
      *
      * @param uuid uuid of the player
@@ -37,6 +48,31 @@ public class PlayerService {
 
         // Search player from database
         MaSuitePlayer player = entityManager.find(MaSuitePlayer.class, uuid);
+
+        // Add player into cache if not null
+        if (player != null) {
+            players.put(player.getUniqueId(), player);
+        }
+        return player;
+    }
+
+    /**
+     * Loads {@link MaSuitePlayer} from cache or database
+     *
+     * @param username username of the player
+     * @return returns {@link MaSuitePlayer} or null
+     */
+    private MaSuitePlayer loadPlayer(String username) {
+        // Check cache
+        Optional<MaSuitePlayer> cachedHome = players.values().stream().filter(player -> player.getUsername().equalsIgnoreCase(username)).findFirst();
+        if (cachedHome.isPresent()) {
+            return cachedHome.get();
+        }
+
+        // Search player from database
+        MaSuitePlayer player = entityManager.createNamedQuery("findPlayerByName", MaSuitePlayer.class)
+                .setParameter("username", username)
+                .getResultList().stream().findFirst().orElse(null);
 
         // Add player into cache if not null
         if (player != null) {

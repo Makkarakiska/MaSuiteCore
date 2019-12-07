@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -16,6 +13,10 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "masuite_players")
+@NamedQuery(
+        name = "findPlayerByName",
+        query = "SELECT p FROM MaSuitePlayer p WHERE p.username = :username"
+)
 public class MaSuitePlayer {
 
     @Id
