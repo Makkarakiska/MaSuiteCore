@@ -11,6 +11,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * @deprecated Move to {@link fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer}
+ */
+@Deprecated
 public class MaSuitePlayer {
 
     private Connection connection = null;
