@@ -41,8 +41,12 @@
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.acf</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.hibernate:*</pattern>
+                            <pattern>org.hibernate</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.hibernate.hibernate-entitymanager</pattern>
+                            <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate-entitymanager</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
