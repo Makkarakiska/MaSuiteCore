@@ -40,6 +40,10 @@
                             <pattern>co.aikar.commands</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.acf</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.hibernate</pattern>
+                            <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -56,6 +60,7 @@
                                     <include>com.zaxxer:*</include>
                                     <include>org.bstats:*</include>
                                     <include>co.aikar:*</include>
+                                    <include>org.hibernate:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
