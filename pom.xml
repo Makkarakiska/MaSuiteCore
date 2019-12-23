@@ -41,7 +41,7 @@
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.acf</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.hibernate</pattern>
+                            <pattern>org.hibernate:*</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
                         </relocation>
                     </relocations>
