@@ -2,22 +2,18 @@ package fi.matiaspaavilainen.masuitecore.core.objects;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.md_5.bungee.api.config.ServerInfo;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
 
 @NoArgsConstructor
-@Embeddable
 @Data
-@Access(AccessType.FIELD)
+@Embeddable
+@Access(AccessType.PROPERTY)
 public class Location {
 
-
-    @Transient private ServerInfo server;
-
+    private String server;
     private String world;
     private Double x;
     private Double y;
@@ -36,7 +32,7 @@ public class Location {
      * @param yaw    yaw-axis of location
      * @param pitch  pitch of location
      */
-    public Location(ServerInfo server, String world, Double x, Double y, Double z, Float yaw, Float pitch) {
+    public Location(String server, String world, Double x, Double y, Double z, Float yaw, Float pitch) {
         this.server = server;
         this.world = world;
         this.x = x;
@@ -55,7 +51,7 @@ public class Location {
      * @param y      y-axis of location
      * @param z      z-axis of location
      */
-    public Location(ServerInfo server, String world, Double x, Double y, Double z) {
+    public Location(String server, String world, Double x, Double y, Double z) {
         this.server = server;
         this.world = world;
         this.x = x;
