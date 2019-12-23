@@ -5,19 +5,16 @@ import fi.matiaspaavilainen.masuitecore.bungee.events.LoginEvent;
 import fi.matiaspaavilainen.masuitecore.bungee.listeners.CoreMessageListener;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BungeeConfiguration;
-import fi.matiaspaavilainen.masuitecore.core.database.ConnectionManager;
 import fi.matiaspaavilainen.masuitecore.core.services.PlayerService;
 import fi.matiaspaavilainen.masuitecore.core.utils.HibernateUtil;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.config.Configuration;
 import org.bstats.bungeecord.Metrics;
 
 public class MaSuiteCore extends Plugin implements Listener {
 
     public PlayerService playerService;
     public BungeeConfiguration config = new BungeeConfiguration();
-    private ConnectionManager cm = null;
 
     private static MaSuiteCore instance;
 
@@ -30,12 +27,6 @@ public class MaSuiteCore extends Plugin implements Listener {
         // Create configuration files
         config.create(this, null, "config.yml");
         config.create(this, null, "messages.yml");
-
-        // Connect to database and create table
-        Configuration dbInfo = config.load(null, "config.yml");
-        cm = new ConnectionManager(dbInfo.getString("database.table-prefix"), dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
-        cm.connect();
-        cm.getDatabase().createTable("players", "(id INT(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, uuid VARCHAR(36) UNIQUE NOT NULL, username VARCHAR(16) NOT NULL, nickname VARCHAR(16) NULL, firstLogin BIGINT(15) NOT NULL, lastLogin BIGINT(16) NOT NULL);");
 
         // Register listeners
         registerListeners();
@@ -50,7 +41,6 @@ public class MaSuiteCore extends Plugin implements Listener {
 
     @Override
     public void onDisable() {
-        cm.close();
         HibernateUtil.shutdown();
     }
 

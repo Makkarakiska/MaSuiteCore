@@ -2,7 +2,7 @@ package fi.matiaspaavilainen.masuitecore.bukkit;
 
 import fi.matiaspaavilainen.masuitecore.core.adapters.BukkitAdapter;
 import fi.matiaspaavilainen.masuitecore.core.objects.Location;
-import org.apache.commons.lang3.EnumUtils;
+import org.apache.commons.lang.enums.EnumUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class CoreMessageListener implements PluginMessageListener {
         }
         DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
 
-        String subchannel = null;
+        /*String subchannel = null;
         try {
             subchannel = in.readUTF();
             if (subchannel.equals("MaSuiteCore")) {
@@ -55,6 +55,6 @@ public class CoreMessageListener implements PluginMessageListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+*/
     }
 }
