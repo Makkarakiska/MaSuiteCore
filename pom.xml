@@ -6,7 +6,7 @@
 
     <groupId>fi.matiaspaavilainen</groupId>
     <artifactId>MaSuiteCore</artifactId>
-    <version>1.5.5-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
 
     <distributionManagement>
         <snapshotRepository>
@@ -52,18 +52,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <artifactSet>
-                                <includes>
-                                    <include>mysql:*</include>
-                                    <include>org.slf4j:*</include>
-                                    <include>com.zaxxer:*</include>
-                                    <include>org.bstats:*</include>
-                                    <include>co.aikar:*</include>
-                                    <include>org.hibernate:*</include>
-                                </includes>
-                            </artifactSet>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -117,13 +105,13 @@
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
-            <version>1.14-SNAPSHOT</version>
+            <version>1.15-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.14.4-R0.1-SNAPSHOT</version>
+            <version>1.15.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
