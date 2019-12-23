@@ -22,9 +22,6 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
         config.create(this, null, "messages.yml");
         new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
         registerListeners();
-
-        config.addDefault("/config.yml", "gui.sounds.empty-slot", "ENTITY_ITEM_BREAK");
-        config.addDefault("/config.yml", "gui.sounds.filled-slot", "BLOCK_WOODEN_BUTTON_CLICK_ON");
         getCommand("masuite").setExecutor(new MaSuiteCommand(this));
     }
 
