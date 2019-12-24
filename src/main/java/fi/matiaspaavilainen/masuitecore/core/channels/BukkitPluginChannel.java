@@ -25,11 +25,12 @@ public class BukkitPluginChannel {
      * @param player player to use send messages
      * @param params params to send
      */
-    public BukkitPluginChannel(JavaPlugin plugin, Player player, Object[] params) {
+    public BukkitPluginChannel(JavaPlugin plugin, Player player, Object... params) {
         this.plugin = plugin;
         this.player = player;
         this.params = params;
     }
+
 
     /**
      * Send given data to BungeeCord

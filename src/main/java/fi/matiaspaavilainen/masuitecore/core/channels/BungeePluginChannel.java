@@ -27,7 +27,7 @@ public class BungeePluginChannel {
      * @param server server to send messages
      * @param params params to send
      */
-    public BungeePluginChannel(Plugin plugin, ServerInfo server, Object[] params) {
+    public BungeePluginChannel(Plugin plugin, ServerInfo server, Object ...params) {
         this.plugin = plugin;
         this.server = server;
         this.params = params;
