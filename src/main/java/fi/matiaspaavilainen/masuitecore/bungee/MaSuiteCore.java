@@ -32,9 +32,9 @@ public class MaSuiteCore extends Plugin implements Listener {
         registerListeners();
 
         // Detect if new version on spigot
-        new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
+        new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
 
-        config.addDefault("/config.yml", "use-tab-completer", false);
+        config.addDefault("/config.yml", "use-tab-completer", true);
 
         playerService = new PlayerService();
     }

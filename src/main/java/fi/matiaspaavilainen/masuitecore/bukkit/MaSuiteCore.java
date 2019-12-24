@@ -20,7 +20,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     public void onEnable() {
         // Detect if new version on spigot
         config.create(this, null, "messages.yml");
-        new Updator(new String[]{getDescription().getVersion(), getDescription().getName(), "60037"}).checkUpdates();
+        new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
         registerListeners();
         getCommand("masuite").setExecutor(new MaSuiteCommand(this));
     }
