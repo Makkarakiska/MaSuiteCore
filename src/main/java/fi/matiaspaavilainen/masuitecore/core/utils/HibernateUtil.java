@@ -45,6 +45,7 @@ public class HibernateUtil {
                 settings.put("hibernate.hikari.minimumIdle", "10");
                 // Maximum number of actual connection in the pool
                 settings.put("hibernate.hikari.maximumPoolSize", "10");
+                settings.put("hibernate.hikari.maxLifetime", "30000");
                 registryBuilder.applySettings(settings);
 
                 registry = registryBuilder.build();

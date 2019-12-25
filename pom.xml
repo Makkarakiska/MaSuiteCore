@@ -45,6 +45,28 @@
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
                         </relocation>
                     </relocations>
+                    <artifactSet>
+                        <includes>
+                            <include>org.bstats:*</include>
+                            <include>com.zaxxer:*</include>
+                            <include>co.aikar:*</include>
+                            <include>org.hibernate:*</include>
+                            <include>javax.persistence:*</include>
+                            <include>net.jodah:*</include>
+                            <include>co.aikar:minecraft-timings</include>
+                        </includes>
+                        <excludes>
+                            <exclude>antlr:*</exclude>
+                            <exclude>org.javassist:*</exclude>
+                            <exclude>net.bytebuddy:*</exclude>
+                            <exclude>com.fasterxml:*</exclude>
+                            <exclude>javax.xml:*</exclude>
+                            <exclude>org.glassfish:*</exclude>
+                            <exclude>com.sun:*</exclude>
+                            <exclude>org.jvnet:*</exclude>
+                            <exclude>org.jetbrains:*</exclude>
+                        </excludes>
+                    </artifactSet>
                 </configuration>
                 <executions>
                     <execution>
@@ -117,12 +139,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.5</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>3.4.1</version>
@@ -147,11 +163,6 @@
             <artifactId>log4j-core</artifactId>
             <version>2.11.1</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.18</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
