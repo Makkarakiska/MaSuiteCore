@@ -106,7 +106,6 @@ public class PlayerService {
         entityManager.getTransaction().begin();
         entityManager.merge(player);
         entityManager.getTransaction().commit();
-
         players.put(player.getUniqueId(), player);
         return player;
     }
