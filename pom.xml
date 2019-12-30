@@ -45,7 +45,7 @@
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
                         </relocation>
                     </relocations>
-                    <artifactSet>
+                    <!--<artifactSet>
                         <includes>
                             <include>org.bstats:*</include>
                             <include>com.zaxxer:*</include>
@@ -53,19 +53,21 @@
                             <include>org.hibernate:*</include>
                             <include>net.jodah:*</include>
                             <include>co.aikar:minecraft-timings</include>
+                            <include>javax:*</include>
+                            <include>org.jboss.logging:*</include>
                         </includes>
                         <excludes>
                             <exclude>antlr:*</exclude>
                             <exclude>org.javassist:*</exclude>
                             <exclude>net.bytebuddy:*</exclude>
                             <exclude>com.fasterxml:*</exclude>
-                            <exclude>javax:*</exclude>
+                            <exclude>javax.xml:*</exclude>
                             <exclude>org.glassfish:*</exclude>
                             <exclude>com.sun:*</exclude>
                             <exclude>org.jvnet:*</exclude>
                             <exclude>org.jetbrains:*</exclude>
                         </excludes>
-                    </artifactSet>
+                    </artifactSet>-->
                 </configuration>
                 <executions>
                     <execution>

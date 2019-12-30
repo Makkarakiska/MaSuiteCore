@@ -13,10 +13,7 @@ import org.hibernate.cfg.Environment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HibernateUtil {
 
@@ -25,10 +22,10 @@ public class HibernateUtil {
     private static SessionFactory sessionFactory;
     private static BungeeConfiguration config = new BungeeConfiguration();
 
-    private static List<Class<?>> models;
+    private static List<Class<?>> models = new ArrayList<>();
 
     public static HibernateUtil addClasses(Class<?>... models) {
-        HibernateUtil.models = Arrays.asList(models);
+        HibernateUtil.models.addAll(Arrays.asList(models));
         sessionFactory = null;
         return null;
     }
