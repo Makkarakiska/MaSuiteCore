@@ -29,6 +29,7 @@ public class HibernateUtil {
 
     public static HibernateUtil addClasses(Class<?>... models) {
         HibernateUtil.models = Arrays.asList(models);
+        sessionFactory = null;
         return null;
     }
 
