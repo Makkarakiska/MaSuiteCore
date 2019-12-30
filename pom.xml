@@ -44,6 +44,10 @@
                             <pattern>org.hibernate:*</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>javax</pattern>
+                            <shadedPattern>fi.matiaspaavilainen.masuitecore.javax</shadedPattern>
+                        </relocation>
                     </relocations>
                     <artifactSet>
                         <includes>
@@ -51,7 +55,7 @@
                             <include>com.zaxxer:*</include>
                             <include>co.aikar:*</include>
                             <include>org.hibernate:*</include>
-                            <include>javax.persistence:*</include>
+                            <include>javax:*</include>
                             <include>net.jodah:*</include>
                             <include>co.aikar:minecraft-timings</include>
                         </includes>
