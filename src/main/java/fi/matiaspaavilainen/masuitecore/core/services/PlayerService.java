@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class PlayerService {
 
-    private EntityManager entityManager = HibernateUtil.getEntityManager();
+    private EntityManager entityManager = HibernateUtil.addClasses(MaSuitePlayer.class).getEntityManager();
     public HashMap<UUID, MaSuitePlayer> players = new HashMap<>();
 
     /**
