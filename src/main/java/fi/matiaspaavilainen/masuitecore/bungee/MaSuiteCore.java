@@ -35,6 +35,7 @@ public class MaSuiteCore extends Plugin implements Listener {
         new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
 
         config.addDefault("/config.yml", "use-tab-completer", true);
+        config.addDefault("/config.yml", "teleportation-delay", 750);
 
         playerService = new PlayerService();
     }
