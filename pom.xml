@@ -45,7 +45,7 @@
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>javax</pattern>
+                            <pattern>javax.persistence</pattern>
                             <shadedPattern>fi.matiaspaavilainen.masuitecore.javax</shadedPattern>
                         </relocation>
                     </relocations>
