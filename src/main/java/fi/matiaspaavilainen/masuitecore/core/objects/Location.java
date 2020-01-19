@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.core.objects;
 
+import com.google.gson.Gson;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -101,11 +102,20 @@ public class Location {
 
     }
 
+    public String serialize() {
+        return new Gson().toJson(this);
+    }
+
+    public Location deserialize(String json) {
+        return new Gson().fromJson(json, Location.class);
+    }
+
     /**
      * Convert string to {@link Location}
      *
      * @param string build from {@link #toString()}
      * @return {@link Location} built from {@link #toString()}
+     * @deprecated
      */
     public Location fromString(String string) {
         String[] loc = string.split(":");
