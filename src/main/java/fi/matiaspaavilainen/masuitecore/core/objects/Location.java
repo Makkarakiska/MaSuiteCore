@@ -96,6 +96,7 @@ public class Location {
 
     /**
      * Convert {@link Location} to string
+     * @deprecated
      */
     public String toString() {
         return this.world + ":" + this.x + ":" + this.y + ":" + this.z + ":" + this.yaw + ":" + this.pitch;
