@@ -4,9 +4,7 @@ import fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer;
 import fi.matiaspaavilainen.masuitecore.core.utils.HibernateUtil;
 
 import javax.persistence.EntityManager;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerService {
 
@@ -31,6 +29,19 @@ public class PlayerService {
      */
     public MaSuitePlayer getPlayer(String username) {
         return this.loadPlayer(username);
+    }
+
+    /**
+     * Get all {@link MaSuitePlayer}s from cache or database
+     *
+     * @param cachedData do we load players from cache or from database (might cause huge lag spikes)
+     * @return returns a list of {@link MaSuitePlayer}s
+     */
+    public List<MaSuitePlayer> getAllPlayers(boolean cachedData) {
+        if (cachedData) {
+            return new ArrayList<>(players.values());
+        }
+        return entityManager.createQuery("SELECT p FROM MaSuitePlayer p", MaSuitePlayer.class).getResultList();
     }
 
     /**
