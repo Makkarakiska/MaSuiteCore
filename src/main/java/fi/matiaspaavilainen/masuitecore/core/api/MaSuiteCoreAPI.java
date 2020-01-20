@@ -9,7 +9,7 @@ public class MaSuiteCoreAPI {
         return MaSuiteCore.getInstance();
     }
 
-    public static PlayerService getPlayerService() {
+    public PlayerService getPlayerService() {
         return MaSuiteCore.getInstance().playerService;
     }
 }
