@@ -43,12 +43,12 @@ public class BukkitCooldownManager {
      * @return returns boolean
      */
     public boolean hasCooldown(String type, UUID uuid) {
-        if(cooldowns.get(type) == null) return true;
+        if (cooldowns.get(type) == null) return true;
 
         Long timeLeft = cooldowns.get(type).get(uuid);
-        if(timeLeft == null) return true;
+        if (timeLeft == null) return true;
 
-        if(Instant.now().getEpochSecond() - timeLeft > cooldownLengths.get(type)) {
+        if (Instant.now().getEpochSecond() - timeLeft > cooldownLengths.get(type)) {
             cooldowns.get(type).remove(uuid);
             return false;
         }
@@ -68,6 +68,12 @@ public class BukkitCooldownManager {
         return cooldowns.get(type).get(uuid);
     }
 
+    /**
+     * Add cooldown length for specific type
+     *
+     * @param type   type of the cooldown
+     * @param length length of the cooldown
+     */
     public void addCooldownLength(String type, int length) {
         cooldownLengths.put(type, length);
     }
