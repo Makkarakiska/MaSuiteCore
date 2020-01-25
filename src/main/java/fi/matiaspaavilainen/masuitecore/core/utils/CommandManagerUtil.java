@@ -6,6 +6,7 @@ import co.aikar.commands.PaperCommandManager;
 import fi.matiaspaavilainen.masuitecore.bukkit.MaSuiteCore;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer;
+import fi.matiaspaavilainen.masuitecore.core.services.CooldownService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -33,7 +34,7 @@ public class CommandManagerUtil {
      */
     public static void registerCooldownCondition(PaperCommandManager manager) {
         manager.getCommandConditions().addCondition("cooldown", c -> {
-            BukkitCooldownManager cm = MaSuiteCore.cooldownManager;
+            CooldownService cm = MaSuiteCore.cooldownManager;
             UUID uuid = c.getIssuer().getUniqueId();
 
             String cooldownType = c.getConfigValue("type", "");

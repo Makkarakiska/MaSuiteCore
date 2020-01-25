@@ -1,10 +1,10 @@
-package fi.matiaspaavilainen.masuitecore.core.utils;
+package fi.matiaspaavilainen.masuitecore.core.services;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class BukkitCooldownManager {
+public class CooldownService {
 
     public HashMap<String, HashMap<UUID, Long>> cooldowns = new HashMap<>();
     public HashMap<String, Integer> cooldownLengths = new HashMap<>();
