@@ -9,6 +9,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.UUID;
+
 public class Utils {
 
     private BungeeConfiguration config = new BungeeConfiguration();
@@ -73,6 +75,16 @@ public class Utils {
     }
 
     /**
+     * Apply cooldown for player
+     * @param plugin plugin to use
+     * @param uuid uuid of the player
+     * @param type type of the cooldown
+     */
+    public void applyCooldown(Plugin plugin, UUID uuid, String type) {
+        new BungeePluginChannel(plugin, plugin.getProxy().getPlayer(uuid).getServer().getInfo(), "MaSuiteCore", "ApplyCooldown", type, uuid.toString()).send();
+    }
+
+    /**
      * Play sound to user
      *
      * @param plugin   {@link Plugin} to use
@@ -83,8 +95,7 @@ public class Utils {
      * @param pitch    pitch of the sound
      */
     public void playSound(Plugin plugin, Location location, ProxiedPlayer player, String sound, float volume, float pitch) {
-        new BungeePluginChannel(plugin, player.getServer().getInfo(),
-                new Object[]{"MaSuiteCore", "PlaySound", player.getUniqueId().toString(), location.toString(), sound, volume, pitch}
-                ).send();
+        new BungeePluginChannel(plugin, player.getServer().getInfo(), "MaSuiteCore", "PlaySound",
+                player.getUniqueId().toString(), location.serialize(), sound, volume, pitch).send();
     }
 }
