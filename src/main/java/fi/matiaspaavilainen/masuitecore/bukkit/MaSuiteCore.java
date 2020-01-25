@@ -4,6 +4,7 @@ import co.aikar.commands.PaperCommandManager;
 import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
+import fi.matiaspaavilainen.masuitecore.core.utils.BukkitCooldownManager;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,13 +17,13 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     public static BukkitCooldownManager cooldownManager = new BukkitCooldownManager();
 
-    public static boolean bungee = true;
     public static List<String> onlinePlayers = new ArrayList<>();
 
     @Override
     public void onEnable() {
         // Detect if new version on spigot
         config.create(this, null, "messages.yml");
+        config.addDefault("/messages.yml", "in-cooldown", "&cYou can use that command after %time% seconds");
         new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
         registerListeners();
 
