@@ -1,4 +1,4 @@
-package fi.matiaspaavilainen.masuitecore.bukkit;
+package fi.matiaspaavilainen.masuitecore.core.utils;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -46,7 +46,10 @@ public class BukkitCooldownManager {
         if (cooldowns.get(type) == null) return true;
 
         Long timeLeft = cooldowns.get(type).get(uuid);
-        if (timeLeft == null) return true;
+        if (timeLeft == null) {
+            applyCooldown(type, uuid);
+            return false;
+        }
 
         if (Instant.now().getEpochSecond() - timeLeft > cooldownLengths.get(type)) {
             cooldowns.get(type).remove(uuid);
@@ -69,12 +72,34 @@ public class BukkitCooldownManager {
     }
 
     /**
+     * Get cooldown length
+     *
+     * @param type type of the cooldown
+     * @return returns length of the cooldown
+     */
+    public int getCooldownLength(String type) {
+        return cooldownLengths.get(type);
+    }
+
+    /**
+     * Get cooldown time left of the user
+     *
+     * @param type type of the cooldown
+     * @param uuid uuid of the user
+     * @return returns time left of the user
+     */
+    public Long getTimeLeft(String type, UUID uuid) {
+        return Instant.now().getEpochSecond() - getCooldown(type, uuid);
+    }
+
+    /**
      * Add cooldown length for specific type
      *
      * @param type   type of the cooldown
      * @param length length of the cooldown
      */
     public void addCooldownLength(String type, int length) {
+        cooldowns.computeIfAbsent(type, k -> new HashMap<>());
         cooldownLengths.put(type, length);
     }
 
