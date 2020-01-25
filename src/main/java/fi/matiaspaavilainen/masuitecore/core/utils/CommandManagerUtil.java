@@ -34,7 +34,7 @@ public class CommandManagerUtil {
      */
     public static void registerCooldownCondition(PaperCommandManager manager) {
         manager.getCommandConditions().addCondition("cooldown", c -> {
-            CooldownService cm = MaSuiteCore.cooldownManager;
+            CooldownService cm = MaSuiteCore.cooldownService;
             UUID uuid = c.getIssuer().getUniqueId();
 
             String cooldownType = c.getConfigValue("type", "");
