@@ -3,8 +3,3 @@ main: fi.matiaspaavilainen.masuitecore.bukkit.MaSuiteCore
 version: ${project.version}
 author: Masagameplay
 loadbefore: [MaSuiteChat, MaSuiteWarps, MaSuitePortals, MaSuiteTeleports, MaSuiteHomes, MaSuitePunish, MaSuiteBasics, MaSuiteConverter]
-commands:
-  masuite:
-    description: Information about MaSuite
-    aliases: [masuiteinfo, masuitecoreinfo, msinfo]
-    permission: masuite.info

@@ -1,5 +1,6 @@
 package fi.matiaspaavilainen.masuitecore.bukkit;
 
+import co.aikar.commands.PaperCommandManager;
 import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
@@ -13,6 +14,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     private BukkitConfiguration config = new BukkitConfiguration();
 
+    public static BukkitCooldownManager cooldownManager = new BukkitCooldownManager();
+
     public static boolean bungee = true;
     public static List<String> onlinePlayers = new ArrayList<>();
 
@@ -22,7 +25,9 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
         config.create(this, null, "messages.yml");
         new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
         registerListeners();
-        getCommand("masuite").setExecutor(new MaSuiteCommand(this));
+
+        PaperCommandManager manager = new PaperCommandManager(this);
+        manager.registerCommand(new MaSuiteCommand(this));
     }
 
     /**
