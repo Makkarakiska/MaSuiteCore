@@ -3,8 +3,8 @@ package fi.matiaspaavilainen.masuitecore.core.utils;
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
-import fi.matiaspaavilainen.masuitecore.bukkit.BukkitCooldownManager;
 import fi.matiaspaavilainen.masuitecore.bukkit.MaSuiteCore;
+import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.models.MaSuitePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,6 +13,8 @@ import org.bukkit.World;
 import java.util.UUID;
 
 public class CommandManagerUtil {
+
+    public static BukkitConfiguration config = new BukkitConfiguration();
 
     /**
      * Registers {@link MaSuitePlayer} command completion for {@link PaperCommandManager}
@@ -31,15 +33,18 @@ public class CommandManagerUtil {
      */
     public static void registerCooldownCondition(PaperCommandManager manager) {
         manager.getCommandConditions().addCondition("cooldown", c -> {
-            BukkitCooldownManager cooldownManager = MaSuiteCore.cooldownManager;
+            BukkitCooldownManager cm = MaSuiteCore.cooldownManager;
             UUID uuid = c.getIssuer().getUniqueId();
 
             String cooldownType = c.getConfigValue("type", "");
             String byPassPermission = c.getConfigValue("bypass", "masuitecore.cooldown.bypass");
 
-            if (!c.getIssuer().hasPermission(byPassPermission) && cooldownManager.hasCooldown(cooldownType, uuid)) {
-                // TODO: Switch to config
-                throw new ConditionFailedException("You are in cooldown.");
+            if (cm.getCooldownLength("homes") > 0 && cm.hasCooldown(cooldownType, uuid)) {
+                if (!c.getIssuer().hasPermission(byPassPermission)) {
+                    throw new ConditionFailedException(config.load(null, "messages.yml")
+                            .getString("in-cooldown")
+                            .replace("%time%", cm.getCooldownLength("homes") + ""));
+                }
             }
         });
     }
