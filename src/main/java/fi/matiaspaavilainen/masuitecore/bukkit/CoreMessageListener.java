@@ -6,6 +6,7 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 public class CoreMessageListener implements PluginMessageListener {
 
@@ -31,6 +32,9 @@ public class CoreMessageListener implements PluginMessageListener {
                 }
                 if (childchannel.equals("RemovePlayer")) {
                     MaSuiteCore.onlinePlayers.remove(in.readUTF());
+                }
+                if(childchannel.equals("ApplyCooldown")) {
+                    plugin.cooldownService.applyCooldown(in.readUTF(), UUID.fromString(in.readUTF()));
                 }
             }
 
