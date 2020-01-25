@@ -29,7 +29,7 @@ public class CommandManagerUtil {
      *
      * @param manager manager to use
      */
-    public void registerCooldownCondition(PaperCommandManager manager) {
+    public static void registerCooldownCondition(PaperCommandManager manager) {
         manager.getCommandConditions().addCondition("cooldown", c -> {
             BukkitCooldownManager cooldownManager = MaSuiteCore.cooldownManager;
             UUID uuid = c.getIssuer().getUniqueId();
