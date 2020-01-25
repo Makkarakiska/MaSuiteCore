@@ -5,7 +5,6 @@ import fi.matiaspaavilainen.masuitecore.bukkit.commands.MaSuiteCommand;
 import fi.matiaspaavilainen.masuitecore.core.Updator;
 import fi.matiaspaavilainen.masuitecore.core.configuration.BukkitConfiguration;
 import fi.matiaspaavilainen.masuitecore.core.services.CooldownService;
-import lombok.Getter;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,9 +15,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     private BukkitConfiguration config = new BukkitConfiguration();
 
-    @Getter
     public static CooldownService cooldownService = new CooldownService();
-
     public static List<String> onlinePlayers = new ArrayList<>();
 
     @Override
