@@ -22,7 +22,7 @@ public class MaSuiteCore extends Plugin implements Listener {
     public void onEnable() {
         instance = this;
         // Load metrics
-        Metrics metrics = new Metrics(this);
+        Metrics metrics = new Metrics(this, 3125);
 
         // Create configuration files
         config.create(this, null, "config.yml");
