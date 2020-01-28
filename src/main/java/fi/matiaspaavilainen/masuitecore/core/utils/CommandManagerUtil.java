@@ -40,11 +40,11 @@ public class CommandManagerUtil {
             String cooldownType = c.getConfigValue("type", "");
             String byPassPermission = c.getConfigValue("bypass", "masuitecore.cooldown.bypass");
 
-            if (cm.getCooldownLength("homes") > 0 && cm.hasCooldown(cooldownType, uuid)) {
+            if (cm.getCooldownLength(cooldownType) > 0 && cm.hasCooldown(cooldownType, uuid)) {
                 if (!c.getIssuer().hasPermission(byPassPermission)) {
                     throw new ConditionFailedException(config.load(null, "messages.yml")
                             .getString("in-cooldown")
-                            .replace("%time%", cm.getCooldownLength("homes") + ""));
+                            .replace("%time%", cm.getCooldownLength(cooldownType) + ""));
                 }
             }
         });
