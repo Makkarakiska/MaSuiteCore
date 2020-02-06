@@ -3,6 +3,7 @@ package dev.masa.masuitecore.core.services;
 import dev.masa.masuitecore.bukkit.MaSuiteCore;
 import dev.masa.masuitecore.core.utils.BukkitWarmup;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -21,28 +22,38 @@ public class WarmupService implements Listener {
         this.plugin = plugin;
     }
 
-    public void applyWarmup(UUID uuid, String type, Consumer<Boolean> callback) {
+    public void applyWarmup(Player player, String bypassPermission, String type, Consumer<Boolean> callback) {
         int warmupTime = this.warmupTimes.get(type);
+
+        // If warmup time is 0 or lower
         if(warmupTime <= 0) {
             callback.accept(true);
             return;
         }
 
-        warmups.put(uuid, type);
+        // If player has bypass permission
+        if(player.hasPermission(bypassPermission)){
+            callback.accept(true);
+            return;
+        }
+
+        // Add player to warmups list
+        warmups.put(player.getUniqueId(), type);
+        // Send teleportation message
         String message = plugin.config.load(null, "messages.yml").getString("teleportation-started").replace("%time%", String.valueOf(warmupTime));
-        plugin.formator.sendMessage(plugin.getServer().getPlayer(uuid), message);
+        plugin.formator.sendMessage(player, message);
 
         new BukkitWarmup(warmupTime, plugin) {
             @Override
             public void count(int current) {
                 if (current == 0) {
-                    if (warmups.containsKey(uuid)) {
+                    if (warmups.containsKey(player.getUniqueId())) {
                         callback.accept(true);
-                        warmups.remove(uuid);
+                        warmups.remove(player.getUniqueId());
                         return;
                     }
                     callback.accept(false);
-                    warmups.remove(uuid);
+                    warmups.remove(player.getUniqueId());
                 }
             }
         }.start();
