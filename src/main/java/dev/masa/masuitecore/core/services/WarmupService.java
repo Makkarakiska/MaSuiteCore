@@ -21,13 +21,18 @@ public class WarmupService implements Listener {
         this.plugin = plugin;
     }
 
-    public void applyWarmup(UUID uuid, String type, int time, Consumer<Boolean> callback) {
-        warmups.put(uuid, type);
+    public void applyWarmup(UUID uuid, String type, Consumer<Boolean> callback) {
+        int warmupTime = this.warmupTimes.get(type);
+        if(warmupTime <= 0) {
+            callback.accept(true);
+            return;
+        }
 
-        String message = plugin.config.load(null, "messages.yml").getString("teleportation-started").replace("%time%", String.valueOf(this.warmupTimes.get(type)));
+        warmups.put(uuid, type);
+        String message = plugin.config.load(null, "messages.yml").getString("teleportation-started").replace("%time%", String.valueOf(warmupTime));
         plugin.formator.sendMessage(plugin.getServer().getPlayer(uuid), message);
 
-        new BukkitWarmup(time, plugin) {
+        new BukkitWarmup(warmupTime, plugin) {
             @Override
             public void count(int current) {
                 if (current == 0) {
