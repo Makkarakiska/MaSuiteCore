@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fi.matiaspaavilainen</groupId>
+    <groupId>dev.masa</groupId>
     <artifactId>MaSuiteCore</artifactId>
     <version>2.0.0-SNAPSHOT</version>
 
@@ -30,19 +30,19 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore</shadedPattern>
+                            <shadedPattern>dev.masa.masuitecore</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.zaxxer.hikari</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore</shadedPattern>
+                            <shadedPattern>dev.masa.masuitecore</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore.acf</shadedPattern>
+                            <shadedPattern>dev.masa.masuitecore.acf</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>org.hibernate:*</pattern>
-                            <shadedPattern>fi.matiaspaavilainen.masuitecore.hibernate</shadedPattern>
+                            <shadedPattern>dev.masa.masuitecore.hibernate</shadedPattern>
                         </relocation>
                     </relocations>
                     <!--<artifactSet>
