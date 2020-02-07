@@ -22,17 +22,25 @@ public class WarmupService implements Listener {
         this.plugin = plugin;
     }
 
+    /**
+     * Apply warmup for the player
+     *
+     * @param player           player to add
+     * @param bypassPermission permission to bypass warmup
+     * @param type             type of the warmup
+     * @param callback         callback
+     */
     public void applyWarmup(Player player, String bypassPermission, String type, Consumer<Boolean> callback) {
         int warmupTime = this.warmupTimes.get(type);
 
         // If warmup time is 0 or lower
-        if(warmupTime <= 0) {
+        if (warmupTime <= 0) {
             callback.accept(true);
             return;
         }
 
         // If player has bypass permission
-        if(player.hasPermission(bypassPermission)){
+        if (player.hasPermission(bypassPermission)) {
             callback.accept(true);
             return;
         }
@@ -59,6 +67,21 @@ public class WarmupService implements Listener {
         }.start();
     }
 
+    /**
+     * Add warmup time to cache
+     *
+     * @param type type of the warmup
+     * @param time time of the warmup
+     */
+    public void addWarmupTime(String type, int time) {
+        warmupTimes.put(type, time);
+    }
+
+    /**
+     * Listen player moving and if player has ongoing warmup then cancel the action
+     *
+     * @param event PlayerMoveEvent
+     */
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         String warmupType = warmups.get(event.getPlayer().getUniqueId());
