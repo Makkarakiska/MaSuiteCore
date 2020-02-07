@@ -9,7 +9,6 @@ public class CooldownService {
     public HashMap<String, HashMap<UUID, Long>> cooldowns = new HashMap<>();
     public HashMap<String, Integer> cooldownLengths = new HashMap<>();
 
-
     /**
      * Apply cooldown for a user
      *
