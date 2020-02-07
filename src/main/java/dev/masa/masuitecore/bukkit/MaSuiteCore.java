@@ -22,6 +22,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     public static WarmupService warmupService;
     public static List<String> onlinePlayers = new ArrayList<>();
 
+    private static MaSuiteCore instance;
+
     @Override
     public void onEnable() {
         // Detect if new version on spigot
@@ -39,6 +41,8 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
         warmupService = new WarmupService(this);
         getServer().getPluginManager().registerEvents(warmupService, this);
+
+        instance = this;
     }
 
     /**
@@ -47,6 +51,10 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     private void registerListeners() {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new CoreMessageListener(this));
+    }
+
+    public static MaSuiteCore getInstance() {
+        return instance;
     }
 
 }
