@@ -1,4 +1,4 @@
-package dev.masa.masuitecore.bungee.events;
+package dev.masa.masuitecore.bungee.listeners;
 
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 import dev.masa.masuitecore.core.channels.BungeePluginChannel;
@@ -29,11 +29,11 @@ public class LeaveEvent implements Listener {
                 ServerInfo serverInfo = entry.getValue();
                 serverInfo.ping((result, error) -> {
                     if (error == null) {
-                        new BungeePluginChannel(plugin, serverInfo, new Object[]{
+                        new BungeePluginChannel(plugin, serverInfo,
                                 "MaSuiteCore",
                                 "RemovePlayer",
                                 e.getPlayer().getName()
-                        }).send();
+                        ).send();
                     }
                 });
             }
