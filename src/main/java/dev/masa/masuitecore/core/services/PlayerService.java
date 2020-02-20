@@ -1,5 +1,8 @@
 package dev.masa.masuitecore.core.services;
 
+import dev.masa.masuitecore.bungee.MaSuiteCore;
+import dev.masa.masuitecore.bungee.events.MaSuitePlayerCreationEvent;
+import dev.masa.masuitecore.bungee.events.MaSuitePlayerUpdateEvent;
 import dev.masa.masuitecore.core.models.MaSuitePlayer;
 import dev.masa.masuitecore.core.utils.HibernateUtil;
 
@@ -10,6 +13,12 @@ public class PlayerService {
 
     private EntityManager entityManager = HibernateUtil.addClasses(MaSuitePlayer.class).getEntityManager();
     public HashMap<UUID, MaSuitePlayer> players = new HashMap<>();
+
+    private MaSuiteCore plugin;
+
+    public PlayerService(MaSuiteCore plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Get {@link MaSuitePlayer} from UUID
@@ -104,6 +113,8 @@ public class PlayerService {
         entityManager.getTransaction().commit();
 
         players.put(player.getUniqueId(), player);
+
+        plugin.getProxy().getPluginManager().callEvent(new MaSuitePlayerCreationEvent(player));
         return player;
     }
 
@@ -118,6 +129,8 @@ public class PlayerService {
         entityManager.merge(player);
         entityManager.getTransaction().commit();
         players.put(player.getUniqueId(), player);
+
+        plugin.getProxy().getPluginManager().callEvent(new MaSuitePlayerUpdateEvent(player));
         return player;
     }
 }

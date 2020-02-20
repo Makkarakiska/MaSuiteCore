@@ -3,8 +3,8 @@ package dev.masa.masuitecore.bungee;
 import dev.masa.masuitecore.core.Updator;
 import dev.masa.masuitecore.core.services.PlayerService;
 import dev.masa.masuitecore.core.utils.HibernateUtil;
-import dev.masa.masuitecore.bungee.events.LeaveEvent;
-import dev.masa.masuitecore.bungee.events.LoginEvent;
+import dev.masa.masuitecore.bungee.listeners.LeaveEvent;
+import dev.masa.masuitecore.bungee.listeners.LoginEvent;
 import dev.masa.masuitecore.bungee.listeners.CoreMessageListener;
 import dev.masa.masuitecore.core.configuration.BungeeConfiguration;
 import net.md_5.bungee.api.plugin.Listener;
@@ -37,7 +37,7 @@ public class MaSuiteCore extends Plugin implements Listener {
         config.addDefault("/config.yml", "use-tab-completer", true);
         config.addDefault("/config.yml", "teleportation-delay", 750);
 
-        playerService = new PlayerService();
+        playerService = new PlayerService(this);
     }
 
     @Override
