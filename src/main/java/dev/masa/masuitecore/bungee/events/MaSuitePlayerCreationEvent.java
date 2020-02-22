@@ -2,8 +2,8 @@ package dev.masa.masuitecore.bungee.events;
 
 import dev.masa.masuitecore.core.models.MaSuitePlayer;
 import lombok.Getter;
+import net.md_5.bungee.api.plugin.Cancellable;
 import net.md_5.bungee.api.plugin.Event;
-import org.bukkit.event.Cancellable;
 
 public class MaSuitePlayerCreationEvent extends Event implements Cancellable {
 
