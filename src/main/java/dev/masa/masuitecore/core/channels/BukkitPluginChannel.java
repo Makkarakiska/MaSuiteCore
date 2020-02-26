@@ -1,5 +1,7 @@
 package dev.masa.masuitecore.core.channels;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -7,16 +9,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+@Data
+@NoArgsConstructor
 public class BukkitPluginChannel {
     private JavaPlugin plugin;
     private Player player;
     private Object[] params;
-
-    /**
-     * An empty constructor for BukkitPluginChannel
-     */
-    public BukkitPluginChannel() {
-    }
 
     /**
      * A constructor for BukkitPluginChannel
@@ -30,7 +28,6 @@ public class BukkitPluginChannel {
         this.player = player;
         this.params = params;
     }
-
 
     /**
      * Send given data to BungeeCord
@@ -63,47 +60,5 @@ public class BukkitPluginChannel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * @return plugin to be used
-     */
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
-    /**
-     * @param plugin plugin to be used
-     */
-    public void setPlugin(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * @return get the player to send messages
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    /**
-     * @param player get the player to send messages
-     */
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    /**
-     * @return params to send
-     */
-    public Object[] getParams() {
-        return params;
-    }
-
-    /**
-     * @param params params to send
-     */
-    public void setParams(Object[] params) {
-        this.params = params;
     }
 }

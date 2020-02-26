@@ -1,6 +1,8 @@
 package dev.masa.masuitecore.core.channels;
 
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -8,17 +10,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+@Data
+@NoArgsConstructor
 public class BungeePluginChannel {
 
     private Plugin plugin;
     private ServerInfo server;
     private Object[] params;
-
-    /**
-     * An empty constructor for BungeePluginChannel
-     */
-    public BungeePluginChannel() {
-    }
 
     /**
      * A constructor for BungeePluginChannel
@@ -27,7 +25,7 @@ public class BungeePluginChannel {
      * @param server server to send messages
      * @param params params to send
      */
-    public BungeePluginChannel(Plugin plugin, ServerInfo server, Object ...params) {
+    public BungeePluginChannel(Plugin plugin, ServerInfo server, Object... params) {
         this.plugin = plugin;
         this.server = server;
         this.params = params;
@@ -64,47 +62,5 @@ public class BungeePluginChannel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * @return plugin to be used
-     */
-    public Plugin getPlugin() {
-        return plugin;
-    }
-
-    /**
-     * @param plugin plugin to be used
-     */
-    public void setPlugin(Plugin plugin) {
-        this.plugin = plugin;
-    }
-
-    /**
-     * @return get the server to send messages
-     */
-    public ServerInfo getServer() {
-        return server;
-    }
-
-    /**
-     * @param server get the player to send messages
-     */
-    public void setServer(ServerInfo server) {
-        this.server = server;
-    }
-
-    /**
-     * @return params to send
-     */
-    public Object[] getParams() {
-        return params;
-    }
-
-    /**
-     * @param params params to send
-     */
-    public void setParams(Object[] params) {
-        this.params = params;
     }
 }
