@@ -20,25 +20,26 @@ public class LeaveEvent implements Listener {
 
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e) {
-        MaSuitePlayer msp = new MaSuitePlayer();
-        msp = msp.find(e.getPlayer().getUniqueId());
-        msp.setLastLogin(System.currentTimeMillis() / 1000);
-        msp.update();
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+            MaSuitePlayer msp = new MaSuitePlayer();
+            msp = msp.find(e.getPlayer().getUniqueId());
+            msp.setLastLogin(System.currentTimeMillis() / 1000);
+            msp.update();
 
-        if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
-            for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
-                ServerInfo serverInfo = entry.getValue();
-                serverInfo.ping((result, error) -> {
-                    if (error == null) {
-                        new BungeePluginChannel(plugin, serverInfo, new Object[]{
-                                "MaSuiteCore",
-                                "RemovePlayer",
-                                e.getPlayer().getName()
-                        }).send();
-                    }
-                });
+            if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
+                for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
+                    ServerInfo serverInfo = entry.getValue();
+                    serverInfo.ping((result, error) -> {
+                        if (error == null) {
+                            new BungeePluginChannel(plugin, serverInfo, new Object[]{
+                                    "MaSuiteCore",
+                                    "RemovePlayer",
+                                    e.getPlayer().getName()
+                            }).send();
+                        }
+                    });
+                }
             }
-        }
+        });
     }
-
 }

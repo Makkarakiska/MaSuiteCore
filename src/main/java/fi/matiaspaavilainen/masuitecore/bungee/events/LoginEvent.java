@@ -9,7 +9,6 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class LoginEvent implements Listener {
 
@@ -21,21 +20,23 @@ public class LoginEvent implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent e) {
-        MaSuitePlayer msp = new MaSuitePlayer();
-        if (msp.find(e.getPlayer().getUniqueId()).getUniqueId() != null) {
-            msp = msp.find(e.getPlayer().getUniqueId());
-            if (msp.getNickname() != null) {
-                e.getPlayer().setDisplayName(msp.getNickname());
-            }
-        }
-        msp.setUsername(e.getPlayer().getName());
-        msp.setUniqueId(e.getPlayer().getUniqueId());
-        msp.setLastLogin(System.currentTimeMillis() / 1000);
-        msp.setFirstLogin(System.currentTimeMillis() / 1000);
-        msp.create();
+        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
+            MaSuitePlayer msp = new MaSuitePlayer();
 
-        if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
-            plugin.getProxy().getScheduler().schedule(plugin, () -> {
+            if (msp.find(e.getPlayer().getUniqueId()).getUniqueId() != null) {
+                msp = msp.find(e.getPlayer().getUniqueId());
+                if (msp.getNickname() != null) {
+                    e.getPlayer().setDisplayName(msp.getNickname());
+                }
+            }
+
+            msp.setUsername(e.getPlayer().getName());
+            msp.setUniqueId(e.getPlayer().getUniqueId());
+            msp.setLastLogin(System.currentTimeMillis() / 1000);
+            msp.setFirstLogin(System.currentTimeMillis() / 1000);
+            msp.create();
+
+            if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
                 for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
                     ServerInfo serverInfo = entry.getValue();
                     serverInfo.ping((result, error) -> {
@@ -48,7 +49,7 @@ public class LoginEvent implements Listener {
                         }
                     });
                 }
-            }, 1, TimeUnit.SECONDS);
-        }
+            }
+        });
     }
 }
