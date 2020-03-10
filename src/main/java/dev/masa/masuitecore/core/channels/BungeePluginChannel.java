@@ -58,7 +58,7 @@ public class BungeePluginChannel {
                     out.writeChar((char) param);
                 }
             }
-            server.sendData("BungeeCord", b.toByteArray());
+            plugin.getProxy().getScheduler().runAsync(plugin, () -> server.sendData("BungeeCord", b.toByteArray()));
         } catch (IOException e) {
             e.printStackTrace();
         }
