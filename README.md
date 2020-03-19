@@ -7,4 +7,6 @@ Are you using a standalone server without BungeeCord? MaSuiteCore supports stand
 
 MaSuiteCore is the hearth of MaSuite family: Chat, Homes, Teleports, Warps, Portals, Punish and Basics! Everything you need! It can be customized for different types of servers!
 
-This plugin contains many utils for developing Minecraft plugin, so you can use this to develop your own MaSuite addons or use the event API to customize even more your server!​
+This plugin contains many utils for developing Minecraft plugin, so you can use this to develop your own MaSuite addons or use the event API to customize even more your server!
+
+Check more details from [https://www.spigotmc.org/resources/masuitecore-1-8-1-15.60037](SpigotMC)
