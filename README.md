@@ -9,4 +9,4 @@ MaSuiteCore is the hearth of MaSuite family: Chat, Homes, Teleports, Warps, Port
 
 This plugin contains many utils for developing Minecraft plugin, so you can use this to develop your own MaSuite addons or use the event API to customize even more your server!
 
-Check more details from [https://www.spigotmc.org/resources/masuitecore-1-8-1-15.60037](SpigotMC)
+Check more details from [SpigotMC](https://www.spigotmc.org/resources/masuitecore-1-8-1-15.60037)
