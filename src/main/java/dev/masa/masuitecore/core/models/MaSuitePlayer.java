@@ -1,5 +1,6 @@
 package dev.masa.masuitecore.core.models;
 
+import dev.masa.masuitecore.core.objects.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,17 @@ public class MaSuitePlayer {
 
     private Long firstLogin;
     private Long lastLogin;
+
+    @Transient
+    private Location location;
+
+    @Transient
+    public Location getLocation() {
+        return this.location;
+    }
+
+    @Transient
+    public Location setLocation(Location loc) {
+        return this.location = loc;
+    }
 }

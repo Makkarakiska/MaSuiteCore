@@ -4,6 +4,7 @@ import dev.masa.masuitecore.bungee.MaSuiteCore;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerCreationEvent;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerUpdateEvent;
 import dev.masa.masuitecore.core.models.MaSuitePlayer;
+import dev.masa.masuitecore.core.objects.Location;
 import dev.masa.masuitecore.core.utils.HibernateUtil;
 
 import javax.persistence.EntityManager;
@@ -131,6 +132,19 @@ public class PlayerService {
         players.put(player.getUniqueId(), player);
 
         plugin.getProxy().getPluginManager().callEvent(new MaSuitePlayerUpdateEvent(player));
+        return player;
+    }
+
+    /**
+     * Update player location into cache but not into database
+     *
+     * @param player   player to use
+     * @param location the new location of player
+     * @return returns updated player
+     */
+    public MaSuitePlayer updatePlayerLocation(MaSuitePlayer player, Location location) {
+        player.setLocation(location);
+        players.put(player.getUniqueId(), player);
         return player;
     }
 }
