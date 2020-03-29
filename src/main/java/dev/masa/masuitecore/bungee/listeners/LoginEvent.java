@@ -21,40 +21,38 @@ public class LoginEvent implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent e) {
-        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
-            MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
-            if (msp != null) {
-                if (msp.getNickname() != null) {
-                    e.getPlayer().setDisplayName(msp.getNickname());
+        MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
+        if (msp != null) {
+            if (msp.getNickname() != null) {
+                e.getPlayer().setDisplayName(msp.getNickname());
+            }
+        }
+
+        if (msp == null) {
+            msp = new MaSuitePlayer();
+            msp.setUsername(e.getPlayer().getName());
+            msp.setUniqueId(e.getPlayer().getUniqueId());
+            msp.setLastLogin(System.currentTimeMillis() / 1000);
+            msp.setFirstLogin(System.currentTimeMillis() / 1000);
+            plugin.playerService.createPlayer(msp);
+        }
+
+
+        if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
+            plugin.getProxy().getScheduler().schedule(plugin, () -> {
+                for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
+                    ServerInfo serverInfo = entry.getValue();
+                    serverInfo.ping((result, error) -> {
+                        if (error == null) {
+                            new BungeePluginChannel(plugin, serverInfo,
+                                    "MaSuiteCore",
+                                    "AddPlayer",
+                                    e.getPlayer().getName()
+                            ).send();
+                        }
+                    });
                 }
-            }
-
-            if (msp == null) {
-                msp = new MaSuitePlayer();
-                msp.setUsername(e.getPlayer().getName());
-                msp.setUniqueId(e.getPlayer().getUniqueId());
-                msp.setLastLogin(System.currentTimeMillis() / 1000);
-                msp.setFirstLogin(System.currentTimeMillis() / 1000);
-                plugin.playerService.createPlayer(msp);
-            }
-
-
-            if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
-                plugin.getProxy().getScheduler().schedule(plugin, () -> {
-                    for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
-                        ServerInfo serverInfo = entry.getValue();
-                        serverInfo.ping((result, error) -> {
-                            if (error == null) {
-                                new BungeePluginChannel(plugin, serverInfo,
-                                        "MaSuiteCore",
-                                        "AddPlayer",
-                                        e.getPlayer().getName()
-                                ).send();
-                            }
-                        });
-                    }
-                }, 1, TimeUnit.SECONDS);
-            }
-        });
+            }, 1, TimeUnit.SECONDS);
+        }
     }
 }
