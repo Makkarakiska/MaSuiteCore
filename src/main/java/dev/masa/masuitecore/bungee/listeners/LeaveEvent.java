@@ -20,9 +20,10 @@ public class LeaveEvent implements Listener {
 
     @EventHandler
     public void onLeave(PlayerDisconnectEvent e) {
+        /*
         MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
         msp.setLastLogin(System.currentTimeMillis() / 1000);
-        plugin.playerService.updatePlayer(msp);
+        plugin.playerService.updatePlayer(msp);*/
 
         if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
             for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
