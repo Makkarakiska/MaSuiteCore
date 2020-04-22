@@ -1,24 +1,31 @@
 package dev.masa.masuitecore.core.services;
 
+import com.j256.ormlite.dao.CloseableWrappedIterable;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.table.TableUtils;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerCreationEvent;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerUpdateEvent;
 import dev.masa.masuitecore.core.models.MaSuitePlayer;
 import dev.masa.masuitecore.core.objects.Location;
-import dev.masa.masuitecore.core.utils.HibernateUtil;
+import lombok.SneakyThrows;
 
-import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.util.*;
 
 public class PlayerService {
 
-    private EntityManager entityManager = HibernateUtil.addClasses(MaSuitePlayer.class).getEntityManager();
+    Dao<MaSuitePlayer, UUID> playerDao;
     public HashMap<UUID, MaSuitePlayer> players = new HashMap<>();
 
     private MaSuiteCore plugin;
 
+    @SneakyThrows
     public PlayerService(MaSuiteCore plugin) {
         this.plugin = plugin;
+        this.playerDao = DaoManager.createDao(plugin.getDatabaseService().getConnection(), MaSuitePlayer.class);
+        TableUtils.createTableIfNotExists(plugin.getDatabaseService().getConnection(), MaSuitePlayer.class);
     }
 
     /**
@@ -51,7 +58,14 @@ public class PlayerService {
         if (cachedData) {
             return new ArrayList<>(players.values());
         }
-        return entityManager.createQuery("SELECT p FROM MaSuitePlayer p", MaSuitePlayer.class).getResultList();
+        List<MaSuitePlayer> playerList = new ArrayList<>();
+        try (CloseableWrappedIterable<MaSuitePlayer> wrappedIterable = playerDao.getWrappedIterable()) {
+            wrappedIterable.forEach(playerList::add);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return playerList;
     }
 
     /**
@@ -60,6 +74,7 @@ public class PlayerService {
      * @param uuid uuid of the player
      * @return returns {@link MaSuitePlayer} or null
      */
+    @SneakyThrows
     private MaSuitePlayer loadPlayer(UUID uuid) {
         // Check cache
         MaSuitePlayer cachedPlayer = players.get(uuid);
@@ -68,7 +83,7 @@ public class PlayerService {
         }
 
         // Search player from database
-        MaSuitePlayer player = entityManager.find(MaSuitePlayer.class, uuid);
+        MaSuitePlayer player = playerDao.queryForId(uuid);
 
         // Add player into cache if not null
         if (player != null) {
@@ -83,6 +98,7 @@ public class PlayerService {
      * @param username username of the player
      * @return returns {@link MaSuitePlayer} or null
      */
+    @SneakyThrows
     private MaSuitePlayer loadPlayer(String username) {
         // Check cache
         Optional<MaSuitePlayer> cachedHome = players.values().stream().filter(player -> player.getUsername().equalsIgnoreCase(username)).findFirst();
@@ -91,9 +107,7 @@ public class PlayerService {
         }
 
         // Search player from database
-        MaSuitePlayer player = entityManager.createNamedQuery("findPlayerByName", MaSuitePlayer.class)
-                .setParameter("username", username)
-                .getResultList().stream().findFirst().orElse(null);
+        MaSuitePlayer player = playerDao.queryForEq("username", username).get(0);
 
         // Add player into cache if not null
         if (player != null) {
@@ -108,10 +122,9 @@ public class PlayerService {
      * @param player player to create
      * @return returns created player
      */
+    @SneakyThrows
     public MaSuitePlayer createPlayer(MaSuitePlayer player) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(player);
-        entityManager.getTransaction().commit();
+        playerDao.create(player);
 
         players.put(player.getUniqueId(), player);
 
@@ -125,10 +138,9 @@ public class PlayerService {
      * @param player player to update
      * @return returns updated player
      */
+    @SneakyThrows
     public MaSuitePlayer updatePlayer(MaSuitePlayer player) {
-        entityManager.getTransaction().begin();
-        entityManager.merge(player);
-        entityManager.getTransaction().commit();
+        playerDao.update(player);
         players.put(player.getUniqueId(), player);
 
         plugin.getProxy().getPluginManager().callEvent(new MaSuitePlayerUpdateEvent(player));

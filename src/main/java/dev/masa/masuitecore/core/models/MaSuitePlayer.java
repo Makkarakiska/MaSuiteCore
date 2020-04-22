@@ -1,10 +1,11 @@
 package dev.masa.masuitecore.core.models;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
 import dev.masa.masuitecore.core.objects.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -19,16 +20,16 @@ import java.util.UUID;
         query = "SELECT p FROM MaSuitePlayer p WHERE p.username = :username"
 )
 public class MaSuitePlayer {
-
-    @Id
-    @Column(name = "uuid")
-    @Type(type = "uuid-char")
+    @DatabaseField(dataType = DataType.UUID, readOnly = true, id = true, columnName = "uuid")
     private UUID uniqueId;
 
+    @DatabaseField
     private String username;
+    @DatabaseField
     private String nickname;
-
+    @DatabaseField
     private Long firstLogin;
+    @DatabaseField
     private Long lastLogin;
 
     @Transient

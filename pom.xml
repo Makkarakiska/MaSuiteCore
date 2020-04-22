@@ -44,6 +44,10 @@
                             <pattern>org.hibernate:*</pattern>
                             <shadedPattern>dev.masa.masuitecore.hibernate</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.j256:*</pattern>
+                            <shadedPattern>dev.masa.masuitecore.j256</shadedPattern>
+                        </relocation>
                     </relocations>
                     <!--<artifactSet>
                         <includes>
@@ -157,7 +161,7 @@
             <version>2.11.1</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+       <!-- <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.4.9.Final</version>
@@ -174,12 +178,29 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.4.9.Final</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.0-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-core</artifactId>
+            <version>5.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-jdbc</artifactId>
+            <version>5.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
         </dependency>
     </dependencies>
 </project>
