@@ -1,6 +1,5 @@
 package dev.masa.masuitecore.core.services;
 
-import com.j256.ormlite.dao.CloseableWrappedIterable;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.table.TableUtils;
@@ -11,7 +10,6 @@ import dev.masa.masuitecore.core.models.MaSuitePlayer;
 import dev.masa.masuitecore.core.objects.Location;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.util.*;
 
 public class PlayerService {
@@ -54,18 +52,12 @@ public class PlayerService {
      * @param cachedData do we load players from cache or from database (might cause huge lag spikes)
      * @return returns a list of {@link MaSuitePlayer}s
      */
+    @SneakyThrows
     public List<MaSuitePlayer> getAllPlayers(boolean cachedData) {
         if (cachedData) {
             return new ArrayList<>(players.values());
         }
-        List<MaSuitePlayer> playerList = new ArrayList<>();
-        try (CloseableWrappedIterable<MaSuitePlayer> wrappedIterable = playerDao.getWrappedIterable()) {
-            wrappedIterable.forEach(playerList::add);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return playerList;
+        return playerDao.queryForAll();
     }
 
     /**
@@ -107,7 +99,7 @@ public class PlayerService {
         }
 
         // Search player from database
-        MaSuitePlayer player = playerDao.queryForEq("username", username).get(0);
+        MaSuitePlayer player = playerDao.queryForEq("username", username).stream().findFirst().orElse(null);
 
         // Add player into cache if not null
         if (player != null) {
