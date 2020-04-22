@@ -20,7 +20,7 @@ import java.util.UUID;
         query = "SELECT p FROM MaSuitePlayer p WHERE p.username = :username"
 )
 public class MaSuitePlayer {
-    @DatabaseField(dataType = DataType.UUID, readOnly = true, id = true, columnName = "uuid")
+    @DatabaseField(dataType = DataType.UUID, id = true, columnName = "uuid")
     private UUID uniqueId;
 
     @DatabaseField
