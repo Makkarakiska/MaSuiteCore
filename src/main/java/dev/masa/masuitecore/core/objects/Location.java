@@ -1,25 +1,27 @@
 package dev.masa.masuitecore.core.objects;
 
 import com.google.gson.Gson;
+import com.j256.ormlite.field.DatabaseField;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Embeddable;
-
 @NoArgsConstructor
 @Data
-@Embeddable
-@Access(AccessType.PROPERTY)
 public class Location {
 
+    @DatabaseField
     private String server;
+    @DatabaseField
     private String world;
+    @DatabaseField
     private Double x;
+    @DatabaseField
     private Double y;
+    @DatabaseField
     private Double z;
+    @DatabaseField
     private Float yaw = 0.0F;
+    @DatabaseField
     private Float pitch = 0.0F;
 
     /**
