@@ -1,5 +1,6 @@
 package dev.masa.masuitecore.core.api;
 
+import dev.masa.masuitecore.core.services.DatabaseService;
 import dev.masa.masuitecore.core.services.PlayerService;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 
@@ -10,6 +11,10 @@ public class MaSuiteCoreAPI {
     }
 
     public PlayerService getPlayerService() {
-        return MaSuiteCore.getInstance().playerService;
+        return MaSuiteCore.getInstance().getPlayerService();
+    }
+
+    public DatabaseService getDatabaseService() {
+        return MaSuiteCore.getInstance().getDatabaseService();
     }
 }
