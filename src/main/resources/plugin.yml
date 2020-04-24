@@ -3,4 +3,4 @@ main: dev.masa.masuitecore.bukkit.MaSuiteCore
 version: ${project.version}
 author: Masagameplay
 loadbefore: [MaSuiteChat, MaSuiteWarps, MaSuitePortals, MaSuiteTeleports, MaSuiteHomes, MaSuitePunish, MaSuiteBasics, MaSuiteConverter]
-api-version: 1.15
+api-version: 1.13
