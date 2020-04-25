@@ -1,0 +1,4 @@
+name: MaSuiteCore
+main: dev.masa.masuitecore.bungee.MaSuiteCore
+version: ${project.version}
+author: Masagameplay

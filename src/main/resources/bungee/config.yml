@@ -1,0 +1,9 @@
+#Database settings
+database:
+  name: minecraft
+  address: localhost
+  port: 3306
+  username: minecraft
+  password: minecraft
+teleportation-delay: 750 # In ms, other plugins like Homes and Warps are using this.
+debug: false #Set true for debug messages

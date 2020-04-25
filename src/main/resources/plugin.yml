@@ -1,4 +1,6 @@
 name: MaSuiteCore
-main: fi.matiaspaavilainen.masuitecore.MaSuiteCore
-version: 1.4.8
+main: dev.masa.masuitecore.bukkit.MaSuiteCore
+version: ${project.version}
 author: Masagameplay
+loadbefore: [MaSuiteChat, MaSuiteWarps, MaSuitePortals, MaSuiteTeleports, MaSuiteHomes, MaSuitePunish, MaSuiteBasics, MaSuiteConverter]
+api-version: 1.13
