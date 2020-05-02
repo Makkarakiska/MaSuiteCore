@@ -31,7 +31,11 @@ public class WarmupService implements Listener {
      * @param callback         callback
      */
     public void applyWarmup(Player player, String bypassPermission, String type, Consumer<Boolean> callback) {
-        int warmupTime = this.warmupTimes.get(type);
+        int warmupTime = 0;
+
+        if(this.warmupTimes.get(type) != null) {
+            warmupTime = this.warmupTimes.get(type);
+        }
 
         // If warmup time is 0 or lower
         if (warmupTime <= 0) {
