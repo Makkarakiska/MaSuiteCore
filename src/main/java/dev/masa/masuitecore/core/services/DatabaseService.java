@@ -12,7 +12,7 @@ public class DatabaseService {
 
     public DatabaseService(String address, int port, String name, String username, String password) {
         try {
-            connection = new JdbcPooledConnectionSource("jdbc:mysql://" + address + ":" + port + "/" + name + "?useSSL=false&allowPublicKeyRetrieval=true", username, password);
+            connection = new JdbcPooledConnectionSource("jdbc:mysql://" + address + ":" + port + "/" + name + "?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8", username, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
