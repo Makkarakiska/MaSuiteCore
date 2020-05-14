@@ -24,8 +24,14 @@ public class LoginEvent implements Listener {
         plugin.getProxy().getScheduler().runAsync(plugin, () -> {
             MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
             if (msp != null) {
+                // Set nickname if specified
                 if (msp.getNickname() != null) {
                     e.getPlayer().setDisplayName(msp.getNickname());
+                }
+                // Update username if it has changed
+                if(!e.getPlayer().getName().equals(msp.getUsername())){
+                    msp.setUsername(e.getPlayer().getName());
+                    plugin.playerService.updatePlayer(msp);
                 }
             }
 
