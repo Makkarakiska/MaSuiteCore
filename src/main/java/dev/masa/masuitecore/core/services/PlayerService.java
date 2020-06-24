@@ -2,6 +2,7 @@ package dev.masa.masuitecore.core.services;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerCreationEvent;
@@ -92,14 +93,17 @@ public class PlayerService {
      */
     @SneakyThrows
     private MaSuitePlayer loadPlayer(String username) {
+
         // Check cache
         Optional<MaSuitePlayer> cachedHome = players.values().stream().filter(player -> player.getUsername().equalsIgnoreCase(username)).findFirst();
         if (cachedHome.isPresent()) {
             return cachedHome.get();
         }
 
+        SelectArg preparedUsername = new SelectArg(username);
+
         // Search player from database
-        MaSuitePlayer player = playerDao.queryForEq("username", username).stream().findFirst().orElse(null);
+        MaSuitePlayer player = playerDao.queryForEq("username", preparedUsername).stream().findFirst().orElse(null);
 
         // Add player into cache if not null
         if (player != null) {
