@@ -46,6 +46,12 @@ public class MaSuiteCore extends Plugin implements Listener {
         config.addDefault("/config.yml", "teleportation-delay", 750);
 
         Configuration dbInfo = config.load(null, "config.yml");
+
+        if(!dbInfo.getString("database.name").contains("?")) {
+            dbInfo.set("database.name", dbInfo.getString("database.name") + "?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8");
+            config.save(dbInfo, "config.yml");
+        }
+
         databaseService = new DatabaseService(dbInfo.getString("database.address"), dbInfo.getInt("database.port"), dbInfo.getString("database.name"), dbInfo.getString("database.username"), dbInfo.getString("database.password"));
 
         playerService = new PlayerService(this);
