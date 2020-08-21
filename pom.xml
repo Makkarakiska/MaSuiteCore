@@ -6,7 +6,7 @@
 
     <groupId>dev.masa</groupId>
     <artifactId>MaSuiteCore</artifactId>
-    <version>2.0.2-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
 
     <distributionManagement>
         <snapshotRepository>
@@ -43,6 +43,10 @@
                         <relocation>
                             <pattern>com.j256:*</pattern>
                             <shadedPattern>dev.masa.masuitecore.j256</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>javax.persistence</pattern>
+                            <shadedPattern>dev.masa.masuitecore</shadedPattern>
                         </relocation>
                     </relocations>
                     <!--<artifactSet>
