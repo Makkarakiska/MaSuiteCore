@@ -1,4 +1,4 @@
-package dev.masa.masuitecore.core;
+package dev.masa.masuitecore.common.utils;
 
 import lombok.AllArgsConstructor;
 
