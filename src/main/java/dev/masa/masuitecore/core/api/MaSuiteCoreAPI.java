@@ -1,5 +1,6 @@
 package dev.masa.masuitecore.core.api;
 
+import dev.masa.masuitecore.bungee.services.TeleportService;
 import dev.masa.masuitecore.common.services.DatabaseService;
 import dev.masa.masuitecore.bungee.services.PlayerService;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
@@ -17,5 +18,9 @@ public class MaSuiteCoreAPI {
 
     public DatabaseService getDatabaseService() {
         return MaSuiteCore.getInstance().getDatabaseService();
+    }
+
+    public TeleportService getTeleportService() {
+        return MaSuiteCore.getInstance().getTeleportService();
     }
 }
