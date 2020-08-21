@@ -1,15 +1,14 @@
 package dev.masa.masuitecore.bungee.listeners;
 
 import dev.masa.masuitecore.bungee.MaSuiteCore;
-import dev.masa.masuitecore.core.channels.BungeePluginChannel;
-import dev.masa.masuitecore.core.models.MaSuitePlayer;
-import net.md_5.bungee.api.config.ServerInfo;
+import dev.masa.masuitecore.common.models.MaSuitePlayer;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class LoginEvent implements Listener {
 
@@ -20,46 +19,37 @@ public class LoginEvent implements Listener {
     }
 
     @EventHandler
-    public void onLogin(PostLoginEvent e) {
-        plugin.getProxy().getScheduler().runAsync(plugin, () -> {
-            MaSuitePlayer msp = plugin.playerService.getPlayer(e.getPlayer().getUniqueId());
-            if (msp != null) {
-                // Set nickname if specified
-                if (msp.getNickname() != null) {
-                    e.getPlayer().setDisplayName(msp.getNickname());
+    public void onLogin(PostLoginEvent event) {
+        plugin.getPlayerService().get(event.getPlayer().getUniqueId(), playerQuery -> {
+            MaSuitePlayer player;
+
+            if (playerQuery.isPresent()) {
+                player = playerQuery.get();
+                if (player.getNickname() != null) {
+                    event.getPlayer().setDisplayName(player.getNickname());
                 }
-                // Update username if it has changed
-                if(!e.getPlayer().getName().equals(msp.getUsername())){
-                    msp.setUsername(e.getPlayer().getName());
-                    plugin.playerService.updatePlayer(msp);
+                if (!event.getPlayer().getName().equals(player.getUsername())) {
+                    player.setUsername(event.getPlayer().getName());
                 }
+                plugin.getPlayerService().addPlayerToServers(player);
             }
 
-            if (msp == null) {
-                msp = new MaSuitePlayer();
-                msp.setUsername(e.getPlayer().getName());
-                msp.setUniqueId(e.getPlayer().getUniqueId());
-                msp.setLastLogin(System.currentTimeMillis() / 1000);
-                msp.setFirstLogin(System.currentTimeMillis() / 1000);
-                plugin.playerService.createPlayer(msp);
-            }
+            if (!playerQuery.isPresent()) {
+                player = new MaSuitePlayer();
+                player.setUsername(event.getPlayer().getName());
+                player.setUniqueId(event.getPlayer().getUniqueId());
+                player.setLastLogin(System.currentTimeMillis() / 1000);
+                player.setFirstLogin(System.currentTimeMillis() / 1000);
 
-
-            if (plugin.config.load(null, "config.yml").getBoolean("use-tab-completer")) {
-                plugin.getProxy().getScheduler().schedule(plugin, () -> {
-                    for (Map.Entry<String, ServerInfo> entry : plugin.getProxy().getServers().entrySet()) {
-                        ServerInfo serverInfo = entry.getValue();
-                        serverInfo.ping((result, error) -> {
-                            if (error == null) {
-                                new BungeePluginChannel(plugin, serverInfo,
-                                        "MaSuiteCore",
-                                        "AddPlayer",
-                                        e.getPlayer().getName()
-                                ).send();
-                            }
-                        });
+                MaSuitePlayer finalPlayer = player;
+                plugin.getPlayerService().create(player, success -> {
+                    if (success) {
+                        plugin.getPlayerService().addPlayerToServers(finalPlayer);
+                        return;
                     }
-                }, 1, TimeUnit.SECONDS);
+                    event.getPlayer().disconnect(new TextComponent(ChatColor.RED + "There was an error while generating your MaSuite profile. Please try again later."));
+                    this.plugin.getLogger().log(Level.WARNING, "Disconnected " + event.getPlayer().getName() + " because their MaSuite profile could not be loaded!");
+                });
             }
         });
     }

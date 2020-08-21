@@ -1,6 +1,6 @@
 package dev.masa.masuitecore.bungee.events;
 
-import dev.masa.masuitecore.core.models.MaSuitePlayer;
+import dev.masa.masuitecore.common.models.MaSuitePlayer;
 import lombok.Getter;
 import net.md_5.bungee.api.plugin.Cancellable;
 import net.md_5.bungee.api.plugin.Event;
