@@ -8,37 +8,20 @@ import lombok.Data;
 import lombok.SneakyThrows;
 
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 @Data
 public abstract class AbstractDataService<K, V, P extends IDatabaseServiceProvider>{
 
     private P plugin;
-    protected final ConcurrentHashMap<K, V> cache = new ConcurrentHashMap<>();
     protected final Dao<V, K> dao;
 
     @SneakyThrows
     public AbstractDataService(IDatabaseServiceProvider plugin, Class<V> clazz) {
         this.plugin = (P) plugin;
         this.dao = DaoManager.createDao(plugin.getDatabaseService().getConnection(), clazz);
+        this.dao.setObjectCache(true);
         TableUtils.createTableIfNotExists(plugin.getDatabaseService().getConnection(), clazz);
-    }
-
-
-    /**
-     * Get object from the cache by key
-     *
-     * @param key      key to query
-     * @param callback callback to use
-     */
-    public void get(K key, Consumer<Optional<V>> callback) {
-        if (this.isCached(key)) {
-            callback.accept(this.getFromCache(key));
-            return;
-        }
-
-        this.getFromDatabase(key, callback);
     }
 
     /**
@@ -68,44 +51,6 @@ public abstract class AbstractDataService<K, V, P extends IDatabaseServiceProvid
      * @param callback callback to use
      */
     public abstract void getFromDatabase(K key, Consumer<Optional<V>> callback);
-
-    /**
-     * Check if <K> is cached
-     *
-     * @param key <K> of the <V>
-     * @return return boolean from the query
-     */
-    public boolean isCached(K key) {
-        return this.cache.containsKey(key);
-    }
-
-    /**
-     * Get value from cache by <K>
-     *
-     * @param key <K> of the object
-     * @return returns <V> or null
-     */
-    public Optional<V> getFromCache(K key) {
-        return Optional.ofNullable(this.cache.get(key));
-    }
-
-    /**
-     * Adds item to cache
-     *
-     * @param key   <K> of the object
-     * @param value <V> to add
-     */
-    public void addToCache(K key, V value) {
-        this.cache.put(key, value);
-    }
-
-    /**
-     * Remove <K> from database
-     * @param key <K> of the object
-     */
-    public void removeFromCache(K key) {
-        this.cache.remove(key);
-    }
 
 }
 

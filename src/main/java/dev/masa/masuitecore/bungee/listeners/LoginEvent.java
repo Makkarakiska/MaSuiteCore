@@ -20,7 +20,7 @@ public class LoginEvent implements Listener {
 
     @EventHandler
     public void onLogin(PostLoginEvent event) {
-        plugin.getPlayerService().get(event.getPlayer().getUniqueId(), playerQuery -> {
+        plugin.getPlayerService().getPlayer(event.getPlayer().getUniqueId(), playerQuery -> {
             MaSuitePlayer player;
 
             if (playerQuery.isPresent()) {

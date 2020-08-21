@@ -1,5 +1,6 @@
 package dev.masa.masuitecore.bungee.services;
 
+import com.j256.ormlite.stmt.SelectArg;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerCreationEvent;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerUpdateEvent;
@@ -20,12 +21,46 @@ public class PlayerService extends AbstractDataService<UUID, MaSuitePlayer, MaSu
         super(plugin, MaSuitePlayer.class);
     }
 
+    /**
+     * Get {@link MaSuitePlayer} by their uuid
+     *
+     * @param uuid     uuid of the player
+     * @param callback callback to use
+     */
+    public void getPlayer(UUID uuid, Consumer<Optional<MaSuitePlayer>> callback) {
+        this.getPlugin().getProxy().getScheduler().runAsync(this.getPlugin(), () -> {
+            try {
+                callback.accept(Optional.ofNullable(this.getDao().queryForId(uuid)));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                callback.accept(Optional.empty());
+            }
+        });
+    }
+
+    /**
+     * Get {@link MaSuitePlayer} by their username
+     *
+     * @param username username of the player
+     * @param callback callback to use
+     */
+    public void getPlayer(String username, Consumer<Optional<MaSuitePlayer>> callback) {
+        this.getPlugin().getProxy().getScheduler().runAsync(this.getPlugin(), () -> {
+            try {
+                SelectArg preparedUsername = new SelectArg(username);
+                callback.accept(this.getDao().queryForEq("username", preparedUsername).stream().findFirst());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                callback.accept(Optional.empty());
+            }
+        });
+    }
+
     @Override
     public void create(MaSuitePlayer player, Consumer<Boolean> callback) {
         this.getPlugin().getProxy().getScheduler().runAsync(this.getPlugin(), () -> {
             try {
                 this.getDao().create(player);
-                this.addToCache(player.getUniqueId(), player);
                 callback.accept(true);
                 this.getPlugin().getProxy().getPluginManager().callEvent(new MaSuitePlayerCreationEvent(player));
             } catch (SQLException e) {
@@ -40,7 +75,6 @@ public class PlayerService extends AbstractDataService<UUID, MaSuitePlayer, MaSu
         this.getPlugin().getProxy().getScheduler().runAsync(this.getPlugin(), () -> {
             try {
                 this.getDao().update(player);
-                this.addToCache(player.getUniqueId(), player);
                 callback.accept(true);
                 this.getPlugin().getProxy().getPluginManager().callEvent(new MaSuitePlayerUpdateEvent(player));
             } catch (SQLException e) {
@@ -55,7 +89,6 @@ public class PlayerService extends AbstractDataService<UUID, MaSuitePlayer, MaSu
         this.getPlugin().getProxy().getScheduler().runAsync(this.getPlugin(), () -> {
             try {
                 this.getDao().delete(player);
-                this.removeFromCache(player.getUniqueId());
                 callback.accept(true);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -79,6 +112,7 @@ public class PlayerService extends AbstractDataService<UUID, MaSuitePlayer, MaSu
 
     /**
      * Remove {@link MaSuitePlayer} from servers.
+     *
      * @param player player to remove
      */
     public void removePlayerFromServers(MaSuitePlayer player) {

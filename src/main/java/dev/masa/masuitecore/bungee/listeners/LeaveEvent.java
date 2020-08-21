@@ -16,7 +16,7 @@ public class LeaveEvent implements Listener {
 
     @EventHandler
     public void onLeave(PlayerDisconnectEvent event) {
-        plugin.getPlayerService().get(event.getPlayer().getUniqueId(), playerResult -> {
+        plugin.getPlayerService().getPlayer(event.getPlayer().getUniqueId(), playerResult -> {
             if (playerResult.isPresent()) {
                 MaSuitePlayer player = playerResult.get();
                 player.setLastLogin(System.currentTimeMillis() / 1000);
