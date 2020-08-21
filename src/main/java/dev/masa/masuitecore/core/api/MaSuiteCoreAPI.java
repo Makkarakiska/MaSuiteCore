@@ -1,9 +1,10 @@
 package dev.masa.masuitecore.core.api;
 
-import dev.masa.masuitecore.core.services.DatabaseService;
-import dev.masa.masuitecore.core.services.PlayerService;
+import dev.masa.masuitecore.common.services.DatabaseService;
+import dev.masa.masuitecore.bungee.services.PlayerService;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 
+@Deprecated
 public class MaSuiteCoreAPI {
 
     public static MaSuiteCore getCore() {

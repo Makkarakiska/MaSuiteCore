@@ -2,8 +2,9 @@ package dev.masa.masuitecore.core.api;
 
 import dev.masa.masuitecore.bukkit.MaSuiteCore;
 import dev.masa.masuitecore.core.services.CooldownService;
-import dev.masa.masuitecore.core.services.WarmupService;
+import dev.masa.masuitecore.bukkit.services.WarmupService;
 
+@Deprecated
 public class MaSuiteCoreBukkitAPI {
 
     /**

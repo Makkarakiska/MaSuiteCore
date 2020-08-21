@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.util.HashMap;
 
+@Deprecated
 public class BukkitConfiguration {
 
     private JavaPlugin plugin;

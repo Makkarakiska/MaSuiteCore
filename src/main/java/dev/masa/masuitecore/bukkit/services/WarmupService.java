@@ -1,4 +1,4 @@
-package dev.masa.masuitecore.core.services;
+package dev.masa.masuitecore.bukkit.services;
 
 import dev.masa.masuitecore.bukkit.MaSuiteCore;
 import dev.masa.masuitecore.core.utils.BukkitWarmup;

@@ -4,6 +4,7 @@ package dev.masa.masuitecore.core.adapters;
 import dev.masa.masuitecore.core.objects.Location;
 import org.bukkit.Bukkit;
 
+@Deprecated
 public class BukkitAdapter {
 
     /**

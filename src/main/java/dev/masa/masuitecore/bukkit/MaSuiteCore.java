@@ -3,10 +3,10 @@ package dev.masa.masuitecore.bukkit;
 import co.aikar.commands.PaperCommandManager;
 import dev.masa.masuitecore.bukkit.chat.Formator;
 import dev.masa.masuitecore.bukkit.commands.MaSuiteCommand;
-import dev.masa.masuitecore.core.Updator;
+import dev.masa.masuitecore.common.utils.Updator;
 import dev.masa.masuitecore.core.configuration.BukkitConfiguration;
 import dev.masa.masuitecore.core.services.CooldownService;
-import dev.masa.masuitecore.core.services.WarmupService;
+import dev.masa.masuitecore.bukkit.services.WarmupService;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 

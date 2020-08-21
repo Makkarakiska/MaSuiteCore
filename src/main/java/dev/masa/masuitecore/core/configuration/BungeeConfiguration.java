@@ -9,6 +9,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.*;
 import java.util.HashMap;
 
+@Deprecated
 public class BungeeConfiguration {
 
     private HashMap<String, Configuration> configs = new HashMap<>();

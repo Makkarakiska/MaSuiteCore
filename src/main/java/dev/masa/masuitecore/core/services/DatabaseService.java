@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.sql.SQLException;
 
+@Deprecated
 public class DatabaseService {
 
     @Getter

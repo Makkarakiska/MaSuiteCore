@@ -19,6 +19,7 @@ import java.util.UUID;
         name = "findPlayerByName",
         query = "SELECT p FROM MaSuitePlayer p WHERE p.username = :username"
 )
+@Deprecated
 public class MaSuitePlayer {
     @DatabaseField(dataType = DataType.UUID, id = true, columnName = "uuid")
     private UUID uniqueId;

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
+@Deprecated
 public class Location {
 
     @DatabaseField

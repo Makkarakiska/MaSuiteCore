@@ -13,6 +13,7 @@ import org.bukkit.World;
 
 import java.util.UUID;
 
+@Deprecated
 public class CommandManagerUtil {
 
     public static BukkitConfiguration config = new BukkitConfiguration();
