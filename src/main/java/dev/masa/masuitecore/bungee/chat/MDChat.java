@@ -5,10 +5,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A fast and easy way to convert legacy or B+ formatted chat into MD's ChatComponent API
@@ -22,6 +21,7 @@ import java.util.List;
  */
 public class MDChat {
     private final static char PLACEHOLDER = '\u02A7';
+    private static final Pattern URL_PATTERN = Pattern.compile("((?:(?:https?)://)?[\\w-_\\.]{2,})\\.([a-zA-Z]{2,3}(?:/\\S+)?)");
 
     /**
      * Gets a TextComponent from a message
@@ -47,61 +47,101 @@ public class MDChat {
             return chatMessage;
         }
 
-        BaseComponent last = new TextComponent("");
+        BaseComponent first = new TextComponent();
 
         List<TextComponent> actions = new ArrayList<>();
 
-        // More efficient conversion using split, as opposed to iterating over every character
-        String[] parts = (" " + message).split("" + ChatColor.COLOR_CHAR);
-        for (String part : parts) {
-            if (part.isEmpty()) {
-                continue;
-            }
-            char colorCharacter = part.charAt(0);
-            if (colorCharacter == PLACEHOLDER) {
-                chatMessage.addExtra(actions.remove(0));
-            } else {
-                ChatColor color = ChatColor.getByChar(colorCharacter);
+        Stack<String> urls = new Stack();
+        String[] noUrlParts;
 
-                if (color != null) {
-                    if (isColor(color)) {
-                        clearFormatting(last);
-                        last.setColor(color);
-                    } else {
-                        if (color == ChatColor.BOLD) {
-                            last.setBold(true);
-                        }
-                        if (color == ChatColor.ITALIC) {
-                            last.setItalic(true);
-                        }
-                        if (color == ChatColor.UNDERLINE) {
-                            last.setUnderlined(true);
-                        }
-                        if (color == ChatColor.MAGIC) {
-                            last.setObfuscated(true);
-                        }
-                        if (color == ChatColor.RESET) {
+        if(links) {
+            //Extract urls from Message
+            Matcher matcher = URL_PATTERN.matcher(message);
+            //Put all Urls on a Stack to be re-added Later
+            while (matcher.find())
+                urls.push(matcher.group());
+
+            //Split message into parts without urls
+            noUrlParts = URL_PATTERN.split(message);
+        }
+        else{
+            //if no links should be parsed, just throw in the message as it is
+            noUrlParts = new String[]{message};
+        }
+
+        BaseComponent last = new TextComponent();
+        // Iterate through no Url message Parts
+        for(String noUrlPart: noUrlParts) {
+            // More efficient conversion using split, as opposed to iterating over every character
+            String[] parts = (" " + noUrlPart).split("" + ChatColor.COLOR_CHAR);
+            for (String part : parts) {
+                if (part.isEmpty()) {
+                    continue;
+                }
+
+                char colorCharacter = part.charAt(0);
+                if (colorCharacter == PLACEHOLDER) {
+                    chatMessage.addExtra(actions.remove(0));
+                } else {
+                    ChatColor color = ChatColor.getByChar(colorCharacter);
+
+                    if (color != null) {
+                        if (isColor(color)) {
                             clearFormatting(last);
-                        }
-                        if (color == ChatColor.STRIKETHROUGH) {
-                            last.setStrikethrough(true);
+                            last.setColor(color);
+                        } else {
+                            if (color == ChatColor.BOLD) {
+                                last.setBold(true);
+                            }
+                            if (color == ChatColor.ITALIC) {
+                                last.setItalic(true);
+                            }
+                            if (color == ChatColor.UNDERLINE) {
+                                last.setUnderlined(true);
+                            }
+                            if (color == ChatColor.MAGIC) {
+                                last.setObfuscated(true);
+                            }
+                            if (color == ChatColor.RESET) {
+                                clearFormatting(last);
+                            }
+                            if (color == ChatColor.STRIKETHROUGH) {
+                                last.setStrikethrough(true);
+                            }
                         }
                     }
+                }
+                if (part.length() > 1) {
+
+                    if (last instanceof TextComponent) {
+                        ((TextComponent) last).setText(part.substring(1));
+                    }
+                    first.addExtra(last);
+
+                    last = last.duplicate();
                 }
             }
-            if (part.length() > 1) {
-                if (last instanceof TextComponent) {
-                    ((TextComponent) last).setText(part.substring(1));
+            //If a url is left in the List, it will be added
+            if(!urls.empty()) {
+                BaseComponent urlComponent = new TextComponent(urls.peek());
+                //Continue format of last part
+                if(last != null) {
+                    urlComponent.setColor(last.getColor());
+                    urlComponent.setBold(last.isBold());
+                    urlComponent.setItalic(last.isItalic());
+                    urlComponent.setFont(last.getFont());
+                    urlComponent.setUnderlined(last.isUnderlined());
+                    urlComponent.setStrikethrough(last.isStrikethrough());
+                    urlComponent.setObfuscated(last.isObfuscated());
                 }
-                chatMessage.addExtra(last);
-                if(links){
-                    if (isURL(part.substring(1))) {
-                        chatMessage.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, part.substring(1)));
-                    }
-                }
-                last = last.duplicate();
+                //Add Open Url Event to the Url Component
+                urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, urls.pop()));
+                //Add url to this message part
+                first.addExtra(urlComponent);
             }
         }
+        //Add parsed Text Component to the final chat Message
+        chatMessage.addExtra(first);
         return chatMessage;
     }
 
@@ -124,14 +164,4 @@ public class MDChat {
         colors.remove(ChatColor.UNDERLINE);
         return colors.contains(net.md_5.bungee.api.ChatColor.valueOf(color.name()));
     }
-
-    public static boolean isURL(String url) {
-        try {
-            new URL(url.replace(" ", ""));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }
-
