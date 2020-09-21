@@ -51,15 +51,15 @@ public class MDChat {
 
         List<TextComponent> actions = new ArrayList<>();
 
-        Stack<String> urls = new Stack();
+        Queue<String> urls = new LinkedList<>();
         String[] noUrlParts;
 
         if(links) {
-            //Extract urls from Message
+            //Extract urls from message
             Matcher matcher = URL_PATTERN.matcher(message);
-            //Put all Urls on a Stack to be re-added Later
+            //Put all urls on a Queue to be re-added later
             while (matcher.find())
-                urls.push(matcher.group());
+                urls.add(matcher.group());
 
             //Split message into parts without urls
             noUrlParts = URL_PATTERN.split(message);
@@ -70,7 +70,7 @@ public class MDChat {
         }
 
         BaseComponent last = new TextComponent();
-        // Iterate through no Url message Parts
+        // Iterate through no Url message parts
         for(String noUrlPart: noUrlParts) {
             // More efficient conversion using split, as opposed to iterating over every character
             String[] parts = (" " + noUrlPart).split("" + ChatColor.COLOR_CHAR);
@@ -121,8 +121,8 @@ public class MDChat {
                     last = last.duplicate();
                 }
             }
-            //If a url is left in the List, it will be added
-            if(!urls.empty()) {
+            //If a url is left in the list, it will be added
+            if(!urls.isEmpty()) {
                 BaseComponent urlComponent = new TextComponent(urls.peek());
                 //Continue format of last part
                 if(last != null) {
@@ -134,13 +134,13 @@ public class MDChat {
                     urlComponent.setStrikethrough(last.isStrikethrough());
                     urlComponent.setObfuscated(last.isObfuscated());
                 }
-                //Add Open Url Event to the Url Component
-                urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, urls.pop()));
+                //Add Open Url Event to the url Component
+                urlComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, urls.remove()));
                 //Add url to this message part
                 first.addExtra(urlComponent);
             }
         }
-        //Add parsed Text Component to the final chat Message
+        //Add parsed Text Component to the final chat message
         chatMessage.addExtra(first);
         return chatMessage;
     }
