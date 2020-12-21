@@ -1,25 +1,20 @@
-package dev.masa.masuitecore.core.utils;
+package dev.masa.masuitecore.bukkit.utils;
 
 import co.aikar.commands.ConditionFailedException;
 import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
-import dev.masa.masuitecore.core.configuration.BukkitConfiguration;
-import dev.masa.masuitecore.core.models.MaSuitePlayer;
 import dev.masa.masuitecore.bukkit.MaSuiteCore;
-import dev.masa.masuitecore.core.services.CooldownService;
+import dev.masa.masuitecore.common.services.CooldownService;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.UUID;
 
-@Deprecated
 public class CommandManagerUtil {
 
-    public static BukkitConfiguration config = new BukkitConfiguration();
-
     /**
-     * Registers {@link MaSuitePlayer} command completion for {@link PaperCommandManager}
+     * Registers {@link dev.masa.masuitecore.common.models.MaSuitePlayer} command completion for {@link PaperCommandManager}
      *
      * @param manager manager to use
      */
@@ -43,8 +38,7 @@ public class CommandManagerUtil {
 
             if (cm.getCooldownLength(cooldownType) > 0 && cm.hasCooldown(cooldownType, uuid)) {
                 if (!c.getIssuer().hasPermission(byPassPermission)) {
-                    throw new ConditionFailedException(config.load(null, "messages.yml")
-                            .getString("in-cooldown")
+                    throw new ConditionFailedException(MaSuiteCore.getInstance().getMessages().getInCooldown()
                             .replace("%time%", cm.getCooldownLength(cooldownType) + ""));
                 }
             }

@@ -1,10 +1,9 @@
-package dev.masa.masuitecore.core.utils;
+package dev.masa.masuitecore.bukkit.utils;
 
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-@Deprecated
 public abstract class BukkitWarmup {
 
     private int time;
