@@ -19,6 +19,6 @@ public class MaSuiteCoreServerAPI implements IMaSuiteCoreServerAPI<MaSuiteCore> 
 
     @Override
     public @NonNull CooldownService getCooldownService() {
-        return null;
+        return MaSuiteCore.getCooldownService();
     }
 }

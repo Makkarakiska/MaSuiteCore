@@ -21,7 +21,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     public Formator formator = new Formator();
 
     @Getter
-    public static CooldownService cooldownService = new CooldownService();
+    public static CooldownService cooldownService;
 
     @Getter
     public static WarmupService warmupService;
@@ -48,6 +48,7 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
         manager.registerCommand(new MaSuiteCommand(this));
 
         warmupService = new WarmupService(this);
+        cooldownService = new CooldownService();
         getServer().getPluginManager().registerEvents(warmupService, this);
 
         instance = this;
