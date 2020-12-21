@@ -1,10 +1,9 @@
-package dev.masa.masuitecore.core.channels;
-
+package dev.masa.masuitecore.common.channels;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.plugin.Plugin;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -12,27 +11,26 @@ import java.io.IOException;
 
 @Data
 @NoArgsConstructor
-public class BungeePluginChannel {
-
-    private Plugin plugin;
-    private ServerInfo server;
+public class BukkitPluginChannel {
+    private JavaPlugin plugin;
+    private Player player;
     private Object[] params;
 
     /**
-     * A constructor for BungeePluginChannel
+     * A constructor for BukkitPluginChannel
      *
      * @param plugin plugin to use
-     * @param server server to send messages
+     * @param player player to use send messages
      * @param params params to send
      */
-    public BungeePluginChannel(Plugin plugin, ServerInfo server, Object... params) {
+    public BukkitPluginChannel(JavaPlugin plugin, Player player, Object... params) {
         this.plugin = plugin;
-        this.server = server;
+        this.player = player;
         this.params = params;
     }
 
     /**
-     * Send given data to player's server
+     * Send given data to BungeeCord
      */
     public void send() {
         try (ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -58,7 +56,7 @@ public class BungeePluginChannel {
                     out.writeChar((char) param);
                 }
             }
-            plugin.getProxy().getScheduler().runAsync(plugin, () -> server.sendData("BungeeCord", b.toByteArray()));
+            this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> this.player.sendPluginMessage(this.plugin, "BungeeCord", b.toByteArray()));
         } catch (IOException e) {
             e.printStackTrace();
         }
