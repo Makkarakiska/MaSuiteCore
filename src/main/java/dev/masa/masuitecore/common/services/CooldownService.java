@@ -1,4 +1,4 @@
-package dev.masa.masuitecore.core.services;
+package dev.masa.masuitecore.common.services;
 
 import java.time.Instant;
 import java.util.HashMap;
