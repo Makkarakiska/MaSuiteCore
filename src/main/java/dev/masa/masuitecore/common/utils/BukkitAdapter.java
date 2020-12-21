@@ -1,14 +1,13 @@
-package dev.masa.masuitecore.core.adapters;
+package dev.masa.masuitecore.common.utils;
 
 
-import dev.masa.masuitecore.core.objects.Location;
+import dev.masa.masuitecore.common.objects.Location;
 import org.bukkit.Bukkit;
 
-@Deprecated
 public class BukkitAdapter {
 
     /**
-     * Get {@link org.bukkit.Location} from @{@link Location}
+     * Get {@link org.bukkit.Location} from {@link Location}
      *
      * @param loc location to use
      * @return new {@link org.bukkit.Location}
@@ -24,7 +23,7 @@ public class BukkitAdapter {
     }
 
     /**
-     * Get @{@link Location} from {@link org.bukkit.Location}
+     * Get {@link Location} from {@link org.bukkit.Location}
      *
      * @param loc location to use
      * @return new @{@link Location}
