@@ -1,39 +1,26 @@
 package dev.masa.masuitecore.bukkit.services;
 
 import dev.masa.masuitecore.bukkit.MaSuiteCore;
-import dev.masa.masuitecore.core.utils.BukkitWarmup;
+import dev.masa.masuitecore.common.services.AbstractWarmupService;
+import dev.masa.masuitecore.bukkit.utils.BukkitWarmup;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.*;
 import java.util.function.Consumer;
 
-public class WarmupService implements Listener {
-
-    public HashMap<UUID, String> warmups = new HashMap<>();
-    public HashMap<String, Integer> warmupTimes = new HashMap<>();
-
-    private MaSuiteCore plugin;
+public class WarmupService extends AbstractWarmupService<MaSuiteCore, Player> implements Listener {
 
     public WarmupService(MaSuiteCore plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
-    /**
-     * Apply warmup for the player
-     *
-     * @param player           player to add
-     * @param bypassPermission permission to bypass warmup
-     * @param type             type of the warmup
-     * @param callback         callback
-     */
     public void applyWarmup(Player player, String bypassPermission, String type, Consumer<Boolean> callback) {
         int warmupTime = 0;
 
-        if(this.warmupTimes.get(type) != null) {
+        if (this.warmupTimes.get(type) != null) {
             warmupTime = this.warmupTimes.get(type);
         }
 
@@ -52,7 +39,7 @@ public class WarmupService implements Listener {
         // Add player to warmups list
         warmups.put(player.getUniqueId(), type);
         // Send teleportation message
-        String message = plugin.config.load(null, "messages.yml").getString("teleportation-started").replace("%time%", String.valueOf(warmupTime));
+        String message = plugin.getMessages().getTeleportationStarted().replace("%time%", String.valueOf(warmupTime));
         plugin.formator.sendMessage(player, message);
 
         new BukkitWarmup(warmupTime, plugin) {
@@ -69,16 +56,6 @@ public class WarmupService implements Listener {
                 }
             }
         }.start();
-    }
-
-    /**
-     * Add warmup time to cache
-     *
-     * @param type type of the warmup
-     * @param time time of the warmup
-     */
-    public void addWarmupTime(String type, int time) {
-        warmupTimes.put(type, time);
     }
 
     /**
@@ -101,7 +78,7 @@ public class WarmupService implements Listener {
 
         // Moving
         if (movedFrom.getBlockX() != movedTo.getBlockX() || movedFrom.getBlockY() != movedTo.getBlockY() || movedFrom.getBlockZ() != movedTo.getBlockZ()) {
-            plugin.formator.sendMessage(event.getPlayer(), plugin.config.load(null, "messages.yml").getString("teleportation-cancelled"));
+            plugin.formator.sendMessage(event.getPlayer(), plugin.getMessages().getTeleportationCancelled());
             warmups.remove(event.getPlayer().getUniqueId());
         }
     }
