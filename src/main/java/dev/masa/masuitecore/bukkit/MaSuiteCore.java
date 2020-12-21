@@ -3,10 +3,13 @@ package dev.masa.masuitecore.bukkit;
 import co.aikar.commands.PaperCommandManager;
 import dev.masa.masuitecore.bukkit.chat.Formator;
 import dev.masa.masuitecore.bukkit.commands.MaSuiteCommand;
-import dev.masa.masuitecore.common.utils.Updator;
-import dev.masa.masuitecore.core.configuration.BukkitConfiguration;
-import dev.masa.masuitecore.core.services.CooldownService;
 import dev.masa.masuitecore.bukkit.services.WarmupService;
+import dev.masa.masuitecore.common.config.ConfigLoader;
+import dev.masa.masuitecore.common.config.server.CoreServerMessageConfig;
+import dev.masa.masuitecore.common.services.CooldownService;
+import dev.masa.masuitecore.common.utils.Updator;
+import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,22 +18,27 @@ import java.util.List;
 
 public class MaSuiteCore extends JavaPlugin implements Listener {
 
-    public BukkitConfiguration config = new BukkitConfiguration();
     public Formator formator = new Formator();
 
+    @Getter
     public static CooldownService cooldownService = new CooldownService();
+
+    @Getter
     public static WarmupService warmupService;
+
+    @Getter
     public static List<String> onlinePlayers = new ArrayList<>();
 
     private static MaSuiteCore instance;
 
+    @Getter
+    private CoreServerMessageConfig messages;
+
+    @SneakyThrows
     @Override
     public void onEnable() {
         // Detect if new version on spigot
-        config.create(this, null, "messages.yml");
-        config.addDefault("/messages.yml", "in-cooldown", "&cYou can use that command after %time% seconds");
-        config.addDefault("/messages.yml", "teleportation-started", "&7You will be teleported in &a%time%&7 seconds! &cDont move!");
-        config.addDefault("/messages.yml", "teleportation-cancelled", "&cTeleportation cancelled");
+        this.messages = CoreServerMessageConfig.loadFrom(ConfigLoader.loadConfig("config.yml"));
 
         new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
 
