@@ -2,15 +2,12 @@ package dev.masa.masuitecore.common.models;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import dev.masa.masuitecore.core.objects.Location;
+import dev.masa.masuitecore.common.objects.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -23,12 +20,14 @@ import java.util.UUID;
         query = "SELECT p FROM MaSuitePlayer p WHERE p.username = :username"
 )
 public class MaSuitePlayer {
-    @DatabaseField(dataType = DataType.UUID, id = true, columnName = "uuid")
+
+    @Id()
+    @DatabaseField(dataType = DataType.UUID, id = true, columnName = "uuid", unique = true)
     private UUID uniqueId;
 
-    @DatabaseField
+    @DatabaseField(width = 100)
     private String username;
-    @DatabaseField
+    @DatabaseField(width = 100)
     private String nickname;
     @DatabaseField
     private Long firstLogin;
@@ -37,14 +36,4 @@ public class MaSuitePlayer {
 
     @Transient
     private Location location;
-
-    @Transient
-    public Location getLocation() {
-        return this.location;
-    }
-
-    @Transient
-    public Location setLocation(Location loc) {
-        return this.location = loc;
-    }
 }
