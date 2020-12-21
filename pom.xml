@@ -27,6 +27,16 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
                 <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
@@ -46,6 +56,10 @@
                         </relocation>
                         <relocation>
                             <pattern>javax.persistence</pattern>
+                            <shadedPattern>dev.masa.masuitecore</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>ninja.leaping.configurate</pattern>
                             <shadedPattern>dev.masa.masuitecore</shadedPattern>
                         </relocation>
                     </relocations>
@@ -160,6 +174,11 @@
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.spongepowered</groupId>
+            <artifactId>configurate-yaml</artifactId>
+            <version>4.0.0</version>
         </dependency>
     </dependencies>
 </project>
