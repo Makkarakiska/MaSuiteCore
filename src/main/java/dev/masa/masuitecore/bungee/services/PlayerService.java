@@ -6,8 +6,9 @@ import dev.masa.masuitecore.bungee.events.MaSuitePlayerCreationEvent;
 import dev.masa.masuitecore.bungee.events.MaSuitePlayerUpdateEvent;
 import dev.masa.masuitecore.common.models.MaSuitePlayer;
 import dev.masa.masuitecore.common.services.AbstractDataService;
-import dev.masa.masuitecore.core.channels.BungeePluginChannel;
 import net.md_5.bungee.api.config.ServerInfo;
+
+import dev.masa.masuitecore.common.channels.BungeePluginChannel;
 
 import java.sql.SQLException;
 import java.util.Map;

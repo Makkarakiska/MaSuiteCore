@@ -3,7 +3,7 @@ package dev.masa.masuitecore.bungee.services;
 import dev.masa.masuitecore.bungee.MaSuiteCore;
 import dev.masa.masuitecore.common.interfaces.ITeleportService;
 import dev.masa.masuitecore.common.objects.Location;
-import dev.masa.masuitecore.core.channels.BungeePluginChannel;
+import dev.masa.masuitecore.common.channels.BungeePluginChannel;
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -27,7 +27,7 @@ public class TeleportService implements ITeleportService<ProxiedPlayer> {
                     plugin.getProxy().getScheduler().schedule(plugin, () -> {
                         bpc.send();
                         callback.accept(true);
-                    }, plugin.config.load(null, "config.yml").getInt("teleportation-delay"), TimeUnit.MILLISECONDS);
+                    }, plugin.getConfig().getTeleportationDelay(), TimeUnit.MILLISECONDS);
                 } else {
                     callback.accept(false);
                 }
@@ -53,7 +53,7 @@ public class TeleportService implements ITeleportService<ProxiedPlayer> {
                     plugin.getProxy().getScheduler().schedule(plugin, () -> {
                         bpc.send();
                         callback.accept(true);
-                    }, plugin.config.load(null, "config.yml").getInt("teleportation-delay"), TimeUnit.MILLISECONDS);
+                    }, plugin.getConfig().getTeleportationDelay(), TimeUnit.MILLISECONDS);
                 } else {
                     callback.accept(false);
                 }
