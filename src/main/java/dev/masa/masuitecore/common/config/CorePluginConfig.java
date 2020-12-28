@@ -1,6 +1,7 @@
 package dev.masa.masuitecore.common.config;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
@@ -14,34 +15,34 @@ public class CorePluginConfig {
     @Getter
     @Comment("Database settings")
     @Setting("database")
-    protected final DatabaseConfig database = new DatabaseConfig();
+    private DatabaseConfig database = new DatabaseConfig();
 
     @Getter
     @Setting("teleportation-delay")
     @Comment("# In ms, other plugins like Homes and Warps are using this.")
-    private final Integer teleportationDelay = 750;
+    private Integer teleportationDelay = 750;
 
     @ConfigSerializable
     static public class DatabaseConfig {
         @Getter
         @Setting("name")
-        protected final String databaseName = "minecraft?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8";
+        protected String databaseName = "minecraft?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8";
 
         @Getter
         @Setting("address")
-        protected final String databaseAddress = "localhost";
+        protected String databaseAddress = "localhost";
 
         @Getter
         @Setting("port")
-        private final Integer databasePort = 3306;
+        private Integer databasePort = 3306;
 
         @Getter
         @Setting("username")
-        protected final String databaseUsername = "minecraft";
+        protected String databaseUsername = "minecraft";
 
         @Getter
         @Setting("password")
-        protected final String databasePassword = "kissaKoira123";
+        protected String databasePassword = "minecraft";
     }
 
     private static final ObjectMapper<CorePluginConfig> MAPPER;
@@ -56,6 +57,11 @@ public class CorePluginConfig {
 
     public static CorePluginConfig loadFrom(final ConfigurationNode node) throws SerializationException {
         return MAPPER.load(node);
+    }
+
+    @SneakyThrows
+    public void saveTo(ConfigurationNode node) {
+        MAPPER.save(this, node);
     }
 }
 

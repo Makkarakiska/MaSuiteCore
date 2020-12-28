@@ -1,6 +1,7 @@
 package dev.masa.masuitecore.common.config.proxy;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
@@ -14,6 +15,10 @@ public class CoreProxyMessageConfig {
     @Setting("player-not-online")
     private final String playerNotOnline = "&cPlayer is not online.";
 
+    @Getter
+    @Setting("player-not-found")
+    private final String playerNotFound = "&cCould not find player.";
+
     private static final ObjectMapper<CoreProxyMessageConfig> MAPPER;
 
     static {
@@ -26,6 +31,11 @@ public class CoreProxyMessageConfig {
 
     public static CoreProxyMessageConfig loadFrom(final ConfigurationNode node) throws SerializationException {
         return MAPPER.load(node);
+    }
+
+    @SneakyThrows
+    public void saveTo(ConfigurationNode node) {
+        MAPPER.save(this, node);
     }
 
 }

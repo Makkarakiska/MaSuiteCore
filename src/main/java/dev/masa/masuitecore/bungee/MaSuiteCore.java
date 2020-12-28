@@ -16,6 +16,10 @@ import lombok.SneakyThrows;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.bstats.bungeecord.Metrics;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.yaml.NodeStyle;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +53,32 @@ public class MaSuiteCore extends Plugin implements Listener, IDatabaseServicePro
         // Detect if new version on spigot
         new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
 
-        this.config = CorePluginConfig.loadFrom(ConfigLoader.loadConfig("config.yml"));
-        this.messages = CoreProxyMessageConfig.loadFrom(ConfigLoader.loadConfig("messages.yml"));
+        YamlConfigurationLoader configLoader = YamlConfigurationLoader.builder()
+                .file(new File("plugins/MaSuite/config.yml"))
+                .defaultOptions(opts -> opts.shouldCopyDefaults(true))
+                .nodeStyle(NodeStyle.BLOCK)
+                .build();
+
+        CommentedConfigurationNode configNode = configLoader.load();
+        this.config = CorePluginConfig.loadFrom(configNode);
+        this.config.saveTo(configNode);
+        configLoader.save(configNode);
+
+
+        YamlConfigurationLoader messagesLoader = YamlConfigurationLoader.builder()
+                .file(new File("plugins/MaSuite/messages.yml"))
+                .defaultOptions(opts -> opts.shouldCopyDefaults(true))
+                .nodeStyle(NodeStyle.BLOCK)
+                .build();
+
+        CommentedConfigurationNode messagesNode = messagesLoader.load();
+        this.messages = CoreProxyMessageConfig.loadFrom(messagesNode);
+        this.messages.saveTo(messagesNode);
+
+        messagesLoader.save(messagesNode);
+
+
+
 
         databaseService = new DatabaseService(
                 config.getDatabase().getDatabaseAddress(),

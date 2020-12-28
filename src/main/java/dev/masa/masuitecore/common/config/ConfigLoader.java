@@ -11,6 +11,12 @@ public class ConfigLoader {
 
     public static CommentedConfigurationNode loadConfig(String file) {
         try {
+            File f = new File("plugins/MaSuite/" + file);
+
+            if (f.exists()) {
+                System.out.println("File found " + file + " " + f.getAbsolutePath());
+            }
+
             final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
                     .file(new File("plugins/MaSuite/" + file))
                     .defaultOptions(opts -> opts.shouldCopyDefaults(true))

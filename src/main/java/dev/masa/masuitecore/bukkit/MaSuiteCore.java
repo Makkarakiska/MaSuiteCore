@@ -12,7 +12,11 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.yaml.NodeStyle;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,9 +45,21 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
     @SneakyThrows
     @Override
     public void onEnable() {
-        // Detect if new version on spigot
+
+        YamlConfigurationLoader messagesLoader = YamlConfigurationLoader.builder()
+                .file(new File("plugins/MaSuite/messages.yml"))
+                .defaultOptions(opts -> opts.shouldCopyDefaults(true))
+                .nodeStyle(NodeStyle.BLOCK)
+                .build();
+
+        CommentedConfigurationNode messagesNode = messagesLoader.load();
+        this.messages = CoreServerMessageConfig.loadFrom(messagesNode);
+        this.messages.saveTo(messagesNode);
+
+        messagesLoader.save(messagesNode);
         this.messages = CoreServerMessageConfig.loadFrom(ConfigLoader.loadConfig("config.yml"));
 
+        // Detect if new version on spigot
         new Updator(getDescription().getVersion(), getDescription().getName(), "60037").checkUpdates();
 
         registerListeners();

@@ -1,6 +1,7 @@
 package dev.masa.masuitecore.common.config.server;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.ObjectMapper;
@@ -38,5 +39,10 @@ public class CoreServerMessageConfig {
 
     public static CoreServerMessageConfig loadFrom(final ConfigurationNode node) throws SerializationException {
         return MAPPER.load(node);
+    }
+
+    @SneakyThrows
+    public void saveTo(ConfigurationNode node) {
+        MAPPER.save(this, node);
     }
 }
