@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MaSuiteCore extends JavaPlugin implements Listener {
 
@@ -33,6 +34,9 @@ public class MaSuiteCore extends JavaPlugin implements Listener {
 
     @Getter
     private CoreServerMessageConfig messages;
+
+    @Getter
+    private List<UUID> teleportQueue = new ArrayList<>();
 
     @SneakyThrows
     @Override
